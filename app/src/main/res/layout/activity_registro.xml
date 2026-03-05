@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_Registro"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/turrialba1">
+
+    <View
+        android:id="@+id/id_img_bienvenidaRegistro"
+        android:layout_width="348dp"
+        android:layout_height="207dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="29dp"
+        android:layout_marginEnd="69dp"
+        android:layout_marginBottom="14dp"
+        android:background="@drawable/logito6"
+        app:layout_constraintBottom_toTopOf="@+id/id_PrimeraVista_Registro"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/id_PrimeraVista_Registro"
+        android:layout_width="376dp"
+        android:layout_height="325dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/border_radius"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/id_img_bienvenidaRegistro" />
+
+    <View
+        android:id="@+id/id_VistaDerechosCopy"
+        android:layout_width="345dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/border_radius"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.117"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/txt_DerechosCopy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="© Copyright - Municipalidad de Turrialba."
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/txt_DerechosCopy1"
+        app:layout_constraintEnd_toEndOf="@+id/id_VistaDerechosCopy"
+        app:layout_constraintStart_toStartOf="@+id/id_VistaDerechosCopy"
+        app:layout_constraintTop_toTopOf="@+id/id_VistaDerechosCopy"
+        app:layout_constraintVertical_bias="0.65" />
+
+    <TextView
+        android:id="@+id/txt_DerechosCopy1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Todos los derechos reservados."
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/id_VistaDerechosCopy"
+        app:layout_constraintEnd_toEndOf="@+id/id_VistaDerechosCopy"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="@+id/id_VistaDerechosCopy" />
+
+    <TextView
+        android:id="@+id/txt_Registro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Registrarme:"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:typeface="normal"
+        app:layout_constraintEnd_toEndOf="@+id/id_PrimeraVista_Registro"
+        app:layout_constraintHorizontal_bias="0.063"
+        app:layout_constraintStart_toStartOf="@+id/id_PrimeraVista_Registro"
+        app:layout_constraintTop_toTopOf="@+id/id_PrimeraVista_Registro" />
+
+    <EditText
+        android:id="@+id/edtxt_Nombre"
+        android:layout_width="336dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/orange"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Nombre:"
+        android:textAlignment="textStart"
+        android:textColor="@color/black"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="@+id/id_PrimeraVista_Registro"
+        app:layout_constraintHorizontal_bias="0.45"
+        app:layout_constraintStart_toStartOf="@+id/id_PrimeraVista_Registro"
+        app:layout_constraintTop_toBottomOf="@+id/txt_Registro" />
+
+    <EditText
+        android:id="@+id/edtxt_Apellido"
+        android:layout_width="336dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/orange"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Apellido:"
+        android:textAlignment="textStart"
+        android:textColor="@color/black"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="@+id/id_PrimeraVista_Registro"
+        app:layout_constraintHorizontal_bias="0.425"
+        app:layout_constraintStart_toStartOf="@+id/id_PrimeraVista_Registro"
+        app:layout_constraintTop_toBottomOf="@+id/edtxt_Nombre" />
+
+    <EditText
+        android:id="@+id/edtxt_Cedula"
+        android:layout_width="334dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/orange"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Cédula:"
+        android:textAlignment="textStart"
+        android:textColor="@color/black"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="@+id/id_PrimeraVista_Registro"
+        app:layout_constraintStart_toStartOf="@+id/id_PrimeraVista_Registro"
+        app:layout_constraintTop_toBottomOf="@+id/edtxt_Edad" />
+
+    <EditText
+        android:id="@+id/edtxt_Edad"
+        android:layout_width="336dp"
+        android:layout_height="27dp"
+        android:layout_marginTop="7dp"
+        android:background="@color/orange"
+        android:ems="10"
+        android:inputType="number"
+        android:text="Edad:"
+        android:textAlignment="textStart"
+        android:textColor="@color/black"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="@+id/id_PrimeraVista_Registro"
+        app:layout_constraintStart_toStartOf="@+id/id_PrimeraVista_Registro"
+        app:layout_constraintTop_toBottomOf="@+id/edtxt_Apellido" />
+
+    <EditText
+        android:id="@+id/edtxt_Telefono"
+        android:layout_width="331dp"
+        android:layout_height="27dp"
+        android:layout_marginTop="9dp"
+        android:background="@color/orange"
+        android:ems="10"
+        android:inputType="phone"
+        android:text="Teléfono:"
+        android:textAlignment="textStart"
+        android:textColor="@color/black"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="@+id/id_PrimeraVista_Registro"
+        app:layout_constraintStart_toStartOf="@+id/id_PrimeraVista_Registro"
+        app:layout_constraintTop_toBottomOf="@+id/edtxt_Cedula" />
+
+    <EditText
+        android:id="@+id/edtxt_CorreoRegistro"
+        android:layout_width="331dp"
+        android:layout_height="27dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/orange"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:text="Correo Electrónico:"
+        android:textAlignment="textStart"
+        android:textColor="@color/black"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="@+id/id_PrimeraVista_Registro"
+        app:layout_constraintStart_toStartOf="@+id/id_PrimeraVista_Registro"
+        app:layout_constraintTop_toBottomOf="@+id/edtxt_Telefono" />
+
+    <EditText
+        android:id="@+id/edtxt_PasswordRegistro"
+        android:layout_width="330dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="9dp"
+        android:background="@color/orange"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Contraseña:"
+        android:textAlignment="textStart"
+        android:textColor="@color/black"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="@+id/id_PrimeraVista_Registro"
+        app:layout_constraintStart_toStartOf="@+id/id_PrimeraVista_Registro"
+        app:layout_constraintTop_toBottomOf="@+id/edtxt_CorreoRegistro" />
+
+    <Button
+        android:id="@+id/btn_RegistraCuenta"
+        android:layout_width="165dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="123dp"
+        android:layout_marginEnd="123dp"
+        android:background="@drawable/custom_buttons"
+        android:text="Registrar cuenta"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toTopOf="@+id/id_VistaDerechosCopy"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/id_PrimeraVista_Registro" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
