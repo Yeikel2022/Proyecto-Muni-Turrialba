@@ -11,6 +11,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MuniTurrialba">
+
+        <!-- Esto es para indicarle al manifest donde esta la vista: "MenuPrincipalActivity".
+             Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
+             (vista), lo que daria un error en el mismo. -->
+        <activity
+            android:name=".index.MenuPrincipalActivity"
+            android:exported="false" />
+
+        <!-- Esto es para indicarle al manifest donde esta la vista: "RegistroActivity".
+             Esto si o si es necesario porque si no la app no sabra donde esta esa
+             pantalla (vista), lo que daria un error en el mismo. -->
+        <activity
+            android:name=".index.RegistroActivity"
+            android:exported="false" />
+
+        <!-- Esto es para indicarle al manifest donde esta la vista: "MainActivity".
+             Esto si o si es necesario porque si no la app no sabra donde esta esa
+             pantalla (vista), lo que daria un error en el mismo. -->
         <activity
             android:name=".MainActivity"
             android:exported="true">

@@ -5,15 +5,202 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/turrialba1"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <View
+        android:id="@+id/id_PrimeraVista"
+        android:layout_width="289dp"
+        android:layout_height="185dp"
+        android:layout_marginStart="39dp"
+
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="40dp"
+        android:background="@drawable/border_radius"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/id_img_bienvenida" />
+
+    <ImageView
+        android:id="@+id/id_img_bienvenida"
+        android:layout_width="310dp"
+        android:layout_height="177dp"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="31dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="33dp"
+        android:background="@drawable/logito6"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/id_PrimeraVista"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
+    <View
+        android:id="@+id/id_VistaDerechosCopy"
+        android:layout_width="345dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/border_radius"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.117"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/txt_DerechosCopy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="© Copyright - Municipalidad de Turrialba."
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/txt_DerechosCopy1"
+        app:layout_constraintEnd_toEndOf="@+id/id_VistaDerechosCopy"
+        app:layout_constraintStart_toStartOf="@+id/id_VistaDerechosCopy"
+        app:layout_constraintTop_toTopOf="@+id/id_VistaDerechosCopy"
+        app:layout_constraintVertical_bias="0.65" />
+
+    <TextView
+        android:id="@+id/txt_DerechosCopy1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Todos los derechos reservados."
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/id_VistaDerechosCopy"
+        app:layout_constraintEnd_toEndOf="@+id/id_VistaDerechosCopy"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="@+id/id_VistaDerechosCopy" />
+
+    <TextView
+        android:id="@+id/txt_Correo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Correo electrónico:"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:typeface="normal"
+        app:layout_constraintEnd_toEndOf="@+id/id_PrimeraVista"
+        app:layout_constraintHorizontal_bias="0.128"
+        app:layout_constraintStart_toStartOf="@+id/id_PrimeraVista"
+        app:layout_constraintTop_toTopOf="@+id/id_PrimeraVista" />
+
+    <EditText
+        android:id="@+id/edtxt_CampoEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@color/orange"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:textAlignment="textStart"
+        android:textColor="@color/black"
+        android:typeface="normal"
+        app:layout_constraintEnd_toEndOf="@+id/id_PrimeraVista"
+        app:layout_constraintHorizontal_bias="0.238"
+        app:layout_constraintStart_toStartOf="@+id/id_PrimeraVista"
+        app:layout_constraintTop_toBottomOf="@+id/txt_Correo" />
+
+    <TextView
+        android:id="@+id/txt_Password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="Contraseña:"
+        android:textAlignment="textStart"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/id_PrimeraVista"
+        app:layout_constraintHorizontal_bias="0.094"
+        app:layout_constraintStart_toStartOf="@+id/id_PrimeraVista"
+        app:layout_constraintTop_toTopOf="@+id/id_PrimeraVista" />
+
+    <EditText
+        android:id="@+id/edtxt_CampoPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@color/orange"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:textAlignment="textStart"
+        android:textColor="@color/black"
+        android:typeface="normal"
+        app:layout_constraintEnd_toEndOf="@+id/id_PrimeraVista"
+        app:layout_constraintHorizontal_bias="0.24"
+        app:layout_constraintStart_toStartOf="@+id/id_PrimeraVista"
+        app:layout_constraintTop_toBottomOf="@+id/txt_Password" />
+
+    <Button
+        android:id="@+id/btn_InicioSesion"
+        android:layout_width="179dp"
+        android:layout_height="63dp"
+        android:layout_marginTop="56dp"
+        android:background="@drawable/custom_buttons"
+        android:checked="true"
+        android:clickable="true"
+        android:text="Iniciar Sesión"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:backgroundTint="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/id_PrimeraVista" />
+
+    <Button
+        android:id="@+id/btn_Password"
+        android:layout_width="239dp"
+        android:layout_height="53dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/custom_buttons"
+        android:checked="true"
+        android:clickable="true"
+        android:text="¿Ólvido su contraseña?"
+        android:textAlignment="textStart"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:backgroundTint="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_InicioSesion" />
+
+    <Button
+        android:id="@+id/btn_Registro"
+        android:layout_width="170dp"
+        android:layout_height="63dp"
+        android:background="@drawable/custom_buttons"
+        android:checked="true"
+        android:clickable="true"
+        android:text="Registrarme"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toTopOf="@+id/id_VistaDerechosCopy"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_Password"
+        app:layout_constraintVertical_bias="0.38"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
