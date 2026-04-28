@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".index.MenuFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <View
+        android:id="@+id/id_SeccionesMenu"
+        android:layout_width="match_parent"
+        android:layout_height="597dp"
+        android:layout_below="@+id/id_Vistabienvenida"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="69dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="81dp"
+        android:background="@drawable/border_radius" />
+
+    <ImageView
+        android:id="@+id/id_Vistabienvenida"
+        android:layout_width="match_parent"
+        android:layout_height="144dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:background="@drawable/turri15"
+        android:scaleType="center"
+        android:visibility="invisible" />
+
+    <View
+        android:id="@+id/id_SeccionInformativa"
+        android:layout_width="356dp"
+        android:layout_height="80dp"
+        android:layout_alignBottom="@+id/id_Vistabienvenida"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="34dp"
+        android:background="@drawable/border_radius"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/img_Menu"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignStart="@+id/id_SeccionInformativa"
+        android:layout_alignTop="@+id/id_SeccionInformativa"
+        android:layout_alignEnd="@+id/id_SeccionInformativa"
+        android:layout_alignBottom="@+id/id_SeccionInformativa"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="285dp"
+        android:layout_marginBottom="11dp"
+        android:background="@drawable/outline_contact_support_24"
+        android:visibility="visible" />
+
+    <View
+        android:id="@+id/id_seccionEmpleados"
+        android:layout_width="wrap_content"
+        android:layout_height="94dp"
+        android:layout_alignTop="@+id/id_SeccionesMenu"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="34dp"
+        android:layout_marginEnd="9dp"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/btn_ControlEmpleado"
+        android:layout_width="wrap_content"
+        android:layout_height="94dp"
+        android:layout_alignStart="@+id/id_seccionEmpleados"
+        android:layout_alignTop="@+id/id_seccionEmpleados"
+        android:layout_alignEnd="@+id/id_seccionEmpleados"
+        android:layout_alignBottom="@+id/id_seccionEmpleados"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp"
+        android:background="@drawable/custom_buttons"
+        android:checked="true"
+        android:clickable="true"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="Control de empleados."
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:cornerRadius="20dp"
+        app:icon="@drawable/rounded_assignment_ind_24"
+        app:iconPadding="0dp"
+        app:iconSize="80dp" />
+
+    <View
+        android:id="@+id/id_seccionReporteria"
+        android:layout_width="wrap_content"
+        android:layout_height="94dp"
+        android:layout_below="@+id/id_seccionEmpleados"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="34dp"
+        android:layout_marginEnd="9dp"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/btn_Reporteria"
+        android:layout_width="wrap_content"
+        android:layout_height="94dp"
+        android:layout_alignStart="@+id/id_seccionReporteria"
+        android:layout_alignTop="@+id/id_seccionReporteria"
+        android:layout_alignEnd="@+id/id_seccionReporteria"
+        android:layout_alignBottom="@+id/id_seccionReporteria"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp"
+        android:background="@drawable/custom_buttons"
+        android:checked="true"
+        android:clickable="true"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="Reporteria."
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:cornerRadius="20dp"
+        app:icon="@drawable/outline_demography_24"
+        app:iconPadding="0dp"
+        app:iconSize="80dp" />
+
+    <View
+        android:id="@+id/id_seccionAdministracionArchivos"
+        android:layout_width="wrap_content"
+        android:layout_height="94dp"
+        android:layout_below="@+id/id_seccionReporteria"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="34dp"
+        android:layout_marginEnd="9dp"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/btn_AdministracionArchivos"
+        android:layout_width="wrap_content"
+        android:layout_height="94dp"
+        android:layout_alignStart="@+id/id_seccionAdministracionArchivos"
+        android:layout_alignTop="@+id/id_seccionAdministracionArchivos"
+        android:layout_alignEnd="@+id/id_seccionAdministracionArchivos"
+        android:layout_alignBottom="@+id/id_seccionAdministracionArchivos"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp"
+        android:background="@drawable/custom_buttons"
+        android:checked="true"
+        android:clickable="true"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="Administración de archivos."
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:cornerRadius="20dp"
+        app:icon="@drawable/rounded_co_present_24"
+        app:iconPadding="0dp"
+        app:iconSize="80dp" />
+
+    <TextView
+        android:id="@+id/txt_menuBienvenida"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:layout_alignStart="@+id/id_SeccionInformativa"
+        android:layout_alignTop="@+id/id_SeccionInformativa"
+        android:layout_alignEnd="@+id/id_SeccionInformativa"
+        android:layout_alignBottom="@+id/id_SeccionInformativa"
+        android:layout_marginStart="76dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="9dp"
+        android:layout_marginBottom="11dp"
+        android:text="¡Bienvenido(a) al menú de MuniTurrialba!"
+        android:textAlignment="viewStart"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+</RelativeLayout>

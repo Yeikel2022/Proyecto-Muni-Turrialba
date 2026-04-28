@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/itm_Menu"
+        android:icon="@drawable/outline_cottage_24"
+        android:title="Menú" />
+    <item
+        android:id="@+id/itm_Perfil"
+        android:icon="@drawable/outline_account_box_24"
+        android:title="Perfil" />
+    <item
+        android:id="@+id/itm_CarnetVirtual"
+        android:icon="@drawable/outline_demography_24"
+        android:title="Carnet virtual" />
+    <item
+        android:id="@+id/itm_Ayuda"
+        android:icon="@drawable/outline_contact_support_24"
+        android:title="Ayuda" />
+</menu>
