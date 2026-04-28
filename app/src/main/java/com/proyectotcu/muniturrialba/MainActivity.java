@@ -3,7 +3,6 @@ package com.proyectotcu.muniturrialba;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -14,12 +13,12 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.proyectotcu.muniturrialba.databinding.ActivityMainBinding;
 import com.proyectotcu.muniturrialba.index.MenuPrincipalActivity;
+import com.proyectotcu.muniturrialba.index.RecuperarPasswordActivity;
 import com.proyectotcu.muniturrialba.index.RegistroActivity;
 import com.proyectotcu.muniturrialba.manejoAPI.ConexionAPI;
 import com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI.UsuarioEntitie;
 import com.proyectotcu.muniturrialba.manejoAPI.interfacesAPI.UsuarioInterface;
 
-import java.util.List;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -59,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         *  el usuario presione el boton respectivo. */
         mainBinding.btnRegistro.setOnClickListener(v -> VistaRegistro());
         mainBinding.btnInicioSesion.setOnClickListener(v -> VistaInicioSesion());
+        mainBinding.btnPassword.setOnClickListener(v -> VistaRecuperarPassword());
     }
 
     /* Metodo que sirve para llevar el usuario hacia la vista (que es la pantallita) -
@@ -205,6 +205,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+
+    /* Metodo que sirve para llevar el usuario hacia la vista (que es la pantallita) -
+     *  de recuperar contraseña.   */
+    private void VistaRecuperarPassword() {
+        //Aqui le dice a que vista tiene que ir, como un hipervinculo basicamente.
+        Intent intentPassword = new Intent(MainActivity.this, RecuperarPasswordActivity.class);
+
+        //Le indica que ejecute el hipervinculo.
+        startActivity(intentPassword);
     }
 
     /* Este metodo sirve para poder enviar el usuario hacia al -

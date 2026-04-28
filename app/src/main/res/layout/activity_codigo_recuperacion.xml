@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_CodigoRecuperarPassword"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/turrialba1">
+
+    <View
+        android:id="@+id/id_img_bienvenidaCodigoRecuperacion"
+        android:layout_width="348dp"
+        android:layout_height="207dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/logito6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.476"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/id_PrimeraVista_CodigoRecuperacion"
+        android:layout_width="351dp"
+        android:layout_height="225dp"
+        android:layout_marginTop="68dp"
+        android:background="@drawable/border_radius"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/id_img_bienvenidaCodigoRecuperacion" />
+
+    <View
+        android:id="@+id/id_VistaDerechosCopy"
+        android:layout_width="345dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/border_radius"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.117"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/txt_DerechosCopy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="© Copyright - Municipalidad de Turrialba."
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/txt_DerechosCopy1"
+        app:layout_constraintEnd_toEndOf="@+id/id_VistaDerechosCopy"
+        app:layout_constraintStart_toStartOf="@+id/id_VistaDerechosCopy"
+        app:layout_constraintTop_toTopOf="@+id/id_VistaDerechosCopy"
+        app:layout_constraintVertical_bias="0.65" />
+
+    <TextView
+        android:id="@+id/txt_DerechosCopy1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Todos los derechos reservados."
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/id_VistaDerechosCopy"
+        app:layout_constraintEnd_toEndOf="@+id/id_VistaDerechosCopy"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="@+id/id_VistaDerechosCopy" />
+
+    <TextView
+        android:id="@+id/txt_CodigoRecuperacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Código de recuperación:"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:typeface="normal"
+        app:layout_constraintEnd_toEndOf="@+id/id_PrimeraVista_CodigoRecuperacion"
+        app:layout_constraintHorizontal_bias="0.067"
+        app:layout_constraintStart_toStartOf="@+id/id_PrimeraVista_CodigoRecuperacion"
+        app:layout_constraintTop_toTopOf="@+id/id_PrimeraVista_CodigoRecuperacion" />
+
+    <TextView
+        android:id="@+id/txt_InformacionCodigo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Se le envio un código de restablecimiento al -\ncorreo digitado anteirormente. \n\nPara continuar con el procedimiento, digite por -\nfavor el código de restablecimiento."
+        android:textAlignment="textStart"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        android:typeface="normal"
+        app:layout_constraintEnd_toEndOf="@+id/id_PrimeraVista_CodigoRecuperacion"
+        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintStart_toStartOf="@+id/id_PrimeraVista_CodigoRecuperacion"
+        app:layout_constraintTop_toBottomOf="@+id/txt_CodigoRecuperacion" />
+
+    <EditText
+        android:id="@+id/edtxt_Codigo"
+        android:layout_width="330dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/orange"
+        android:ems="10"
+        android:hint="Digite el código:"
+        android:inputType="text"
+        android:textAlignment="textStart"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="@+id/id_PrimeraVista_CodigoRecuperacion"
+        app:layout_constraintHorizontal_bias="0.458"
+        app:layout_constraintStart_toStartOf="@+id/id_PrimeraVista_CodigoRecuperacion"
+        app:layout_constraintTop_toBottomOf="@+id/txt_InformacionCodigo" />
+
+    <Button
+        android:id="@+id/btn_CodigoRecuperacion"
+        android:layout_width="165dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="123dp"
+        android:layout_marginTop="107dp"
+        android:layout_marginEnd="123dp"
+        android:layout_marginBottom="110dp"
+        android:checkable="true"
+        android:checked="true"
+        android:clickable="true"
+        android:text="Continuar"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:background="@drawable/custom_buttons"
+        android:backgroundTint="@null"
+        app:layout_constraintBottom_toTopOf="@+id/id_VistaDerechosCopy"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/id_PrimeraVista_CodigoRecuperacion" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

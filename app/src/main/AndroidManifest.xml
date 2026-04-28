@@ -1,49 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
-    <!-- Esto es para que la aplicación tenga el permiso -
-         de internet, de modo que se pueda comunicar con -
-         el API en cuestión.
-    <uses-permission android:name="android.permission.INTERNET"/>-->
-
+    <!--
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission> -->
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="MuniTurrialba"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MuniTurrialba"
-
         android:usesCleartextTraffic="false">
-        <!-- Esto es para que la aplicación permita el uso a:
-        HTTP, pero por el momento no esta permitido usarlo.
-        Pero como tal, despues de eso el que si se deberia -
-        usar seria el: HTTPS.
+        <activity
+            android:name=".moduloAdministracionArchivos.AdministracionArchivosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".moduloReporteria.ReporteriaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".moduloEmpleados.ControlEmpleadosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".index.CambiarPasswordActivity"
+            android:exported="false" />
+        <!--
+        Esto es para que la aplicación permita el uso a:
+             HTTP, pero por el momento no esta permitido usarlo.
+             Pero como tal, despues de eso el que si se deberia -
+             usar seria el: HTTPS.
 
-        Por lo que solo se usaria ese para el desarrollo, después -
-        hay que configurarlo para que acepte solo HTTPS y realice -
-        transacciones bajo ese protocolo en producción.-->
-
-        <!-- Esto es para indicarle al manifest donde esta la vista: "MenuPrincipalActivity".
+             Por lo que solo se usaria ese para el desarrollo, después -
+             hay que configurarlo para que acepte solo HTTPS y realice -
+             transacciones bajo ese protocolo en producción.
+        -->
+        <!--
+ Esto es para indicarle al manifest donde esta la vista: "CodigoRecuperacionActivity".
              Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
-             (vista), lo que daria un error en el mismo. -->
+             (vista), lo que daria un error en el mismo.
+        -->
+        <activity
+            android:name=".index.CodigoRecuperacionActivity"
+            android:exported="false" />
+        <!--
+ Esto es para indicarle al manifest donde esta la vista: "RecuperarPasswordActivity".
+             Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
+             (vista), lo que daria un error en el mismo.
+        -->
+        <activity
+            android:name=".index.RecuperarPasswordActivity"
+            android:exported="false" />
+        <!--
+ Esto es para indicarle al manifest donde esta la vista: "MenuPrincipalActivity".
+             Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
+             (vista), lo que daria un error en el mismo.
+        -->
         <activity
             android:name=".index.MenuPrincipalActivity"
             android:exported="false" />
-
-        <!-- Esto es para indicarle al manifest donde esta la vista: "RegistroActivity".
+        <!--
+ Esto es para indicarle al manifest donde esta la vista: "RegistroActivity".
              Esto si o si es necesario porque si no la app no sabra donde esta esa
-             pantalla (vista), lo que daria un error en el mismo. -->
+             pantalla (vista), lo que daria un error en el mismo.
+        -->
         <activity
             android:name=".index.RegistroActivity"
             android:exported="false" />
-
-        <!-- Esto es para indicarle al manifest donde esta la vista: "MainActivity".
+        <!--
+ Esto es para indicarle al manifest donde esta la vista: "MainActivity".
              Esto si o si es necesario porque si no la app no sabra donde esta esa
-             pantalla (vista), lo que daria un error en el mismo. -->
+             pantalla (vista), lo que daria un error en el mismo.
+        -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
