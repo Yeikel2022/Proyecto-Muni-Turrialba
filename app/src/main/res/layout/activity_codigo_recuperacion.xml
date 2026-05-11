@@ -92,7 +92,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Se le envio un código de restablecimiento al -\ncorreo digitado anteirormente. \n\nPara continuar con el procedimiento, digite por -\nfavor el código de restablecimiento."
+        android:text="Se le envio un código de restablecimiento al -\ncorreo digitado anteriormente. \n\nPara continuar con el procedimiento, digite por -\nfavor el código de restablecimiento."
         android:textAlignment="textStart"
         android:textColor="@color/black"
         android:textSize="16sp"
