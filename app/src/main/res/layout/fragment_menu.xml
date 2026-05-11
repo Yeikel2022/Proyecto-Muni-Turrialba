@@ -8,20 +8,6 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <View
-        android:id="@+id/id_SeccionesMenu"
-        android:layout_width="match_parent"
-        android:layout_height="597dp"
-        android:layout_below="@+id/id_Vistabienvenida"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="69dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="81dp"
-        android:background="@drawable/border_radius" />
-
     <ImageView
         android:id="@+id/id_Vistabienvenida"
         android:layout_width="match_parent"
@@ -66,6 +52,139 @@
         android:background="@drawable/outline_contact_support_24"
         android:visibility="visible" />
 
+    <TextView
+        android:id="@+id/txt_menuBienvenida"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:layout_alignStart="@+id/id_SeccionInformativa"
+        android:layout_alignTop="@+id/id_SeccionInformativa"
+        android:layout_alignEnd="@+id/id_SeccionInformativa"
+        android:layout_alignBottom="@+id/id_SeccionInformativa"
+        android:layout_marginStart="76dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="9dp"
+        android:layout_marginBottom="11dp"
+        android:text="¡Bienvenido(a) al menú de MuniTurrialba!"
+        android:textAlignment="viewStart"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <View
+        android:id="@+id/id_SeccionesMenu"
+        android:layout_width="match_parent"
+        android:layout_height="551dp"
+        android:layout_below="@+id/id_Vistabienvenida"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="69dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="127dp"
+        android:background="@drawable/border_radius" />
+<LinearLayout
+        android:id="@+id/lnl_SeccionModulos"
+        android:layout_width="match_parent"
+        android:layout_height="597dp"
+        android:layout_alignTop="@+id/id_SeccionesMenu"
+        android:layout_alignBottom="@+id/id_SeccionesMenu"
+        android:layout_marginTop="-1dp"
+        android:layout_marginBottom="-1dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_ControlEmpleado"
+            android:layout_width="392dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/id_SeccionesMenu"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="34dp"
+            android:layout_marginEnd="9dp"
+            android:background="@drawable/custom_buttons"
+            android:checked="true"
+            android:clickable="true"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="Control de empleados."
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:cornerRadius="20dp"
+            app:icon="@drawable/rounded_assignment_ind_24"
+            app:iconPadding="0dp"
+            app:iconSize="80dp" />
+
+        <Button
+            android:id="@+id/btn_Reporteria"
+            android:layout_width="392dp"
+            android:layout_height="89dp"
+            android:layout_alignTop="@+id/btn_ControlEmpleado"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="34dp"
+            android:layout_marginEnd="9dp"
+            android:background="@drawable/custom_buttons"
+            android:checked="true"
+            android:clickable="true"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="Reporteria."
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:cornerRadius="20dp"
+            app:icon="@drawable/outline_demography_24"
+            app:iconPadding="0dp"
+            app:iconSize="80dp" />
+
+    <Button
+        android:id="@+id/btn_AdministracionArchivos"
+        android:layout_width="392dp"
+        android:layout_height="94dp"
+        android:layout_alignTop="@+id/btn_Reporteria"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="34dp"
+        android:layout_marginEnd="9dp"
+        android:background="@drawable/custom_buttons"
+        android:checked="true"
+        android:clickable="true"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="Administración de archivos."
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:cornerRadius="20dp"
+        app:icon="@drawable/rounded_co_present_24"
+        app:iconPadding="0dp"
+        app:iconSize="80dp" />
+
+    <TextView
+        android:id="@+id/txt_MensajeMenu"
+        android:layout_width="392dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/id_SeccionesMenu"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="9dp"
+        android:fontFamily="sans-serif"
+        android:rotation="28"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:visibility="visible" />
+
+</LinearLayout>
+
+    <!--
     <View
         android:id="@+id/id_seccionEmpleados"
         android:layout_width="wrap_content"
@@ -76,7 +195,7 @@
         android:layout_marginStart="7dp"
         android:layout_marginTop="34dp"
         android:layout_marginEnd="9dp"
-        android:visibility="invisible" />
+        android:visibility="visible" />
 
     <Button
         android:id="@+id/btn_ControlEmpleado"
@@ -114,7 +233,7 @@
         android:layout_marginStart="7dp"
         android:layout_marginTop="34dp"
         android:layout_marginEnd="9dp"
-        android:visibility="invisible" />
+        android:visibility="visible" />
 
     <Button
         android:id="@+id/btn_Reporteria"
@@ -152,7 +271,7 @@
         android:layout_marginStart="7dp"
         android:layout_marginTop="34dp"
         android:layout_marginEnd="9dp"
-        android:visibility="invisible" />
+        android:visibility="visible" />
 
     <Button
         android:id="@+id/btn_AdministracionArchivos"
@@ -178,23 +297,6 @@
         app:cornerRadius="20dp"
         app:icon="@drawable/rounded_co_present_24"
         app:iconPadding="0dp"
-        app:iconSize="80dp" />
-
-    <TextView
-        android:id="@+id/txt_menuBienvenida"
-        android:layout_width="wrap_content"
-        android:layout_height="56dp"
-        android:layout_alignStart="@+id/id_SeccionInformativa"
-        android:layout_alignTop="@+id/id_SeccionInformativa"
-        android:layout_alignEnd="@+id/id_SeccionInformativa"
-        android:layout_alignBottom="@+id/id_SeccionInformativa"
-        android:layout_marginStart="76dp"
-        android:layout_marginTop="13dp"
-        android:layout_marginEnd="9dp"
-        android:layout_marginBottom="11dp"
-        android:text="¡Bienvenido(a) al menú de MuniTurrialba!"
-        android:textAlignment="viewStart"
-        android:textColor="@color/black"
-        android:textSize="18sp" />
+        app:iconSize="80dp" />-->
 
 </RelativeLayout>

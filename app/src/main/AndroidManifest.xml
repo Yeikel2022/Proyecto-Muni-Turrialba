@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <!--
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission> -->
+    <!-- <uses-permission android:name="android.permission.INTERNET"></uses-permission> -->
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,65 +12,74 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MuniTurrialba"
         android:usesCleartextTraffic="false">
-        <activity
-            android:name=".moduloAdministracionArchivos.AdministracionArchivosActivity"
-            android:exported="false" />
-        <activity
-            android:name=".moduloReporteria.ReporteriaActivity"
-            android:exported="false" />
-        <activity
-            android:name=".moduloEmpleados.ControlEmpleadosActivity"
-            android:exported="false" />
-        <activity
-            android:name=".index.CambiarPasswordActivity"
-            android:exported="false" />
-        <!--
-        Esto es para que la aplicación permita el uso a:
+        <!-- Esto es para que la aplicación permita el uso a:
              HTTP, pero por el momento no esta permitido usarlo.
              Pero como tal, despues de eso el que si se deberia -
              usar seria el: HTTPS.
 
              Por lo que solo se usaria ese para el desarrollo, después -
              hay que configurarlo para que acepte solo HTTPS y realice -
-             transacciones bajo ese protocolo en producción.
-        -->
-        <!--
- Esto es para indicarle al manifest donde esta la vista: "CodigoRecuperacionActivity".
+             transacciones bajo ese protocolo en producción. -->
+
+        <!-- Esto es para indicarle al manifest donde esta la vista: "AdministracionArchivosActivity".
              Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
-             (vista), lo que daria un error en el mismo.
-        -->
+             (vista), lo que daria un error en el mismo. -->
+        <activity
+            android:name=".moduloAdministracionArchivos.AdministracionArchivosActivity"
+            android:exported="false" />
+
+        <!-- Esto es para indicarle al manifest donde esta la vista: "ReporteriaActivity".
+             Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
+             (vista), lo que daria un error en el mismo. -->
+        <activity
+            android:name=".moduloReporteria.ReporteriaActivity"
+            android:exported="false" />
+
+        <!-- Esto es para indicarle al manifest donde esta la vista: "ControlEmpleadosActivity".
+             Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
+             (vista), lo que daria un error en el mismo. -->
+        <activity
+            android:name=".moduloEmpleados.ControlEmpleadosActivity"
+            android:exported="false" />
+
+        <!-- Esto es para indicarle al manifest donde esta la vista: "CambiarPasswordActivity".
+             Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
+             (vista), lo que daria un error en el mismo. -->
+        <activity
+            android:name=".index.CambiarPasswordActivity"
+            android:exported="false" />
+
+        <!-- Esto es para indicarle al manifest donde esta la vista: "CodigoRecuperacionActivity".
+             Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
+             (vista), lo que daria un error en el mismo. -->
         <activity
             android:name=".index.CodigoRecuperacionActivity"
             android:exported="false" />
-        <!--
- Esto es para indicarle al manifest donde esta la vista: "RecuperarPasswordActivity".
+
+        <!-- Esto es para indicarle al manifest donde esta la vista: "RecuperarPasswordActivity".
              Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
-             (vista), lo que daria un error en el mismo.
-        -->
+             (vista), lo que daria un error en el mismo. -->
         <activity
             android:name=".index.RecuperarPasswordActivity"
             android:exported="false" />
-        <!--
- Esto es para indicarle al manifest donde esta la vista: "MenuPrincipalActivity".
+
+        <!-- Esto es para indicarle al manifest donde esta la vista: "MenuPrincipalActivity".
              Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
-             (vista), lo que daria un error en el mismo.
-        -->
+             (vista), lo que daria un error en el mismo. -->
         <activity
             android:name=".index.MenuPrincipalActivity"
             android:exported="false" />
-        <!--
- Esto es para indicarle al manifest donde esta la vista: "RegistroActivity".
+
+        <!-- Esto es para indicarle al manifest donde esta la vista: "RegistroActivity".
              Esto si o si es necesario porque si no la app no sabra donde esta esa
-             pantalla (vista), lo que daria un error en el mismo.
-        -->
+             pantalla (vista), lo que daria un error en el mismo. -->
         <activity
             android:name=".index.RegistroActivity"
             android:exported="false" />
-        <!--
- Esto es para indicarle al manifest donde esta la vista: "MainActivity".
+
+        <!-- Esto es para indicarle al manifest donde esta la vista: "MainActivity".
              Esto si o si es necesario porque si no la app no sabra donde esta esa
-             pantalla (vista), lo que daria un error en el mismo.
-        -->
+             pantalla (vista), lo que daria un error en el mismo. -->
         <activity
             android:name=".MainActivity"
             android:exported="true">

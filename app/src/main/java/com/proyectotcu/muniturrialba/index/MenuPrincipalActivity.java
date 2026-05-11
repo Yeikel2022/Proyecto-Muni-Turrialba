@@ -1,6 +1,5 @@
 package com.proyectotcu.muniturrialba.index;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -20,10 +19,11 @@ public class MenuPrincipalActivity extends AppCompatActivity {
     //Variable para usar el ViewBinding de esta clase.
     private ActivityMenuPrincipalBinding activityMenuPrincipalBinding;
 
+
     /* Este metodo sirve para poder crear y enlazar la clase hacia la vista respectiva.
-     * También se sustituyo aspectos como "find by id (y similares)" por el uso del ViewBinding,-
-     * el cual es una nueva forma para llamar los elementos de la vista de una forma más optimizada.
-     */
+     * También, se sustituyo aspectos similares (como por ejemplo el "find by id"), por -
+     * el uso del ViewBinding. El cual es una nueva forma para llamar los elementos de -
+     * la vista de una forma más optimizada. */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         activityMenuPrincipalBinding = ActivityMenuPrincipalBinding.inflate(getLayoutInflater());
@@ -36,10 +36,14 @@ public class MenuPrincipalActivity extends AppCompatActivity {
             return insets;
         });
 
+        /* Sirve para llamar los fragmentos del menu, perfil, carnet virtual -
+         * y ayuda, siempre y cuando el usuario presione el boton respectivo.
+         *
+         * Además de que antes se coloca el fragmento relacionado al menú de -
+         * forma predeterminada, de ahi el porque se puso el comando: -
+         * "Fragmentos(new MenuFragment())" respectivamente. */
         Fragmentos(new MenuFragment());
-
         activityMenuPrincipalBinding.btnVBarraNavegacion.setOnItemSelectedListener(menuItem -> {
-
             int idItem = menuItem.getItemId();
 
             if(idItem == R.id.itm_Menu) {
@@ -61,10 +65,14 @@ public class MenuPrincipalActivity extends AppCompatActivity {
     }
 
 
-    private void Fragmentos(Fragment fragment){
+    /* Este metodo sirve para poder enviar el usuario hacia a las -
+     * diferentes opciones de la barra de navegación de la aplicación -
+     * móvil. Básicamente es lo equivalente a usar los intents en una -
+     * actividad, solo que aqui son fragmentos. */
+    private void Fragmentos(Fragment fragmentoSeleccionado){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.framL_PlantillaMenu, fragment).commit();
+        fragmentTransaction.replace(R.id.framL_PlantillaMenu, fragmentoSeleccionado).commit();
     }
 
 }
