@@ -7,6 +7,21 @@
     tools:context=".index.PerfilFragment">
 
     <!-- TODO: Update blank fragment layout -->
+
+    <ImageView
+        android:id="@+id/id_Vistabienvenida"
+        android:layout_width="match_parent"
+        android:layout_height="144dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:background="@drawable/turri15"
+        android:scaleType="center"
+        android:visibility="invisible" />
+
     <View
         android:id="@+id/id_SeccionInformativa"
         android:layout_width="356dp"
@@ -23,20 +38,6 @@
         android:visibility="visible" />
 
     <ImageView
-        android:id="@+id/id_Vistabienvenida"
-        android:layout_width="match_parent"
-        android:layout_height="144dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="0dp"
-        android:background="@drawable/turri15"
-        android:scaleType="center"
-        android:visibility="invisible" />
-
-    <ImageView
         android:id="@+id/img_Perfil"
         android:layout_width="56dp"
         android:layout_height="56dp"
@@ -48,7 +49,7 @@
         android:layout_marginTop="13dp"
         android:layout_marginEnd="285dp"
         android:layout_marginBottom="11dp"
-        android:background="@drawable/outline_contact_support_24"
+        android:background="@drawable/rounded_emoji_people_24"
         android:visibility="visible" />
 
     <TextView
@@ -63,37 +64,184 @@
         android:layout_marginTop="13dp"
         android:layout_marginEnd="9dp"
         android:layout_marginBottom="11dp"
+        android:paddingTop="3dp"
         android:text="¡Bienvenido(a) al perfil de MuniTurrialba!"
         android:textAlignment="viewStart"
         android:textColor="@color/black"
         android:textSize="18sp" />
 
+    <ImageView
+        android:id="@+id/img_fotoPerfil"
+        android:layout_width="274dp"
+        android:layout_height="164dp"
+        android:layout_below="@+id/id_Vistabienvenida"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="67dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="70dp"
+        android:layout_marginBottom="-70dp"
+        android:background="@drawable/border_radius"
+        android:scaleType="fitCenter"
+        android:src="@drawable/outline_account_circle_24" />
+
+    <ImageButton
+        android:id="@+id/btn_editarPerfil"
+        android:layout_width="46dp"
+        android:layout_height="54dp"
+        android:layout_alignStart="@+id/img_fotoPerfil"
+        android:layout_alignTop="@+id/img_fotoPerfil"
+        android:layout_alignEnd="@+id/img_fotoPerfil"
+        android:layout_alignBottom="@+id/img_fotoPerfil"
+        android:layout_marginStart="212dp"
+        android:layout_marginTop="93dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="17dp"
+        android:background="@drawable/border_radius"
+        android:clickable="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/rounded_draft_orders_24" />
+
     <View
         android:id="@+id/id_seccionesPerfil"
         android:layout_width="match_parent"
         android:layout_height="551dp"
-        android:layout_below="@+id/id_Vistabienvenida"
+        android:layout_below="@+id/img_fotoPerfil"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="69dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="0dp"
-        android:layout_marginBottom="127dp"
+        android:layout_marginBottom="78dp"
         android:background="@drawable/border_radius" />
 
-    <Button
-        android:id="@+id/btn_CerrarSesion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/lnl_SeccionPerfil"
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
         android:layout_alignTop="@+id/id_seccionesPerfil"
+        android:layout_alignBottom="@+id/id_seccionesPerfil"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="81dp"
-        android:layout_marginTop="127dp"
-        android:layout_marginEnd="240dp"
-        android:background="@drawable/custom_buttons"
-        android:text="Button" />
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="-1dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="1dp"
+        android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/txt_NombreUsuario"
+            android:layout_width="365dp"
+            android:layout_height="39dp"
+            android:layout_alignTop="@+id/id_seccionesPerfil"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="23dp"
+            android:layout_marginEnd="41dp"
+            android:background="@color/orange"
+            android:fontFamily="sans-serif"
+            android:hint="Nombre:"
+            android:paddingTop="7dp"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="18sp"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/txt_ApellidosUsuario"
+            android:layout_width="365dp"
+            android:layout_height="39dp"
+            android:layout_below="@+id/txt_NombreUsuario"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="41dp"
+            android:background="@color/orange"
+            android:fontFamily="sans-serif"
+            android:hint="Apellidos:"
+            android:paddingTop="7dp"
+            android:textAlignment="textStart"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="18sp"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/txt_CorreoUsuario"
+            android:layout_width="365dp"
+            android:layout_height="39dp"
+            android:layout_alignBottom="@+id/txt_ApellidosUsuario"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="41dp"
+            android:background="@color/orange"
+            android:fontFamily="sans-serif"
+            android:hint="Correo Electrónico:"
+            android:paddingTop="7dp"
+            android:textAlignment="textStart"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="18sp"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/btn_CerrarSesion"
+            android:layout_width="151dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/txt_CorreoUsuario"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="220dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="52dp"
+            android:background="@drawable/custom_buttons_menu"
+            android:text="Cerrar sesión"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:backgroundTint="@null" />
+
+        <Button
+            android:id="@+id/btn_Permisos"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/txt_CorreoUsuario"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="-48dp"
+            android:layout_marginEnd="256dp"
+            android:background="@drawable/custom_buttons_menu"
+            app:backgroundTint="@null"
+            android:fontFamily="sans-serif"
+            android:text="Permisos"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txt_MensajePerfil"
+            android:layout_width="392dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/id_seccionesPerfil"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="165dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="sans-serif"
+            android:rotation="28"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:visibility="visible" />
+    </LinearLayout>
 
 </RelativeLayout>

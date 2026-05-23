@@ -59,7 +59,7 @@ public class AutenticacionAPI implements Interceptor {
          * se incluira el Bearer (el cual es necesario) y el token almacenado -
          * para poder autenticarse con el API. */
         if(resultadoToken != null) {
-            solicitudModificada.addHeader("Authorization", "Bearer" + resultadoToken);
+            solicitudModificada.addHeader("Authorization", "Bearer " + resultadoToken);
         }
 
         //Devuelve la solicitud HTTP:
