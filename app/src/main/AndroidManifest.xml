@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
-    <!--<uses-permission android:name="android.permission.INTERNET"></uses-permission>
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"></uses-permission>-->
+    <!-- <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />-->
 
     <application
         android:allowBackup="true"
@@ -23,6 +22,41 @@
              Por lo que solo se usaria ese para el desarrollo, después -
              hay que configurarlo para que acepte solo HTTPS y realice -
              transacciones bajo ese protocolo en producción. -->
+
+        <!-- Esto es para indicarle al manifest donde esta la vista: "PermisosUsuarioEmpleadoActivity".
+             Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
+             (vista), lo que daria un error en el mismo. -->
+        <activity
+            android:name=".moduloEmpleados.PermisosUsuarioEmpleadoActivity"
+            android:exported="false" />
+
+        <!-- Esto es para indicarle al manifest donde esta la vista: "EmpleadoActualizarActivity".
+             Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
+             (vista), lo que daria un error en el mismo. -->
+        <activity
+            android:name=".moduloEmpleados.EmpleadoActualizarActivity"
+            android:exported="false" />
+
+        <!-- Esto es para indicarle al manifest donde esta la vista: "EmpleadoCrearActivity".
+             Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
+             (vista), lo que daria un error en el mismo. -->
+        <activity
+            android:name=".moduloEmpleados.EmpleadoCrearActivity"
+            android:exported="false" />
+
+        <!-- Esto es para indicarle al manifest donde esta la vista: "AyudaActualizarActivity".
+             Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
+             (vista), lo que daria un error en el mismo. -->
+        <activity
+            android:name=".index.AyudaActualizarActivity"
+            android:exported="false" />
+
+        <!-- Esto es para indicarle al manifest donde esta la vista: "AyudaCrearActivity".
+             Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
+             (vista), lo que daria un error en el mismo. -->
+        <activity
+            android:name=".index.AyudaCrearActivity"
+            android:exported="false" />
 
         <!-- Esto es para indicarle al manifest donde esta la vista: "AdministracionArchivosActivity".
              Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla

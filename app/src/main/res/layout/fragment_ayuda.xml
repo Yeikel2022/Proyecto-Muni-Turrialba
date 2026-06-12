@@ -7,38 +7,22 @@
     tools:context=".index.AyudaFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <ImageView
-        android:id="@+id/id_Vistabienvenida"
-        android:layout_width="match_parent"
-        android:layout_height="144dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="0dp"
-        android:background="@drawable/turri15"
-        android:scaleType="center"
-        android:visibility="invisible" />
 
     <View
         android:id="@+id/id_SeccionInformativa"
         android:layout_width="356dp"
         android:layout_height="80dp"
-        android:layout_alignBottom="@+id/id_Vistabienvenida"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="23dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="23dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="34dp"
         android:background="@drawable/border_radius"
         android:visibility="visible" />
 
 
     <ImageView
-
         android:id="@+id/img_Ayuda"
         android:layout_width="56dp"
         android:layout_height="56dp"
@@ -50,11 +34,9 @@
         android:layout_marginTop="13dp"
         android:layout_marginEnd="285dp"
         android:layout_marginBottom="11dp"
-        android:background="@drawable/outline_contact_support_24"
-        android:visibility="visible" />
+        android:background="@drawable/icono_bienvenida" />
 
     <TextView
-
         android:id="@+id/txt_ayudaBienvenida"
         android:layout_width="wrap_content"
         android:layout_height="56dp"
@@ -66,25 +48,344 @@
         android:layout_marginTop="13dp"
         android:layout_marginEnd="9dp"
         android:layout_marginBottom="11dp"
-
+        android:paddingTop="3dp"
         android:text="¡Bienvenido(a) a la ayuda MuniTurrialba!"
         android:textAlignment="viewStart"
         android:textColor="@color/black"
         android:textSize="18sp" />
 
+    <SearchView
+        android:id="@+id/sv_buscarTipoPrioridad"
+        android:layout_width="149dp"
+        android:layout_height="59dp"
+        android:layout_below="@+id/id_SeccionInformativa"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="67dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="70dp"
+        android:background="@drawable/border_radius"
+        android:closeIcon="@drawable/icono_busqueda_cerrar"
+        android:paddingStart="7dp"
+        android:searchHintIcon="@drawable/icono_busqueda_filtrar"
+        android:searchIcon="@drawable/icono_busqueda_filtrar" />
+
     <View
         android:id="@+id/id_seccionesAyuda"
         android:layout_width="match_parent"
         android:layout_height="551dp"
-        android:layout_below="@+id/id_Vistabienvenida"
+        android:layout_below="@+id/sv_buscarTipoPrioridad"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="69dp"
+        android:layout_marginTop="19dp"
         android:layout_marginEnd="0dp"
-        android:layout_marginBottom="127dp"
-        android:background="@drawable/border_radius" />
+        android:layout_marginBottom="29dp"
+        android:background="@drawable/border_radius_new" />
+
+    <LinearLayout
+        android:id="@+id/lnl_ContenidoAyuda"
+        android:layout_width="293dp"
+        android:layout_height="448dp"
+        android:layout_alignTop="@+id/id_seccionesAyuda"
+        android:layout_alignBottom="@+id/id_seccionesAyuda"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp"
+        android:orientation="vertical">
+
+        <HorizontalScrollView
+            android:id="@+id/hsv_ScrollHorizontalBotones_Ayuda"
+            android:layout_width="410dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
+            android:overScrollMode="never">
+
+            <LinearLayout
+                android:id="@+id/lnl_ContenidoHorizontal_Ayuda"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="-16dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_CrearAyuda"
+                    android:layout_width="128dp"
+                    android:layout_height="56dp"
+                    android:layout_alignTop="@+id/hsv_ScrollHorizontalBotones_Ayuda"
+                    android:layout_alignBottom="@+id/hsv_ScrollHorizontalBotones_Ayuda"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="25dp"
+                    android:background="@drawable/custom_buttons_menu"
+                    android:clickable="true"
+                    android:fontFamily="sans-serif"
+                    android:paddingStart="12dp"
+                    android:text="Añadir"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@null"
+                    app:cornerRadius="20dp"
+                    app:icon="@drawable/icono_agregar"
+                    app:iconPadding="2dp"
+                    app:iconSize="25dp" />
+
+                <Button
+                    android:id="@+id/btn_ActualizarAyuda"
+                    android:layout_width="128dp"
+                    android:layout_height="56dp"
+                    android:layout_alignTop="@+id/hsv_ScrollHorizontalBotones_Ayuda"
+                    android:layout_alignBottom="@+id/hsv_ScrollHorizontalBotones_Ayuda"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="25dp"
+                    android:background="@drawable/custom_buttons_menu"
+                    android:clickable="true"
+                    android:fontFamily="sans-serif"
+                    android:paddingStart="12dp"
+                    android:text="Editar"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@null"
+                    app:cornerRadius="20dp"
+                    app:icon="@drawable/icono_actualizar"
+                    app:iconPadding="2dp"
+                    app:iconSize="25dp" />
+
+                <Button
+                    android:id="@+id/btn_EliminarAyuda"
+                    android:layout_width="119dp"
+                    android:layout_height="56dp"
+                    android:layout_alignTop="@+id/hsv_ScrollHorizontalBotones_Ayuda"
+                    android:layout_alignBottom="@+id/hsv_ScrollHorizontalBotones_Ayuda"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="25dp"
+                    android:background="@drawable/custom_buttons_menu"
+                    android:clickable="true"
+                    android:fontFamily="sans-serif"
+                    android:paddingStart="12dp"
+                    android:text="Eliminar"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@null"
+                    app:cornerRadius="20dp"
+                    app:icon="@drawable/icono_eliminar"
+                    app:iconPadding="2dp"
+                    app:iconSize="25dp" />
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <HorizontalScrollView
+            android:id="@+id/hsv_ScrollHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="410dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="11dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
+            android:overScrollMode="never">
+
+            <LinearLayout
+                android:id="@+id/lnl_ContenidoHorizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ScrollView
+                    android:id="@+id/sv_ScrollVertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:overScrollMode="never">
+
+                    <LinearLayout
+                        android:id="@+id/lnl_ContenidoVertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TableLayout
+                            android:id="@+id/tbl_TablaInfoAyuda"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TableRow
+                                android:id="@+id/tbr_InfoFilaAyuda"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/border_table">
+
+                                <TextView
+                                    android:id="@+id/txt_InfoSeleccionAyuda"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_marginEnd="7dp"
+                                    android:fontFamily="sans-serif"
+                                    android:text="✓"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/black"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoPregunta"
+                                    android:layout_width="160dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginStart="7dp"
+                                    android:fontFamily="sans-serif"
+                                    android:text="Pregunta:"
+                                    android:textAlignment="viewStart"
+                                    android:textColor="@color/black"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoRespuesta"
+                                    android:layout_width="205dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginStart="55dp"
+                                    android:layout_span="1"
+                                    android:fontFamily="sans-serif"
+                                    android:text="Respuesta:"
+                                    android:textAlignment="viewStart"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoTipoPrioridad"
+                                    android:layout_width="205dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginStart="85dp"
+                                    android:layout_span="1"
+                                    android:fontFamily="sans-serif"
+                                    android:text="Prioridad:"
+                                    android:textAlignment="viewStart"
+                                    android:textColor="@color/black"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
+
+
+                            </TableRow>
+
+                        </TableLayout>
+
+                        <TableLayout
+                            android:id="@+id/tbl_TablaAyuda"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TableRow
+                                android:id="@+id/tbr_PrimeraFila"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/border_table">
+
+                                <CheckBox
+                                    android:id="@+id/btn_SeleccionDato"
+                                    android:layout_width="35dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_marginEnd="7dp"
+                                    android:buttonTint="@color/white" />
+
+                                <TextView
+                                    android:id="@+id/txt_Pregunta"
+                                    android:layout_width="205dp"
+                                    android:layout_height="205dp"
+                                    android:layout_marginStart="7dp"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Pregunta:"
+                                    android:textAlignment="viewStart"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="18sp"
+                                    android:textStyle="italic" />
+
+                                <TextView
+                                    android:id="@+id/txt_Respuesta"
+                                    android:layout_width="205dp"
+                                    android:layout_height="205dp"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_span="1"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Respuesta:"
+                                    android:textAlignment="viewStart"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="18sp"
+                                    android:textStyle="italic" />
+
+                                <TextView
+                                    android:id="@+id/txt_TipoPrioridad"
+                                    android:layout_width="205dp"
+                                    android:layout_height="205dp"
+                                    android:layout_gravity="start|right"
+                                    android:layout_marginStart="7dp"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Tipo de prioridad:"
+                                    android:textAlignment="viewStart"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="18sp"
+                                    android:textStyle="italic" />
+                            </TableRow>
+
+                        </TableLayout>
+                    </LinearLayout>
+                </ScrollView>
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <ImageView
+            android:id="@+id/img_fotoAyuda"
+            android:layout_width="match_parent"
+            android:layout_height="264dp"
+            android:layout_marginStart="67dp"
+            android:layout_marginTop="95dp"
+            android:layout_marginEnd="70dp"
+            android:layout_marginBottom="-70dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icono_contenido_no_disponible"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/txt_MensajeAyuda"
+            android:layout_width="392dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/id_seccionesAyuda"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="117dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="sans-serif"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+    </LinearLayout>
 
 
 </RelativeLayout>

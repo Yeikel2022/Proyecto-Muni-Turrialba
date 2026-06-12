@@ -1,5 +1,6 @@
 package com.proyectotcu.muniturrialba.index;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -18,7 +19,6 @@ public class MenuPrincipalActivity extends AppCompatActivity {
 
     //Variable para usar el ViewBinding de esta clase.
     private ActivityMenuPrincipalBinding activityMenuPrincipalBinding;
-
 
     /* Este metodo sirve para poder crear y enlazar la clase hacia la vista respectiva.
      * También, se sustituyo aspectos similares (como por ejemplo el "find by id"), por -
@@ -42,7 +42,16 @@ public class MenuPrincipalActivity extends AppCompatActivity {
          * Además de que antes se coloca el fragmento relacionado al menú de -
          * forma predeterminada, de ahi el porque se puso el comando: -
          * "Fragmentos(new MenuFragment())" respectivamente. */
-        Fragmentos(new MenuFragment());
+        Intent seccionRecorrida = getIntent();
+        String seccionMostrar = seccionRecorrida.getStringExtra("Seccion_A_Mostrar");
+
+        if("Ayuda".equals(seccionMostrar)) {
+            Fragmentos(new AyudaFragment());
+            activityMenuPrincipalBinding.btnVBarraNavegacion.setSelectedItemId(R.id.itm_Ayuda);
+        } else {
+            Fragmentos(new MenuFragment());
+        }
+
         activityMenuPrincipalBinding.btnVBarraNavegacion.setOnItemSelectedListener(menuItem -> {
             int idItem = menuItem.getItemId();
 

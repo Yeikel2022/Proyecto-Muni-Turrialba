@@ -16,6 +16,7 @@ import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts.*;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.provider.Settings;
 import android.util.Base64;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -158,7 +160,7 @@ public class PerfilFragment extends Fragment {
                  * entonces quiere decir que si esta autorizado para acceder a las opciones del -
                  * perfil. */
                 Integer respuestaPermisos = ValidarPermisosUsuario(campoPermisoLeer, campoPermisoCrear, campoPermisoActualizar, campoPermisoEliminar);
-                if (respuestaPermisos == 4) {
+                if (respuestaPermisos == 5) {
                     txtNombre.setVisibility(View.VISIBLE);
                     txtApellidos.setVisibility(View.VISIBLE);
                     txtCorreo.setVisibility(View.VISIBLE);
@@ -171,7 +173,7 @@ public class PerfilFragment extends Fragment {
                     botonCerrar.setOnClickListener(v -> {
                         AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
 
-                        construirAlerta.setIcon(R.drawable.rounded_cancel_presentation_24);
+                        construirAlerta.setIcon(R.drawable.icono_cancelar);
                         construirAlerta.setMessage("¿Esta completamente seguro(a) de cerrar sesión?")
                                 .setTitle("Cerrar Sesión.");
 
@@ -243,7 +245,7 @@ public class PerfilFragment extends Fragment {
                     botonCerrar.setOnClickListener(v -> {
                         AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
 
-                        construirAlerta.setIcon(R.drawable.rounded_cancel_presentation_24);
+                        construirAlerta.setIcon(R.drawable.icono_cancelar);
                         construirAlerta.setMessage("¿Esta completamente seguro(a) de cerrar sesión?")
                                 .setTitle("Cerrar Sesión.");
 
@@ -269,6 +271,75 @@ public class PerfilFragment extends Fragment {
                     MostrarDatosPerfil(campoCorreo, tokenGuardado);
                 }
 
+                /* Asimismo, también se hace otra validación, ya que, si la respuesta que trae -
+                 * es un 1, entonces quiere decir que ese usuario no esta autorizado para acceder -
+                 * a los permisos de la aplicacion móvil respectivamente. */
+                if (respuestaPermisos == 1) {
+                    Toast.makeText(getActivity(), "¡No tienes la autorización necesaria para visualizar los permisos de la aplicación!", Toast.LENGTH_LONG).show();
+
+                    txtNombre.setVisibility(View.VISIBLE);
+                    txtApellidos.setVisibility(View.VISIBLE);
+                    txtCorreo.setVisibility(View.VISIBLE);
+
+                    fotoPerfil.setVisibility(View.VISIBLE);
+                    botonEditarPerfil.setVisibility(View.VISIBLE);
+                    botonCerrar.setVisibility(View.VISIBLE);
+
+                    botonCerrar.setOnClickListener(v -> {
+                        AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
+
+                        construirAlerta.setIcon(R.drawable.icono_cancelar);
+                        construirAlerta.setMessage("¿Esta completamente seguro(a) de cerrar sesión?")
+                                .setTitle("Cerrar Sesión.");
+
+                        construirAlerta.setPositiveButton("Si.", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                VistaCerrarSesion();
+                            }
+                        });
+
+                        construirAlerta.setNegativeButton("No.", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(getActivity(), "¡No se cerro la sesión!", Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+                        AlertDialog ejecutarMensaje = construirAlerta.create();
+                        ejecutarMensaje.show();
+                    });
+
+                    botonEditarPerfil.setOnClickListener(v -> SelectorImagen.launch(new PickVisualMediaRequest.
+                            Builder().setMediaType(PickVisualMedia.ImageOnly.INSTANCE).build()));
+                    /* NOTA: Aqui lo que se hace en el botonFotoPerfil, es usar el photo picker -
+                     * el cual es una forma más optimizada y nueva que ofrece Google para que el -
+                     * usuario pueda seleccionar una imagen en su galeria respectivamente.
+                     *
+                     * Además de que se puede asegurar que no solo se acceda a las imagenes (de ahi -
+                     * el porque se puso: "PickVisualMedia.ImageOnly.INSTANCE"), si no que también -
+                     * sirve para evitar solicitar permisos que pueden ser innecesarios. */
+
+
+                    /* Ahora, esto también se relaciona con el botonFotoPerfil, esto debido a que cuando -
+                     * se abre la galeria para seleccionar la imagen, este comando ayuda a registrar la -
+                     * acción que va a hacer el usuario, lo cual, si es que pasa el escenario de que -
+                     * selecciono una imagen, entonces se realizaria el proceso necesario para hacer -
+                     * el cambio de su foto perfil.
+                     *
+                     * NOTA: El uri, es básicamente la ruta que indica donde esta la imagen, de modo -
+                     * que con ese dato, se podria acceder a ella. */
+                    SelectorImagen = registerForActivityResult(new PickVisualMedia(), uri -> {
+                        if (uri != null) {
+                            /* Este comando seria para ver si se pudo seleccionar la imagen, entonces -
+                             * sirve de mucho para cuestiones de depuración:
+                             * Log.d("Imagen", "Si se pudo seleccionar la imagen, la cual es la siguiente: " + uri); */
+                            CambiarFotoPerfil(campoCorreo, tokenGuardado, uri);
+                        }
+                    });
+
+                    MostrarDatosPerfil(campoCorreo, tokenGuardado);
+                }
             }
         } catch (Exception error) {
             /* Sirve para imprimir el mensaje que se recibio anteriormente.
@@ -347,7 +418,9 @@ public class PerfilFragment extends Fragment {
          * y luego un 1 para que el metodo: "VistaPermisos" pueda saber que no -
          * esta autorizado. */
         if(Leer == false) {
-            Toast.makeText(getActivity(), "¡No tienes la autorización necesaria para visualizar los permisos de la aplicación!", Toast.LENGTH_LONG).show();
+            botonPermisos.setVisibility(View.GONE);
+            LinearLayout.LayoutParams parametrosBotonCerrarSesion = (LinearLayout.LayoutParams) botonCerrar.getLayoutParams();
+            parametrosBotonCerrarSesion.setMarginStart(355);
             return 1;
         }
 
@@ -360,8 +433,8 @@ public class PerfilFragment extends Fragment {
             return 3;
         }
 
-        //El 4 se refiere a que el usuario que inicio sesión si esta autorizado.
-        return 4;
+        //El 5 se refiere a que el usuario que inicio sesión si esta autorizado.
+        return 5;
     }
 
 
@@ -422,7 +495,7 @@ public class PerfilFragment extends Fragment {
 
                             fotoPerfil.setImageBitmap(mapeo);
                         } catch (Exception error) {
-                            fotoPerfil.setImageResource(R.drawable.rounded_account_circle_24);
+                            fotoPerfil.setImageResource(R.drawable.icono_perfil_logo);
                         }
                     } else {
                         try {
@@ -432,7 +505,7 @@ public class PerfilFragment extends Fragment {
 
                             /* Aqui lo que se hace es colocar el logo de imagen por defecto y ocultar -
                              * la opcion de editar el perfil. Esto por temas de buenas prácticas. */
-                            fotoPerfil.setImageResource(R.drawable.rounded_account_circle_24);
+                            fotoPerfil.setImageResource(R.drawable.icono_perfil_logo);
                             botonEditarPerfil.setVisibility(View.GONE);
 
 
@@ -454,7 +527,7 @@ public class PerfilFragment extends Fragment {
                             /* Aqui lo que se hace es ocultar la opcion para editar el perfil, -
                              * y en la foto de perfil se coloca el logo de imagen por defecto. -
                              * Esto por temas de buenas prácticas. */
-                            fotoPerfil.setImageResource(R.drawable.rounded_account_circle_24);
+                            fotoPerfil.setImageResource(R.drawable.icono_perfil_logo);
                             botonEditarPerfil.setVisibility(View.GONE);
 
                             Toast.makeText(getActivity(), "¡Lo sentimos!", Toast.LENGTH_SHORT).show();
@@ -480,7 +553,7 @@ public class PerfilFragment extends Fragment {
                     /* Aqui lo que se hace es ocultar la opcion para editar el perfil, -
                      * y en la foto de perfil se coloca el logo de imagen por defecto. -
                      * Esto por temas de buenas prácticas. */
-                    fotoPerfil.setImageResource(R.drawable.rounded_account_circle_24);
+                    fotoPerfil.setImageResource(R.drawable.icono_perfil_logo);
                     botonEditarPerfil.setVisibility(View.GONE);
 
                     Toast.makeText(getActivity(), "¡Lo sentimos!", Toast.LENGTH_SHORT).show();
@@ -652,31 +725,20 @@ public class PerfilFragment extends Fragment {
      * respectivamente. */
     private void VistaPermisos(int Rol, Boolean Leer, Boolean Crear, Boolean Actualizar, Boolean Eliminar) {
         try {
-            /* Aqui lo que se esta haciendo es validar si el usuario tiene el rol: "Moderador", -
-             * "Administrador" o "Empleado". Y si no, entonces no lo dejaria acceder a los permisos -
-             * de la aplicación móvil. */
-            if (Rol == 1 || Rol == 2 || Rol == 3) {
-                /* Una vez hecho eso, lo que seguiria seria validar los permisos del usuario -
-                 * que ha iniciado sesión. Y, si luego de eso, la respuesta que trae es un 4, -
-                 * entonces quiere decir que si esta autorizado para acceder a los permisos de -
-                 * la aplicacion móvil respectivamente. */
-                Integer respuestaPermisos = ValidarPermisosUsuario(Leer, Crear, Actualizar, Eliminar);
-                if (respuestaPermisos == 4) {
-                    /* Aqui lo que se esta haciendo es primero realizar un intent, el cual, se le esta indicando -
-                     * que lo lleve hacia los detalles de una aplicación dentro de los ajustes del sistema, esto -
-                     * básicamente funge como un hipervinculo por decirlo de una manera.
-                     *
-                     * Ahora, con el Uri, lo que se esta haciendo es indicar la ruta donde se encuentra la aplicación -
-                     * móvil, de modo que una vez hecho eso, simplemente se le coloca esa ruta al intentConfiguracionApp -
-                     * y se ejecuta para que se lleve a los detalles de la aplicación. De forma que así el usuario pueda -
-                     * revisar todos los permisos que solicita la aplicación móvil respectivamente. */
-                    Intent intentConfiguracionApp = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    Uri rutaAplicacion = Uri.fromParts("package", getActivity().getPackageName(), null);
+            /* Aqui lo que se esta haciendo es primero realizar un intent, el cual, se le esta indicando -
+             * que lo lleve hacia los detalles de una aplicación dentro de los ajustes del sistema, esto -
+             * básicamente funge como un hipervinculo por decirlo de una manera.
+             *
+             * Ahora, con el Uri, lo que se esta haciendo es indicar la ruta donde se encuentra la aplicación -
+             * móvil, de modo que una vez hecho eso, simplemente se le coloca esa ruta al intentConfiguracionApp -
+             * y se ejecuta para que se lleve a los detalles de la aplicación. De forma que así el usuario pueda -
+             * revisar todos los permisos que solicita la aplicación móvil respectivamente. */
+            Intent intentConfiguracionApp = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            Uri rutaAplicacion = Uri.fromParts("package", getActivity().getPackageName(), null);
 
-                    intentConfiguracionApp.setData(rutaAplicacion);
-                    startActivity(intentConfiguracionApp);
-                }
-            }
+            intentConfiguracionApp.setData(rutaAplicacion);
+            startActivity(intentConfiguracionApp);
+
         } catch (Exception error) {
             Toast.makeText(getActivity(), "¡Lo sentimos, pero parece que hubo un problema técnico!" + "\nPor favor, intentelo más tarde.", Toast.LENGTH_LONG).show();
             Toast.makeText(getActivity(),"Si el problema persiste, entonces" + "\ncontactese con el personal técnico.", Toast.LENGTH_LONG).show();

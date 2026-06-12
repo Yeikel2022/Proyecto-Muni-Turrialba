@@ -1,6 +1,8 @@
 package com.proyectotcu.muniturrialba.index;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -212,11 +214,29 @@ public class MenuFragment extends Fragment {
      * de control de empleados respectivamente (básicamente es -
      * la pantallita). */
     private void VistaEmpleados() {
-        //Aqui le dice a que vista tiene que ir, como un hipervinculo basicamente.
-        Intent intentEmpleado = new Intent(getActivity(), ControlEmpleadosActivity.class);
+        try {
+            //Aqui le dice a que vista tiene que ir, como un hipervinculo basicamente.
+            Intent intentEmpleado = new Intent(getActivity(), ControlEmpleadosActivity.class);
 
-        //Le indica que ejecute el hipervinculo.
-        startActivity(intentEmpleado);
+            //Le indica que ejecute el hipervinculo.
+            startActivity(intentEmpleado);
+
+        } catch (Exception error) {
+            botonEmpleado.setVisibility(View.GONE);
+
+            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
+            construirAlerta.setIcon(R.drawable.icono_advertencia);
+            construirAlerta.setMessage("Pero no es posible visualizar la información en estos momentos debido a un problema técnico. Por favor, intentelo más tarde.\n" + "\\nSi el problema persiste, entonces contactese con el personal técnico.")
+                    .setTitle("¡Lo sentimos!");
+
+            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {}});
+
+            AlertDialog ejecutarMensaje = construirAlerta.create();
+            ejecutarMensaje.show();
+
+        }
     }
 
 

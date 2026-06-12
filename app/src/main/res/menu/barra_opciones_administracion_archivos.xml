@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/itm_Historial_Archivos"
+        android:icon="@drawable/icono_historial_archivos"
+        android:title="Historial de archivos" />
+    <item
+        android:id="@+id/itm_Archivos"
+        android:icon="@drawable/icono_archivo"
+        android:title="Compartir archivos" />
+    <item
+        android:id="@+id/itm_Archivos_Mensaje"
+        android:icon="@drawable/icono_mensaje_error"
+        android:title="Mensaje" />
+
+</menu>

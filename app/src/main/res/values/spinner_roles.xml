@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="listaTipo_Roles">
+        <item>Seleccione el rol que quiere asignar:</item>
+        <item>Moderador</item>
+        <item>Administrador</item>
+        <item>Empleado</item>
+    </string-array>
+</resources>
