@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/itm_Reportes_Usuarios"
+        android:icon="@drawable/icono_reportes_usuario"
+        android:title="Usuarios" />
+    <item
+        android:id="@+id/itm_Reportes_Permisos_Tiempo"
+        android:icon="@drawable/icono_reportes_tiempo"
+        android:title="Permisos de tiempo" />
+    <item
+        android:id="@+id/itm_Reportes_Salarios"
+        android:icon="@drawable/icono_reportes_salario"
+        android:title="Salarios"/>
+    <item
+        android:id="@+id/itm_Reportes_Mensaje"
+        android:icon="@drawable/icono_mensaje_error"
+        android:title="Mensaje" />
+
+</menu>

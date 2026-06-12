@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".moduloEmpleados.MensajeFragment">
+
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <View
+        android:id="@+id/id_seccionesMensajeError"
+        android:layout_width="match_parent"
+        android:layout_height="674dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="59dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="109dp"
+        android:background="@drawable/border_radius_new" />
+
+    <ImageView
+        android:id="@+id/img_fotoMensajeError"
+        android:layout_width="364dp"
+        android:layout_height="304dp"
+        android:layout_alignTop="@+id/id_seccionesMensajeError"
+        android:layout_alignRight="@+id/id_seccionesMensajeError"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="74dp"
+        android:layout_marginEnd="33dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginBottom="-70dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/icono_contenido_no_disponible" />
+
+    <TextView
+        android:id="@+id/txt_MensajeError"
+        android:layout_width="342dp"
+        android:layout_height="304dp"
+        android:layout_below="@+id/img_fotoMensajeError"
+        android:layout_alignEnd="@+id/id_seccionesMensajeError"
+        android:layout_alignRight="@+id/id_seccionesMensajeError"
+        android:layout_alignBottom="@+id/id_seccionesMensajeError"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="118dp"
+        android:layout_marginEnd="33dp"
+        android:layout_marginRight="26dp"
+        android:layout_marginBottom="40dp"
+        android:fontFamily="sans-serif"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>

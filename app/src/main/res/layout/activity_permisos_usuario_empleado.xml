@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_Permisos_UsuarioEmpleado"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/turrialba">
+
+
+    <ImageView
+        android:id="@+id/id_img_bienvenidaPermisos_UsuarioEmpleado"
+        android:layout_width="310dp"
+        android:layout_height="178dp"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/logito6"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/id_SeccionesPermisos_UsuarioEmpleado"
+        android:layout_width="367dp"
+        android:layout_height="445dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/border_radius"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/id_img_bienvenidaPermisos_UsuarioEmpleado" />
+
+    <LinearLayout
+        android:id="@+id/lnl_ContenidoPermisos_UsuarioEmpleado"
+        android:layout_width="367dp"
+        android:layout_height="445dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/id_SeccionesPermisos_UsuarioEmpleado"
+        app:layout_constraintEnd_toEndOf="@+id/id_SeccionesPermisos_UsuarioEmpleado"
+        app:layout_constraintHorizontal_bias="0.194"
+        app:layout_constraintStart_toStartOf="@+id/id_SeccionesPermisos_UsuarioEmpleado"
+        app:layout_constraintTop_toTopOf="@+id/id_SeccionesPermisos_UsuarioEmpleado"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:id="@+id/txt_TituloPermisos_UsuarioEmpleado"
+            android:layout_width="215dp"
+            android:layout_height="33dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="12dp"
+            android:fontFamily="sans-serif"
+            android:paddingTop="6dp"
+            android:text="Permisos del usuario(a):"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txt_InfoPermisos_UsuarioEmpleado"
+            android:layout_width="325dp"
+            android:layout_height="160dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="sans-serif"
+            android:text="@string/InformacionPermisos_UsuarioEmpleado"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+
+
+        <CheckBox
+            android:id="@+id/btn_PermisoLeer"
+            android:layout_width="158dp"
+            android:layout_height="51dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="39dp"
+            android:background="@color/orange"
+            android:buttonTint="@color/white"
+            android:padding="0dp"
+            android:paddingLeft="0dp"
+            android:paddingTop="0dp"
+            android:paddingEnd="0dp"
+            android:paddingRight="0dp"
+            android:paddingBottom="0dp"
+            android:scaleX="1"
+            android:scaleY="1"
+            android:text="- Leer."
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+
+        <CheckBox
+            android:id="@+id/btn_PermisoCrear"
+            android:layout_width="158dp"
+            android:layout_height="51dp"
+            android:layout_marginStart="188dp"
+            android:layout_marginTop="-51dp"
+            android:background="@color/orange"
+            android:buttonTint="@color/white"
+            android:padding="0dp"
+            android:paddingLeft="0dp"
+            android:paddingTop="0dp"
+            android:paddingEnd="0dp"
+            android:paddingRight="0dp"
+            android:paddingBottom="0dp"
+            android:scaleX="1"
+            android:scaleY="1"
+            android:text="- Crear."
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+
+        <CheckBox
+            android:id="@+id/btn_PermisoActualizar"
+            android:layout_width="158dp"
+            android:layout_height="51dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="39dp"
+            android:background="@color/orange"
+            android:buttonTint="@color/white"
+            android:padding="0dp"
+            android:paddingLeft="0dp"
+            android:paddingTop="0dp"
+            android:paddingEnd="0dp"
+            android:paddingRight="0dp"
+            android:paddingBottom="0dp"
+            android:scaleX="1"
+            android:scaleY="1"
+            android:text="- Actualizar."
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+
+        <CheckBox
+            android:id="@+id/btn_PermisoEliminar"
+            android:layout_width="158dp"
+            android:layout_height="51dp"
+            android:layout_marginStart="188dp"
+            android:layout_marginTop="-51dp"
+            android:background="@color/orange"
+            android:buttonTint="@color/white"
+            android:padding="0dp"
+            android:paddingLeft="0dp"
+            android:paddingTop="0dp"
+            android:paddingEnd="0dp"
+            android:paddingRight="0dp"
+            android:paddingBottom="0dp"
+            android:scaleX="1"
+            android:scaleY="1"
+            android:text="- Eliminar."
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+
+        <ImageView
+            android:id="@+id/img_fotoPermisos_UsuarioEmpleado"
+            android:layout_width="286dp"
+            android:layout_height="230dp"
+            android:layout_marginStart="42dp"
+            android:layout_marginTop="5dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icono_contenido_no_disponible"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/txt_MensajePermisos_UsuarioEmpleado"
+            android:layout_width="328dp"
+            android:layout_height="201dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="-5dp"
+            android:fontFamily="sans-serif"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_ConfirmarPermisos"
+        android:layout_width="133dp"
+        android:layout_height="63dp"
+        android:layout_marginTop="35dp"
+        android:background="@drawable/custom_buttons"
+        android:checked="true"
+        android:clickable="true"
+        android:text="Aceptar"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:backgroundTint="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/id_SeccionesPermisos_UsuarioEmpleado" />
+
+
+
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

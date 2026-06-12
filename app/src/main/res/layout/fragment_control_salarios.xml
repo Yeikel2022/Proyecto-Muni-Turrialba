@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".moduloEmpleados.ControlSalarioFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <View
+        android:id="@+id/id_SeccionSalariosInformativa"
+        android:layout_width="356dp"
+        android:layout_height="80dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/border_radius"
+        android:visibility="visible" />
+
+
+    <ImageView
+        android:id="@+id/img_ControlSalarios"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignStart="@+id/id_SeccionSalariosInformativa"
+        android:layout_alignTop="@+id/id_SeccionSalariosInformativa"
+        android:layout_alignEnd="@+id/id_SeccionSalariosInformativa"
+        android:layout_alignBottom="@+id/id_SeccionSalariosInformativa"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="285dp"
+        android:layout_marginBottom="11dp"
+        android:background="@drawable/icono_bienvenida" />
+
+    <TextView
+        android:id="@+id/txt_controlSalarios_Bienvenida"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:layout_alignStart="@+id/id_SeccionSalariosInformativa"
+        android:layout_alignTop="@+id/id_SeccionSalariosInformativa"
+        android:layout_alignEnd="@+id/id_SeccionSalariosInformativa"
+        android:layout_alignBottom="@+id/id_SeccionSalariosInformativa"
+        android:layout_marginStart="76dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="9dp"
+        android:layout_marginBottom="0dp"
+        android:paddingTop="3dp"
+        android:text="¡Bienvenido(a) al apartado de control de salarios de MuniTurrialba!"
+        android:textAlignment="viewStart"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <SearchView
+        android:id="@+id/sv_buscarSalarios"
+        android:layout_width="149dp"
+        android:layout_height="59dp"
+        android:layout_below="@+id/id_SeccionSalariosInformativa"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="67dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="70dp"
+        android:background="@drawable/border_radius"
+        android:closeIcon="@drawable/icono_busqueda_cerrar"
+        android:paddingStart="7dp"
+        android:searchHintIcon="@drawable/icono_busqueda_filtrar"
+        android:searchIcon="@drawable/icono_busqueda_filtrar" />
+
+    <View
+        android:id="@+id/id_seccionesSalarios"
+        android:layout_width="match_parent"
+        android:layout_height="551dp"
+        android:layout_below="@+id/sv_buscarSalarios"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="19dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="29dp"
+        android:background="@drawable/border_radius" />
+
+    <LinearLayout
+        android:id="@+id/lnl_ContenidoSalarios"
+        android:layout_width="293dp"
+        android:layout_height="448dp"
+        android:layout_alignTop="@+id/id_seccionesSalarios"
+        android:layout_alignBottom="@+id/id_seccionesSalarios"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_CrearSalarios"
+            android:layout_width="128dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="33dp"
+            android:layout_marginEnd="297dp"
+            android:layout_marginBottom="-1062dp"
+            android:background="@drawable/custom_buttons_menu"
+            android:clickable="true"
+            android:fontFamily="sans-serif"
+            android:paddingStart="12dp"
+            android:text="Añadir"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:visibility="visible"
+            app:backgroundTint="@null"
+            app:cornerRadius="20dp"
+            app:icon="@drawable/icono_agregar"
+            app:iconPadding="2dp"
+            app:iconSize="25dp" />
+
+        <Button
+            android:id="@+id/btn_ActualizarSalarios"
+            android:layout_width="128dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="145dp"
+            android:layout_marginTop="1005dp"
+            android:layout_marginEnd="154dp"
+            android:layout_marginBottom="462dp"
+            android:background="@drawable/custom_buttons_menu"
+            android:clickable="true"
+            android:fontFamily="sans-serif"
+            android:paddingStart="12dp"
+            android:text="Editar"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:visibility="visible"
+            app:backgroundTint="@null"
+            app:cornerRadius="20dp"
+            app:icon="@drawable/icono_actualizar"
+            app:iconPadding="2dp"
+            app:iconSize="25dp" />
+
+        <Button
+            android:id="@+id/btn_EliminarSalarios"
+            android:layout_width="119dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="280dp"
+            android:layout_marginTop="-518dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="462dp"
+            android:background="@drawable/custom_buttons_menu"
+            android:clickable="true"
+            android:fontFamily="sans-serif"
+            android:paddingStart="12dp"
+            android:text="Eliminar"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:backgroundTint="@null"
+            app:cornerRadius="20dp"
+            app:icon="@drawable/icono_eliminar"
+            app:iconPadding="2dp"
+            app:iconSize="25dp" />
+
+        <HorizontalScrollView
+            android:id="@+id/hsv_ScrollHorizontalSalarios"
+            android:layout_width="410dp"
+            android:layout_height="380dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="-442dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
+            android:overScrollMode="never">
+
+            <LinearLayout
+                android:id="@+id/lnl_ContenidoHorizontalSalarios"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ScrollView
+                    android:id="@+id/sv_ScrollVerticalSalarios"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:overScrollMode="never">
+
+                    <LinearLayout
+                        android:id="@+id/lnl_ContenidoVerticalSalarios"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TableLayout
+                            android:id="@+id/tbl_TablaInfoSalarios"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TableRow
+                                android:id="@+id/tbr_InfoFilaSalarios"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/border_table">
+
+                                <TextView
+                                    android:id="@+id/txt_InfoSeleccionSalarios"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_marginEnd="7dp"
+                                    android:fontFamily="sans-serif"
+                                    android:text="✓"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/black"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoNombreSalarios"
+                                    android:layout_width="160dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginStart="7dp"
+                                    android:fontFamily="sans-serif"
+                                    android:text="Nombre:"
+                                    android:textAlignment="viewStart"
+                                    android:textColor="@color/black"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoApellidosSalarios"
+                                    android:layout_width="205dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginStart="55dp"
+                                    android:layout_span="1"
+                                    android:fontFamily="sans-serif"
+                                    android:text="Apellidos:"
+                                    android:textAlignment="viewStart"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoEdadSalarios"
+                                    android:layout_width="205dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_span="1"
+                                    android:fontFamily="sans-serif"
+                                    android:text="Edad:"
+                                    android:textAlignment="viewStart"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoCedulaSalarios"
+                                    android:layout_width="205dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_span="1"
+                                    android:fontFamily="sans-serif"
+                                    android:text="Cédula:"
+                                    android:textAlignment="viewStart"
+                                    android:textColor="@color/black"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoDepartamentoSalarios"
+                                    android:layout_width="205dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_span="1"
+                                    android:fontFamily="sans-serif"
+                                    android:text="Departamento:"
+                                    android:textAlignment="viewStart"
+                                    android:textColor="@color/black"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoFechaEntregaSalarios"
+                                    android:layout_width="205dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_span="1"
+                                    android:fontFamily="sans-serif"
+                                    android:text="Fecha de entrega:"
+                                    android:textAlignment="viewStart"
+                                    android:textColor="@color/black"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoSalario"
+                                    android:layout_width="205dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_span="1"
+                                    android:fontFamily="sans-serif"
+                                    android:text="Salario:"
+                                    android:textAlignment="viewStart"
+                                    android:textColor="@color/black"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoDescripcionSalarios"
+                                    android:layout_width="205dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_span="1"
+                                    android:fontFamily="sans-serif"
+                                    android:text="Descripción:"
+                                    android:textAlignment="viewStart"
+                                    android:textColor="@color/black"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
+
+
+                            </TableRow>
+
+                        </TableLayout>
+
+                        <TableLayout
+                            android:id="@+id/tbl_TablaSalarios"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TableRow
+                                android:id="@+id/tbr_PrimeraFilaSalarios"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/border_table">
+
+                                <CheckBox
+                                    android:id="@+id/btn_SeleccionDatoSalarios"
+                                    android:layout_width="35dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_marginEnd="7dp"
+                                    android:buttonTint="@color/white" />
+
+                                <TextView
+                                    android:id="@+id/txt_NombreSalario"
+                                    android:layout_width="205dp"
+                                    android:layout_height="205dp"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_span="1"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Nombre:"
+                                    android:textAlignment="viewStart"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="18sp"
+                                    android:textStyle="italic" />
+
+                                <TextView
+                                    android:id="@+id/txt_ApellidoSalario"
+                                    android:layout_width="205dp"
+                                    android:layout_height="205dp"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_span="1"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Apellido:"
+                                    android:textAlignment="viewStart"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="18sp"
+                                    android:textStyle="italic" />
+
+                                <TextView
+                                    android:id="@+id/txt_EdadSalario"
+                                    android:layout_width="205dp"
+                                    android:layout_height="205dp"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_span="1"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Edad:"
+                                    android:textAlignment="viewStart"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="18sp"
+                                    android:textStyle="italic" />
+
+                                <TextView
+                                    android:id="@+id/txt_CedulaSalario"
+                                    android:layout_width="205dp"
+                                    android:layout_height="205dp"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_span="1"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Cedula:"
+                                    android:textAlignment="viewStart"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="18sp"
+                                    android:textStyle="italic" />
+
+                                <TextView
+                                    android:id="@+id/txt_DepartamentoSalario"
+                                    android:layout_width="205dp"
+                                    android:layout_height="205dp"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_span="1"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Departamento:"
+                                    android:textAlignment="viewStart"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="18sp"
+                                    android:textStyle="italic" />
+
+                                <TextView
+                                    android:id="@+id/txt_FechaEntregaSalario"
+                                    android:layout_width="205dp"
+                                    android:layout_height="205dp"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_span="1"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Fecha de entrega:"
+                                    android:textAlignment="viewStart"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="18sp"
+                                    android:textStyle="italic" />
+
+                                <TextView
+                                    android:id="@+id/txt_Salario"
+                                    android:layout_width="205dp"
+                                    android:layout_height="205dp"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_span="1"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Salario:"
+                                    android:textAlignment="viewStart"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="18sp"
+                                    android:textStyle="italic" />
+
+                                <TextView
+                                    android:id="@+id/txt_DescripcionSalario"
+                                    android:layout_width="205dp"
+                                    android:layout_height="205dp"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_span="1"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Descripción:"
+                                    android:textAlignment="viewStart"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="18sp"
+                                    android:textStyle="italic" />
+
+                            </TableRow>
+
+                        </TableLayout>
+                    </LinearLayout>
+                </ScrollView>
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <ImageView
+            android:id="@+id/img_fotoSalarios"
+            android:layout_width="match_parent"
+            android:layout_height="264dp"
+            android:layout_marginStart="67dp"
+            android:layout_marginTop="95dp"
+            android:layout_marginEnd="70dp"
+            android:layout_marginBottom="-70dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icono_contenido_no_disponible"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/txt_MensajeSalarios"
+            android:layout_width="392dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/id_seccionesSalarios"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="117dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="sans-serif"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

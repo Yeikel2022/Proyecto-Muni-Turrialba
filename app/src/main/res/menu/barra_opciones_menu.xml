@@ -4,18 +4,18 @@
 
     <item
         android:id="@+id/itm_Menu"
-        android:icon="@drawable/outline_cottage_24"
+        android:icon="@drawable/icono_menu"
         android:title="Menú" />
     <item
         android:id="@+id/itm_Perfil"
-        android:icon="@drawable/outline_account_box_24"
+        android:icon="@drawable/icono_perfil_menu_principal"
         android:title="Perfil" />
     <item
         android:id="@+id/itm_CarnetVirtual"
-        android:icon="@drawable/outline_demography_24"
+        android:icon="@drawable/icono_reporteria"
         android:title="Carnet virtual" />
     <item
         android:id="@+id/itm_Ayuda"
-        android:icon="@drawable/outline_contact_support_24"
+        android:icon="@drawable/icono_ayuda"
         android:title="Ayuda" />
 </menu>

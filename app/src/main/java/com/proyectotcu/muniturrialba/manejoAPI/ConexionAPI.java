@@ -3,6 +3,9 @@ package com.proyectotcu.muniturrialba.manejoAPI;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.proyectotcu.muniturrialba.manejoAPI.interfacesAPI.EmpleadoInterface;
+import com.proyectotcu.muniturrialba.manejoAPI.interfacesAPI.FAQInterface;
+import com.proyectotcu.muniturrialba.manejoAPI.interfacesAPI.PermisoInterface;
 import com.proyectotcu.muniturrialba.manejoAPI.interfacesAPI.UsuarioInterface;
 
 import okhttp3.OkHttpClient;
@@ -10,6 +13,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ConexionAPI {
+    /* NOTA IMPORTANTE:
+     * Corregir lo de la conexión para que solo sea uno. */
 
     //Variable estatica para indicar al retrofit que es nulo.
     private static Retrofit retrofit = null;
@@ -79,7 +84,145 @@ public class ConexionAPI {
         return retrofit.create(UsuarioInterface.class);
     }
 
+    public static FAQInterface Conexion_API_FAQ(Context context) {
+        /* Lo que hace este comando es crear una variable de tipo: SharedPreferences, -
+         * donde dicha variable estaria accediendo a un archivo XML que tiene como nombre -
+         * "Archivo_Autenticacion", y dicho archivo solo podra ser usado por la aplicación -
+         * móvil (de ahi el MODE_PRIVATE).
+         *
+         * NOTA: La razón de esto es porque ese archivo XML nos servira para poder almacenar -
+         * el token de acceso que nos brindaria el API, de modo que así, se pueda mantener la -
+         * sesión y además, poder acceder a las funciones del API.
+         *
+         * También hay que recalcar que si no existe dicho archivo, el SharedPreferences lo -
+         * creara automaticamente. */
+        SharedPreferences archivoXML = context.getSharedPreferences(
+                "Archivo_Autenticacion", Context.MODE_PRIVATE);
 
+        /* Lo que hace este comando es crear una variable de tipo OkHttpClient, -
+         * que nos ayudara a construir una nueva solicitud (o petición) HTTP del -
+         * cliente, en donde esta llevaria consigo el token de acceso que nos dio -
+         * el API para que nos podamos autenticar y se pueda realizar las operaciones -
+         * de la misma.
+         *
+         * NOTA: Esto se logra gracias al addInterceptor, el cual es un comando que se -
+         * ejecuta antes de la solicitud que vamos a construir, y ya luego este mismo -
+         * recibiria la respuesta de lo que pasamos a ese interceptor. Que en este caso, -
+         * es una instancia hacia la clase "AutenticacionAPI", donde se le esta pasando -
+         * el archivo SharedPreferences que se habia definido antes. El cual contiene -
+         * el token de acceso para poder autenticarnos respectivamente. */
+        OkHttpClient solicitudCliente = new OkHttpClient.Builder()
+                .addInterceptor(new AutenticacionAPI(archivoXML))
+                .build();
 
+        /* Si retrofit es igual a nulo, quiere decir que no se ha hecho todavia la conexión, -
+         * por lo que se realiza el proceso. Caso contrario no se hace de nuevo la conexion.
+         *
+         * NOTA: El .client(solicitudCliente) es para indicar que utilice la solicitud HTTP -
+         * que uno creo, en este caso: solicitudCliente. */
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .client(solicitudCliente)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+
+        return retrofit.create(FAQInterface.class);
+    }
+
+    public static EmpleadoInterface Conexion_API_Empleado(Context context) {
+        /* Lo que hace este comando es crear una variable de tipo: SharedPreferences, -
+         * donde dicha variable estaria accediendo a un archivo XML que tiene como nombre -
+         * "Archivo_Autenticacion", y dicho archivo solo podra ser usado por la aplicación -
+         * móvil (de ahi el MODE_PRIVATE).
+         *
+         * NOTA: La razón de esto es porque ese archivo XML nos servira para poder almacenar -
+         * el token de acceso que nos brindaria el API, de modo que así, se pueda mantener la -
+         * sesión y además, poder acceder a las funciones del API.
+         *
+         * También hay que recalcar que si no existe dicho archivo, el SharedPreferences lo -
+         * creara automaticamente. */
+        SharedPreferences archivoXML = context.getSharedPreferences(
+                "Archivo_Autenticacion", Context.MODE_PRIVATE);
+
+        /* Lo que hace este comando es crear una variable de tipo OkHttpClient, -
+         * que nos ayudara a construir una nueva solicitud (o petición) HTTP del -
+         * cliente, en donde esta llevaria consigo el token de acceso que nos dio -
+         * el API para que nos podamos autenticar y se pueda realizar las operaciones -
+         * de la misma.
+         *
+         * NOTA: Esto se logra gracias al addInterceptor, el cual es un comando que se -
+         * ejecuta antes de la solicitud que vamos a construir, y ya luego este mismo -
+         * recibiria la respuesta de lo que pasamos a ese interceptor. Que en este caso, -
+         * es una instancia hacia la clase "AutenticacionAPI", donde se le esta pasando -
+         * el archivo SharedPreferences que se habia definido antes. El cual contiene -
+         * el token de acceso para poder autenticarnos respectivamente. */
+        OkHttpClient solicitudCliente = new OkHttpClient.Builder()
+                .addInterceptor(new AutenticacionAPI(archivoXML))
+                .build();
+
+        /* Si retrofit es igual a nulo, quiere decir que no se ha hecho todavia la conexión, -
+         * por lo que se realiza el proceso. Caso contrario no se hace de nuevo la conexion.
+         *
+         * NOTA: El .client(solicitudCliente) es para indicar que utilice la solicitud HTTP -
+         * que uno creo, en este caso: solicitudCliente. */
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .client(solicitudCliente)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+
+        return retrofit.create(EmpleadoInterface.class);
+    }
+
+    public static PermisoInterface Conexion_API_Permiso_UsuarioEmpleado(Context context) {
+        /* Lo que hace este comando es crear una variable de tipo: SharedPreferences, -
+         * donde dicha variable estaria accediendo a un archivo XML que tiene como nombre -
+         * "Archivo_Autenticacion", y dicho archivo solo podra ser usado por la aplicación -
+         * móvil (de ahi el MODE_PRIVATE).
+         *
+         * NOTA: La razón de esto es porque ese archivo XML nos servira para poder almacenar -
+         * el token de acceso que nos brindaria el API, de modo que así, se pueda mantener la -
+         * sesión y además, poder acceder a las funciones del API.
+         *
+         * También hay que recalcar que si no existe dicho archivo, el SharedPreferences lo -
+         * creara automaticamente. */
+        SharedPreferences archivoXML = context.getSharedPreferences(
+                "Archivo_Autenticacion", Context.MODE_PRIVATE);
+
+        /* Lo que hace este comando es crear una variable de tipo OkHttpClient, -
+         * que nos ayudara a construir una nueva solicitud (o petición) HTTP del -
+         * cliente, en donde esta llevaria consigo el token de acceso que nos dio -
+         * el API para que nos podamos autenticar y se pueda realizar las operaciones -
+         * de la misma.
+         *
+         * NOTA: Esto se logra gracias al addInterceptor, el cual es un comando que se -
+         * ejecuta antes de la solicitud que vamos a construir, y ya luego este mismo -
+         * recibiria la respuesta de lo que pasamos a ese interceptor. Que en este caso, -
+         * es una instancia hacia la clase "AutenticacionAPI", donde se le esta pasando -
+         * el archivo SharedPreferences que se habia definido antes. El cual contiene -
+         * el token de acceso para poder autenticarnos respectivamente. */
+        OkHttpClient solicitudCliente = new OkHttpClient.Builder()
+                .addInterceptor(new AutenticacionAPI(archivoXML))
+                .build();
+
+        /* Si retrofit es igual a nulo, quiere decir que no se ha hecho todavia la conexión, -
+         * por lo que se realiza el proceso. Caso contrario no se hace de nuevo la conexion.
+         *
+         * NOTA: El .client(solicitudCliente) es para indicar que utilice la solicitud HTTP -
+         * que uno creo, en este caso: solicitudCliente. */
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .client(solicitudCliente)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+
+        return retrofit.create(PermisoInterface.class);
+    }
 
 }

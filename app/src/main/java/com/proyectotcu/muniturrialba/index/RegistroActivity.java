@@ -85,7 +85,7 @@ public class RegistroActivity extends AppCompatActivity {
              * así poder realizar la creación (o registro) de esos datos que están almacenados -
              * en el constructor: "usuarioEntitie" y que el API lo pueda recibir. Esto por medio -
              * de la interfaz respectiva. */
-            Call<UsuarioEntitie> registrarUsuario = usuarioInterface.registrarUsuario(usuarioEntitie);
+            Call<UsuarioEntitie> registrarUsuario = usuarioInterface.registrarUsuario(usuarioEntitie, true);
 
             /* Aqui es cuando notamos si se pudo realizar o no el proceso, en este caso -
              * el metodo POST.

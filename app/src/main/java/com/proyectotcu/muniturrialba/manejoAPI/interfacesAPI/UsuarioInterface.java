@@ -58,7 +58,8 @@ public interface UsuarioInterface {
      * respectivamente. */
     @Headers("Content-Type: application/json")
     @POST("api/crearusuarios")
-    Call<UsuarioEntitie> registrarUsuario(@Body UsuarioEntitie usuarioEntitie);
+    Call<UsuarioEntitie> registrarUsuario(@Body UsuarioEntitie usuarioEntitie,
+                                          @Query("tipo") boolean tipo);
 
     /* Metodo que sirve para crearle los permisos al usuario -
      * respectivamente. */
@@ -89,6 +90,13 @@ public interface UsuarioInterface {
     Call<Boolean> cambiarFotoPerfil(@Part MultipartBody.Part foto,
                                     @Query("tokenAcceso") String jwtToken);
 
+    /* Metodo que sirve para que el usuario pueda actualizar -
+     * la contraseña de su cuenta respectivamente. */
+    @Headers("Content-Type: application/json")
+    @PUT("api/actualizarUsuario")
+    Call<Boolean> actualizarUsuario(@Body UsuarioEntitie usuarioEntitie,
+                                    @Query("cedula") String cedula,
+                                    @Query("tokenAcceso") String jwtToken);
 
 
 }

@@ -4,4 +4,12 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="ErrorFragment">¡¡Si el problema persiste, entonces contactese con el personal técnico!!</string>
     <string name="AutorizacionDenegada">¡¡No tienes la autorización suficiente para este apartado!!</string>
+
+    <string name="InformacionCrearFAQ">Aqui podra crear las preguntas dentro del apartado de: "Ayuda". Además de integrar la respuesta y su tipo de prioridad. \n\nEso si, las preguntas no se podrán repetir respectivamente.</string>
+    <string name="InformacionActualizarFAQ">Aqui podra actualizar la pregunta, la respuesta o incluso su tipo de prioridad que fue seleccionada dentro del apartado de: "Ayuda". \n\nEso si, las preguntas no se podrán repetir respectivamente.</string>
+
+    <string name="InformacionCrearEmpleado">Aqui podra crear un nuevo empleado para el apartado de: "Empleados". Esto para que se pueda registrar en el sistema.</string>
+    <string name="InformacionActualizarEmpleado">Aqui podra actualizar la pregunta, la respuesta o incluso su tipo de prioridad que fue seleccionada dentro del apartado de: "Ayuda". \n\nEso si, las preguntas no se podrán repetir respectivamente.</string>
+
+    <string name="InformacionPermisos_UsuarioEmpleado">Aqui podra actualizar o asignar los permisos que estan asociados al usuario o usuaria en cuestión. \n\nEso si, cabe aclarar que los empleados (as) son los usuarios de la aplicación móvil respectivamente.</string>
 </resources>

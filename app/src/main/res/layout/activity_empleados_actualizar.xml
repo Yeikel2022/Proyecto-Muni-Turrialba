@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_ActualizarEmpleado"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/turrialba">
+
+
+    <ImageView
+        android:id="@+id/id_img_bienvenidaActualizarEmpleado"
+        android:layout_width="282dp"
+        android:layout_height="162dp"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/logito6"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/id_SeccionesActualizarEmpleado"
+        android:layout_width="367dp"
+        android:layout_height="525dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/border_radius"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/id_img_bienvenidaActualizarEmpleado" />
+
+    <LinearLayout
+        android:id="@+id/lnl_ContenidoActualizarEmpleado"
+        android:layout_width="367dp"
+        android:layout_height="525dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/id_SeccionesActualizarEmpleado"
+        app:layout_constraintEnd_toEndOf="@+id/id_SeccionesActualizarEmpleado"
+        app:layout_constraintHorizontal_bias="0.194"
+        app:layout_constraintStart_toStartOf="@+id/id_SeccionesActualizarEmpleado"
+        app:layout_constraintTop_toTopOf="@+id/id_SeccionesActualizarEmpleado"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:id="@+id/txt_TituloActualizarEmpleado"
+            android:layout_width="215dp"
+            android:layout_height="33dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="12dp"
+            android:fontFamily="sans-serif"
+            android:paddingTop="6dp"
+            android:text="Actualizar el empleado(a):"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edtxt_NombreEmpleadoActualizado"
+            android:layout_width="325dp"
+            android:layout_height="33dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/orange"
+            android:fontFamily="sans-serif"
+            android:hint="Nombre:"
+            android:paddingTop="2dp"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+
+        <EditText
+            android:id="@+id/edtxt_PrimerApellidoEmpleadoActualizado"
+            android:layout_width="325dp"
+            android:layout_height="33dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/orange"
+            android:fontFamily="sans-serif"
+            android:hint="Primer apellido:"
+            android:inputType="text"
+            android:paddingTop="2dp"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+
+        <EditText
+            android:id="@+id/edtxt_SegundoApellidoEmpleadoActualizado"
+            android:layout_width="325dp"
+            android:layout_height="33dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/orange"
+            android:fontFamily="sans-serif"
+            android:hint="Segundo apellido:"
+            android:inputType="text"
+            android:paddingTop="2dp"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+
+        <EditText
+            android:id="@+id/edtxt_CedulaEmpleadoActualizada"
+            android:layout_width="325dp"
+            android:layout_height="33dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/orange"
+            android:fontFamily="sans-serif"
+            android:hint="Cédula:"
+            android:inputType="text"
+            android:paddingTop="2dp"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+
+        <EditText
+            android:id="@+id/edtxt_EdadEmpleadoActualizada"
+            android:layout_width="325dp"
+            android:layout_height="33dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/orange"
+            android:fontFamily="sans-serif"
+            android:hint="Edad:"
+            android:inputType="number"
+            android:paddingTop="2dp"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+
+        <EditText
+            android:id="@+id/edtxt_TelefonoEmpleadoActualizado"
+            android:layout_width="325dp"
+            android:layout_height="33dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/orange"
+            android:fontFamily="sans-serif"
+            android:hint="Teléfono:"
+            android:inputType="phone"
+            android:paddingTop="2dp"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+
+        <EditText
+            android:id="@+id/edtxt_CorreoEmpleadoActualizado"
+            android:layout_width="325dp"
+            android:layout_height="33dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/orange"
+            android:fontFamily="sans-serif"
+            android:hint="Correo Electrónico:"
+            android:inputType="textEmailAddress"
+            android:paddingTop="2dp"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+
+        <EditText
+            android:id="@+id/edtxt_PasswordEmpleadoActualizado"
+            android:layout_width="325dp"
+            android:layout_height="33dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/orange"
+            android:fontFamily="sans-serif"
+            android:hint="Contraseña:"
+            android:inputType="textVisiblePassword"
+            android:paddingTop="2dp"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+
+        <Spinner
+            android:id="@+id/sp_RolEmpleadoActualizado"
+            android:layout_width="325dp"
+            android:layout_height="33dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/orange"
+            android:entries="@array/listaTipo_Roles"
+            android:paddingTop="2dp"
+            android:popupBackground="@color/orange"
+            android:spinnerMode="dropdown"
+            android:textAlignment="viewStart" />
+
+        <EditText
+            android:id="@+id/edtxt_DepartamentoEmpleadoActualizado"
+            android:layout_width="325dp"
+            android:layout_height="33dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/orange"
+            android:fontFamily="sans-serif"
+            android:hint="Departamento:"
+            android:inputType="text"
+            android:paddingTop="2dp"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+
+        <CheckBox
+            android:id="@+id/btn_ActivoEmpleado"
+            android:layout_width="98dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="248dp"
+            android:layout_marginTop="-479dp"
+            android:background="@color/orange"
+            android:buttonTint="@color/white"
+            android:checked="true"
+            android:clickable="true"
+            android:padding="0dp"
+            android:paddingLeft="0dp"
+            android:paddingTop="0dp"
+            android:paddingEnd="0dp"
+            android:paddingRight="0dp"
+            android:paddingBottom="0dp"
+            android:scaleX="1"
+            android:scaleY="1"
+            android:text="- Activo."
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+
+        <ImageView
+            android:id="@+id/img_fotoActualizarEmpleado"
+            android:layout_width="286dp"
+            android:layout_height="291dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="5dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icono_contenido_no_disponible"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/txt_MensajeActualizarEmpleado"
+            android:layout_width="328dp"
+            android:layout_height="201dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="25dp"
+            android:fontFamily="sans-serif"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_ActualizarEmpleado"
+        android:layout_width="133dp"
+        android:layout_height="63dp"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/custom_buttons"
+        android:checked="true"
+        android:clickable="true"
+        android:text="Actualizar"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:backgroundTint="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/id_SeccionesActualizarEmpleado" />
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

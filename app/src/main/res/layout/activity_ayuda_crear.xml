@@ -1,7 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_AyudaCrear"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/turrialba">
+
+
+    <ImageView
+        android:id="@+id/id_img_bienvenidaCrearAyuda"
+        android:layout_width="310dp"
+        android:layout_height="178dp"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/logito6"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/id_SeccionesCrearAyuda"
+        android:layout_width="367dp"
+        android:layout_height="450dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/border_radius"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/id_img_bienvenidaCrearAyuda" />
+
+    <LinearLayout
+        android:id="@+id/lnl_ContenidoCrearAyuda"
+        android:layout_width="367dp"
+        android:layout_height="450dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/id_SeccionesCrearAyuda"
+        app:layout_constraintEnd_toEndOf="@+id/id_SeccionesCrearAyuda"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/id_SeccionesCrearAyuda"
+        app:layout_constraintTop_toBottomOf="@+id/txt_TituloCrearAyuda"
+        app:layout_constraintVertical_bias="1.0">
+
+        <TextView
+            android:id="@+id/txt_TituloCrearAyuda"
+            android:layout_width="325dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="sans-serif"
+            android:paddingTop="7dp"
+            android:text="Crear registro FAQ:"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txt_InfoCrearAyuda"
+            android:layout_width="325dp"
+            android:layout_height="160dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="sans-serif"
+            android:text="@string/InformacionCrearFAQ"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            tools:text="@string/InformacionCrearFAQ" />
+
+        <EditText
+            android:id="@+id/edtxt_Pregunta"
+            android:layout_width="325dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/orange"
+            android:fontFamily="sans-serif"
+            android:hint="Pregunta:"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+
+        <EditText
+            android:id="@+id/edtxt_Respuesta"
+            android:layout_width="325dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/orange"
+            android:fontFamily="sans-serif"
+            android:hint="Respuesta:"
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+
+        <Spinner
+            android:id="@+id/sp_tipoPrioridad"
+            android:layout_width="325dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/orange"
+            android:dropDownWidth="325dp"
+            android:entries="@array/listaTipo_Prioridades"
+            android:popupBackground="@color/orange"
+            android:spinnerMode="dropdown" />
+
+        <ImageView
+            android:id="@+id/img_fotoCrearAyuda"
+            android:layout_width="304dp"
+            android:layout_height="226dp"
+            android:layout_marginStart="25dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icono_contenido_no_disponible"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/txt_MensajeCrearAyuda"
+            android:layout_width="328dp"
+            android:layout_height="201dp"
+            android:layout_alignTop="@+id/id_SeccionesCrearAyuda"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="25dp"
+            android:fontFamily="sans-serif"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_Crear"
+        android:layout_width="130dp"
+        android:layout_height="63dp"
+        android:layout_marginTop="35dp"
+        android:background="@drawable/custom_buttons"
+        android:checked="true"
+        android:clickable="true"
+        android:text="Crear"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:backgroundTint="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/id_SeccionesCrearAyuda" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

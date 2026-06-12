@@ -194,7 +194,7 @@ public class CarnetVirtualFragment extends Fragment {
 
                         carnetQR.setImageBitmap(mapeo);
                     } catch (Exception error) {
-                        carnetQR.setImageResource(R.drawable.rounded_id_card_24);
+                        carnetQR.setImageResource(R.drawable.icono_carnet_virtual);
                     }
                 } else {
                     try {
@@ -204,7 +204,7 @@ public class CarnetVirtualFragment extends Fragment {
 
                         /* Aqui lo que se hace es colocar el logo del carnet por defecto.
                          * Esto por temas de buenas prácticas. */
-                        carnetQR.setImageResource(R.drawable.rounded_id_card_24);
+                        carnetQR.setImageResource(R.drawable.icono_carnet_virtual);
 
                         /* Esto es para imprimir los mensajes de error. */
                         Toast.makeText(getActivity(), "¡Lo sentimos!", Toast.LENGTH_SHORT).show();
@@ -223,7 +223,7 @@ public class CarnetVirtualFragment extends Fragment {
 
                         /* Aqui lo que se hace es colocar el logo del carnet por defecto.
                          * Esto por temas de buenas prácticas. */
-                        carnetQR.setImageResource(R.drawable.rounded_id_card_24);
+                        carnetQR.setImageResource(R.drawable.icono_carnet_virtual);
 
                         Toast.makeText(getActivity(), "¡Lo sentimos!", Toast.LENGTH_SHORT).show();
                         Toast.makeText(getActivity(), "Pero no es posible visualizar su carnet virtual en estos momentos debido problema técnico.", Toast.LENGTH_LONG).show();
@@ -244,7 +244,7 @@ public class CarnetVirtualFragment extends Fragment {
                  * ver:
                  * Toast.makeText(getActivity(), t.getLocalizedMessage(),
                  * Toast.LENGTH_SHORT).show(); */
-                carnetQR.setImageResource(R.drawable.rounded_id_card_24);
+                carnetQR.setImageResource(R.drawable.icono_carnet_virtual);
 
                 Toast.makeText(getActivity(), "¡Lo sentimos!", Toast.LENGTH_SHORT).show();
                 Toast.makeText(getActivity(), "Pero no es posible visualizar su carnet virtual en estos momentos debido problema técnico.", Toast.LENGTH_LONG).show();
@@ -279,7 +279,7 @@ public class CarnetVirtualFragment extends Fragment {
 
                         fotoPerfil.setImageBitmap(mapeo);
                     } catch (Exception error) {
-                        fotoPerfil.setImageResource(R.drawable.rounded_account_circle_24);
+                        fotoPerfil.setImageResource(R.drawable.icono_perfil_logo);
                     }
                 } else {
                     try {
@@ -289,7 +289,7 @@ public class CarnetVirtualFragment extends Fragment {
 
                         /* Aqui lo que se hace es colocar el logo de imagen por defecto.
                          * Esto por temas de buenas prácticas. */
-                        fotoPerfil.setImageResource(R.drawable.rounded_account_circle_24);
+                        fotoPerfil.setImageResource(R.drawable.icono_perfil_logo);
 
                         /* Esto es para imprimir los mensajes de error. */
                         Toast.makeText(getActivity(), "¡Lo sentimos!", Toast.LENGTH_SHORT).show();
@@ -308,7 +308,7 @@ public class CarnetVirtualFragment extends Fragment {
 
                         /* Aqui lo que se hace es colocar el logo de imagen por defecto.
                          * Esto por temas de buenas prácticas. */
-                        fotoPerfil.setImageResource(R.drawable.rounded_account_circle_24);
+                        fotoPerfil.setImageResource(R.drawable.icono_perfil_logo);
 
                         Toast.makeText(getActivity(), "¡Lo sentimos!", Toast.LENGTH_SHORT).show();
                         Toast.makeText(getActivity(), "Pero no es posible visualizar la información en estos momentos debido problema técnico.", Toast.LENGTH_LONG).show();
@@ -332,7 +332,7 @@ public class CarnetVirtualFragment extends Fragment {
 
                 /* Aqui lo que se hace es colocar el logo de imagen por defecto.
                  * Esto por temas de buenas prácticas. */
-                fotoPerfil.setImageResource(R.drawable.rounded_account_circle_24);
+                fotoPerfil.setImageResource(R.drawable.icono_perfil_logo);
 
                 Toast.makeText(getActivity(), "¡Lo sentimos!", Toast.LENGTH_SHORT).show();
                 Toast.makeText(getActivity(), "Pero no es posible visualizar la información en estos momentos debido problema técnico.", Toast.LENGTH_LONG).show();
