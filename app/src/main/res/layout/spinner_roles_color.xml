@@ -8,6 +8,6 @@
     android:textStyle="italic"
     android:textColor="@color/black"
     android:textColorHint="@color/black"
-    android:textSize="18sp">
+    android:textSize="20sp">
 
 </CheckedTextView>

@@ -3,6 +3,7 @@ package com.proyectotcu.muniturrialba.index;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Base64;
 import android.widget.Toast;
@@ -56,6 +57,7 @@ public class CambiarPasswordActivity extends AppCompatActivity {
             return insets;
         });
 
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         /* Sirve para llamar el metodo de cambiar contraseña, siempre y cuando -
          * el usuario presione el boton respectivo. */

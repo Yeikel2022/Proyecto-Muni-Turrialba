@@ -1,7 +1,6 @@
 package com.proyectotcu.muniturrialba.moduloEmpleados;
 
 import static android.view.View.GONE;
-import static android.view.View.TEXT_ALIGNMENT_CENTER;
 import static android.view.View.TEXT_ALIGNMENT_VIEW_START;
 import static android.view.View.VISIBLE;
 
@@ -54,28 +53,28 @@ public class EmpleadoFragment extends Fragment {
 
     //Variables globales para esta clase.
     TextView txtNombre, txtApellidos, txtEdad, txtCedula, txtTelefono, txtCorreo_Electronico,
-            txtContraseña, txtNombreRol, txtFechaCreacion, txtDepartamento, txtActivo, campoNombre,
-            campoApellidos, campoEdad, campoCedula, campoTelefono, campoCorreo_Electronico, campoContraseña,
-            campoNombreRol, campoFechaCreacion, campoDepartamento, campoActivo, txtMensaje;
+             txtContraseña, txtNombreRol, txtFechaCreacion, txtDepartamento, txtActivo, campoNombre,
+             campoApellidos, campoEdad, campoCedula, campoTelefono, campoCorreo_Electronico, campoContraseña,
+             campoNombreRol, campoFechaCreacion, campoDepartamento, campoActivo, txtMensaje;
 
-
-    Integer LargoContenido, AnchoContenido, Largo_CheckBox, Ancho_CheckBox, TamañoLetraContenido,
-            margen;
+    Integer LargoContenido, AnchoContenido, LargoCheckBox, AnchoCheckBox, TamañoLetraContenido,
+            margenContenido, margenCheckBox, margenTop, paddingTopContenido, paddingStartContenido,
+            paddingEndContenido;
 
 
     Button botonCrear, botonActualizar, botonEliminar, botonPermisos;
     TableRow tbrInfoFila, tbrPrimeraFila, nuevaFila;
 
-    TableRow.LayoutParams margenContenido, margen_CheckBox;
+    TableRow.LayoutParams parametrosContenido, parametrosCheckBox;
+    HorizontalScrollView scrollHorizontal, scrollHorizontalBotones;
     CheckBox botonSeleccion, campoCheckBox;
 
     TableLayout tblTablaEmpleados;
     ImageView logitoEmpleados;
-    HorizontalScrollView scrollHorizontal, scrollHorizontalBotones;
     SearchView buscadorEmpleados;
     List<ExtensionEmpleadoUsuarioEntitie> datosOrdenados;
 
-    static Boolean mensajePermisosEmpleado = false;
+    public static Boolean mensajeEmpleados = false;
 
 
     //Interfaz que contiene los métodos de la entidad FAQ.
@@ -266,6 +265,12 @@ public class EmpleadoFragment extends Fragment {
             }
 
         } catch (Exception error) {
+            buscadorEmpleados.setVisibility(View.GONE);
+            botonCrear.setVisibility(View.GONE);
+            botonActualizar.setVisibility(View.GONE);
+            botonEliminar.setVisibility(View.GONE);
+            botonPermisos.setVisibility(View.GONE);
+
             scrollHorizontalBotones.setVisibility(View.GONE);
             scrollHorizontal.setVisibility(View.GONE);
 
@@ -298,294 +303,232 @@ public class EmpleadoFragment extends Fragment {
 
 
     private Integer ValidarPermisosAdmin(Boolean Leer, Boolean Crear, Boolean Actualizar, Boolean Eliminar, Integer Rol) {
-        if(Rol == 1) {
-            /* Aqui valida si todos los permisos de ese usuario son falsos -
-             * (dando a entender que no esta autorizado). Y si entra, entonces -
-             * se ocultaria todos las opciones del perfil y se enviaria un mensaje -
-             * mencionando que no tiene la autorización suficiente para poder continuar. */
-            if(Leer == false && Crear == false && Actualizar == false && Eliminar == false) {
-                scrollHorizontalBotones.setVisibility(View.GONE);
-                scrollHorizontal.setVisibility(View.GONE);
+        ArrayList<String> listaMensaje = new ArrayList<String>();
+        String mensajeProveniente = "";
 
-                logitoEmpleados.setVisibility(VISIBLE);
-                txtMensaje.setVisibility(VISIBLE);
+        switch (Rol) {
+            //Moderador:
+            case 1:
+                if(Leer == false && Crear == false && Actualizar == false && Eliminar == false) {
+                    buscadorEmpleados.setVisibility(View.GONE);
+                    botonCrear.setVisibility(View.GONE);
+                    botonActualizar.setVisibility(View.GONE);
+                    botonEliminar.setVisibility(View.GONE);
+                    botonPermisos.setVisibility(View.GONE);
 
-                logitoEmpleados.setImageResource(R.drawable.icono_contenido_no_disponible);
-                txtMensaje.setText(getString(R.string.AutorizacionDenegada));
-                /* NOTA: El "getString(R.string.AutorizacionDenegada)", lo que hace es -
-                 * traer un mensaje que se coloco en: "strings.xml" para que el textview: -
-                 * "txtMensaje" pueda colocarlo en la pantalla del fragmento (osea en el -
-                 * fragment_perfil.xml), esto porque es una forma dinamica de hacerlo. */
+                    scrollHorizontalBotones.setVisibility(View.GONE);
+                    scrollHorizontal.setVisibility(View.GONE);
 
-                AlertDialog.Builder construirAlertaAutorizacion = new AlertDialog.Builder(getActivity());
-                construirAlertaAutorizacion.setIcon(R.drawable.icono_error);
-                construirAlertaAutorizacion.setMessage("Pero no tienes la autorización necesaria para realizar alguna acción dentro de este apartado.")
-                        .setTitle("¡Lo sentimos!");
+                    logitoEmpleados.setVisibility(VISIBLE);
+                    txtMensaje.setVisibility(VISIBLE);
 
-                construirAlertaAutorizacion.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {}});
+                    logitoEmpleados.setImageResource(R.drawable.icono_contenido_no_disponible);
+                    txtMensaje.setText(getString(R.string.AutorizacionDenegada));
+                    /* NOTA: El "getString(R.string.AutorizacionDenegada)", lo que hace es -
+                     * traer un mensaje que se coloco en: "strings.xml" para que el textview: -
+                     * "txtMensaje" pueda colocarlo en la pantalla del fragmento (osea en el -
+                     * fragment_perfil.xml), esto porque es una forma dinamica de hacerlo. */
 
-                AlertDialog ejecutarMensajeAutorizacion = construirAlertaAutorizacion.create();
-                ejecutarMensajeAutorizacion.show();
+                    if(mensajeEmpleados != true) {
+                        AlertDialog.Builder construirAlertaAutorizacion = new AlertDialog.Builder(getActivity());
+                        construirAlertaAutorizacion.setIcon(R.drawable.icono_error);
+                        construirAlertaAutorizacion.setMessage("Pero no tienes la autorización necesaria para realizar alguna acción dentro de este apartado.")
+                                .setTitle("¡Lo sentimos!");
 
-                return 0;
-            }
+                        construirAlertaAutorizacion.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mensajeEmpleados = true;
+                            }});
 
+                        AlertDialog ejecutarMensajeAutorizacion = construirAlertaAutorizacion.create();
+                        ejecutarMensajeAutorizacion.show();
+                    }
 
-            /* Aqui valida si el permiso de leer de ese usuario es falso -
-             * (dando a entender que no esta autorizado para visualizar los -
-             * datos (en este caso los permisos de la aplicación). Y si entra, -
-             * entonces se enviaria un mensaje mencionando que no esta autorizado -
-             * y luego un 1 para que el metodo: "VistaPermisos" pueda saber que no -
-             * esta autorizado. */
-            if(Leer == false) {
-                scrollHorizontal.setVisibility(GONE);
-
-                if(mensajePermisosEmpleado != true) {
-                    AlertDialog.Builder construirAlertaAutorizacion = new AlertDialog.Builder(getActivity());
-                    construirAlertaAutorizacion.setIcon(R.drawable.icono_error);
-                    construirAlertaAutorizacion.setMessage("Pero no tienes la autorización necesaria para visualizar esta información.")
-                            .setTitle("¡Lo sentimos!");
-
-                    construirAlertaAutorizacion.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            mensajePermisosEmpleado = true;
-                        }
-                    });
-
-                    AlertDialog ejecutarMensajeAutorizacion = construirAlertaAutorizacion.create();
-                    ejecutarMensajeAutorizacion.show();
+                    return 0;
                 }
-            }
 
-            /* Aqui valida si el permiso de leer de ese usuario es falso -
-             * (dando a entender que no esta autorizado para visualizar los -
-             * datos (en este caso los permisos de la aplicación). Y si entra, -
-             * entonces se enviaria un mensaje mencionando que no esta autorizado -
-             * y luego un 1 para que el metodo: "VistaPermisos" pueda saber que no -
-             * esta autorizado. */
-            if(Crear == false) {
-                botonCrear.setVisibility(GONE);
 
-                if(mensajePermisosEmpleado != true) {
-                    AlertDialog.Builder construirAlertaAutorizacion = new AlertDialog.Builder(getActivity());
-                    construirAlertaAutorizacion.setIcon(R.drawable.icono_error);
-                    construirAlertaAutorizacion.setMessage("Pero no tienes la autorización necesaria para crear un nuevo empleado(a) dentro de este apartado.")
-                            .setTitle("¡Lo sentimos!");
+                if(Leer == false) {
+                    buscadorEmpleados.setVisibility(View.GONE);
+                    botonCrear.setVisibility(View.GONE);
+                    botonActualizar.setVisibility(View.GONE);
+                    botonEliminar.setVisibility(View.GONE);
+                    botonPermisos.setVisibility(View.GONE);
 
-                    construirAlertaAutorizacion.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            mensajePermisosEmpleado = true;
-                        }
-                    });
+                    scrollHorizontalBotones.setVisibility(GONE);
+                    scrollHorizontal.setVisibility(GONE);
 
-                    AlertDialog ejecutarMensajeAutorizacion = construirAlertaAutorizacion.create();
-                    ejecutarMensajeAutorizacion.show();
+                    logitoEmpleados.setVisibility(VISIBLE);
+                    txtMensaje.setVisibility(VISIBLE);
+
+                    logitoEmpleados.setImageResource(R.drawable.icono_contenido_no_disponible);
+                    txtMensaje.setText(getString(R.string.AutorizacionDenegada));
+
+                    listaMensaje.add("- Visualizar esta información.\n\n");
                 }
-            }
 
-            /* Aqui valida si el permiso de leer de ese usuario es falso -
-             * (dando a entender que no esta autorizado para visualizar los -
-             * datos (en este caso los permisos de la aplicación). Y si entra, -
-             * entonces se enviaria un mensaje mencionando que no esta autorizado -
-             * y luego un 1 para que el metodo: "VistaPermisos" pueda saber que no -
-             * esta autorizado. */
-            if(Actualizar == false) {
-                botonActualizar.setVisibility(GONE);
 
-                if(mensajePermisosEmpleado != true) {
-                    AlertDialog.Builder construirAlertaAutorizacion = new AlertDialog.Builder(getActivity());
-                    construirAlertaAutorizacion.setIcon(R.drawable.icono_error);
-                    construirAlertaAutorizacion.setMessage("Pero no tienes la autorización necesaria para actualizar un empleado(a) respectivamente.")
-                            .setTitle("¡Lo sentimos!");
-
-                    construirAlertaAutorizacion.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            mensajePermisosEmpleado = true;
-                        }
-                    });
-
-                    AlertDialog ejecutarMensajeAutorizacion = construirAlertaAutorizacion.create();
-                    ejecutarMensajeAutorizacion.show();
+                if(Crear == false) {
+                    botonCrear.setVisibility(GONE);
+                    listaMensaje.add("- Crear un nuevo empleado(a) dentro de este apartado.\n\n");
                 }
-            }
 
-            /* Aqui valida si el permiso de leer de ese usuario es falso -
-             * (dando a entender que no esta autorizado para visualizar los -
-             * datos (en este caso los permisos de la aplicación). Y si entra, -
-             * entonces se enviaria un mensaje mencionando que no esta autorizado -
-             * y luego un 1 para que el metodo: "VistaPermisos" pueda saber que no -
-             * esta autorizado. */
-            if(Eliminar == false) {
-                botonEliminar.setVisibility(GONE);
 
-                if(mensajePermisosEmpleado != true) {
-                    AlertDialog.Builder construirAlertaAutorizacion = new AlertDialog.Builder(getActivity());
-                    construirAlertaAutorizacion.setIcon(R.drawable.icono_error);
-                    construirAlertaAutorizacion.setMessage("Pero no tienes la autorización necesaria para eliminar un empleado(a) respectivamente.")
-                            .setTitle("¡Lo sentimos!");
+                if(Actualizar == false) {
+                    botonActualizar.setVisibility(GONE);
+                    botonPermisos.setVisibility(GONE);
 
-                    construirAlertaAutorizacion.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            mensajePermisosEmpleado = true;
-                        }
-                    });
-
-                    AlertDialog ejecutarMensajeAutorizacion = construirAlertaAutorizacion.create();
-                    ejecutarMensajeAutorizacion.show();
+                    listaMensaje.add("- Actualizar un empleado(a) respectivamente.\n\n");
+                    listaMensaje.add("- Asignar permisos a un empleado(a) respectivamente.\n\n");
                 }
-            }
-        }
 
 
-        if(Rol == 2) {
-            botonPermisos.setVisibility(GONE);
-
-            /* Aqui valida si todos los permisos de ese usuario son falsos -
-             * (dando a entender que no esta autorizado). Y si entra, entonces -
-             * se ocultaria todos las opciones del perfil y se enviaria un mensaje -
-             * mencionando que no tiene la autorización suficiente para poder continuar. */
-            if(Leer == false && Crear == false && Actualizar == false && Eliminar == false) {
-                scrollHorizontalBotones.setVisibility(View.GONE);
-                scrollHorizontal.setVisibility(View.GONE);
-
-                logitoEmpleados.setVisibility(VISIBLE);
-                txtMensaje.setVisibility(VISIBLE);
-
-                logitoEmpleados.setImageResource(R.drawable.icono_contenido_no_disponible);
-                txtMensaje.setText(getString(R.string.AutorizacionDenegada));
-                /* NOTA: El "getString(R.string.AutorizacionDenegada)", lo que hace es -
-                 * traer un mensaje que se coloco en: "strings.xml" para que el textview: -
-                 * "txtMensaje" pueda colocarlo en la pantalla del fragmento (osea en el -
-                 * fragment_perfil.xml), esto porque es una forma dinamica de hacerlo. */
-
-                AlertDialog.Builder construirAlertaAutorizacion = new AlertDialog.Builder(getActivity());
-                construirAlertaAutorizacion.setIcon(R.drawable.icono_error);
-                construirAlertaAutorizacion.setMessage("Pero no tienes la autorización necesaria para realizar alguna acción dentro de este apartado.")
-                        .setTitle("¡Lo sentimos!");
-
-                construirAlertaAutorizacion.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {}});
-
-                AlertDialog ejecutarMensajeAutorizacion = construirAlertaAutorizacion.create();
-                ejecutarMensajeAutorizacion.show();
-
-                return 0;
-            }
-
-            /* Aqui valida si el permiso de leer de ese usuario es falso -
-             * (dando a entender que no esta autorizado para visualizar los -
-             * datos (en este caso los permisos de la aplicación). Y si entra, -
-             * entonces se enviaria un mensaje mencionando que no esta autorizado -
-             * y luego un 1 para que el metodo: "VistaPermisos" pueda saber que no -
-             * esta autorizado. */
-            if(Leer == false) {
-                scrollHorizontal.setVisibility(GONE);
-
-                if(mensajePermisosEmpleado != true) {
-                    AlertDialog.Builder construirAlertaAutorizacion = new AlertDialog.Builder(getActivity());
-                    construirAlertaAutorizacion.setIcon(R.drawable.icono_error);
-                    construirAlertaAutorizacion.setMessage("Pero no tienes la autorización necesaria para visualizar esta información.")
-                            .setTitle("¡Lo sentimos!");
-
-                    construirAlertaAutorizacion.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            mensajePermisosEmpleado = true;
-                        }
-                    });
-
-                    AlertDialog ejecutarMensajeAutorizacion = construirAlertaAutorizacion.create();
-                    ejecutarMensajeAutorizacion.show();
+                if(Eliminar == false) {
+                    botonEliminar.setVisibility(GONE);
+                    listaMensaje.add("- Eliminar un empleado(a) respectivamente.");
                 }
-            }
 
-            /* Aqui valida si el permiso de leer de ese usuario es falso -
-             * (dando a entender que no esta autorizado para visualizar los -
-             * datos (en este caso los permisos de la aplicación). Y si entra, -
-             * entonces se enviaria un mensaje mencionando que no esta autorizado -
-             * y luego un 1 para que el metodo: "VistaPermisos" pueda saber que no -
-             * esta autorizado. */
-            if(Crear == false) {
-                botonCrear.setVisibility(GONE);
 
-                if(mensajePermisosEmpleado != true) {
-                    AlertDialog.Builder construirAlertaAutorizacion = new AlertDialog.Builder(getActivity());
-                    construirAlertaAutorizacion.setIcon(R.drawable.icono_error);
-                    construirAlertaAutorizacion.setMessage("Pero no tienes la autorización necesaria para crear un nuevo empleado(a) dentro de este apartado.")
-                            .setTitle("¡Lo sentimos!");
+                if(Leer != true || Crear != true || Actualizar != true || Eliminar != true) {
+                    if(listaMensaje.size() == 4) {
+                        scrollHorizontalBotones.setVisibility(GONE);
+                    }
 
-                    construirAlertaAutorizacion.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            mensajePermisosEmpleado = true;
+                    if(mensajeEmpleados != true) {
+                        for(int i = 0; i < listaMensaje.size(); i++) {
+                            mensajeProveniente += listaMensaje.get(i);
                         }
-                    });
 
-                    AlertDialog ejecutarMensajeAutorizacion = construirAlertaAutorizacion.create();
-                    ejecutarMensajeAutorizacion.show();
+                        AlertDialog.Builder construirAlertaCrear = new AlertDialog.Builder(getActivity());
+                        construirAlertaCrear.setIcon(R.drawable.icono_error);
+
+                        construirAlertaCrear.setMessage("Pero no tienes la autorización necesaria para: \n\n" + mensajeProveniente)
+                                .setTitle("¡Lo sentimos!");
+
+                        construirAlertaCrear.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mensajeEmpleados = true;
+                            }
+                        });
+
+                        AlertDialog ejecutarMensajeCrear = construirAlertaCrear.create();
+                        ejecutarMensajeCrear.show();
+                    }
                 }
-            }
 
-            /* Aqui valida si el permiso de leer de ese usuario es falso -
-             * (dando a entender que no esta autorizado para visualizar los -
-             * datos (en este caso los permisos de la aplicación). Y si entra, -
-             * entonces se enviaria un mensaje mencionando que no esta autorizado -
-             * y luego un 1 para que el metodo: "VistaPermisos" pueda saber que no -
-             * esta autorizado. */
-            if(Actualizar == false) {
-                botonActualizar.setVisibility(GONE);
+                break;
 
-                if(mensajePermisosEmpleado != true) {
-                    AlertDialog.Builder construirAlertaAutorizacion = new AlertDialog.Builder(getActivity());
-                    construirAlertaAutorizacion.setIcon(R.drawable.icono_error);
-                    construirAlertaAutorizacion.setMessage("Pero no tienes la autorización necesaria para actualizar un empleado(a) respectivamente.")
-                            .setTitle("¡Lo sentimos!");
+            //Administrador:
+            case 2:
+                botonPermisos.setVisibility(GONE);
 
-                    construirAlertaAutorizacion.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            mensajePermisosEmpleado = true;
+                if(Leer == false && Crear == false && Actualizar == false && Eliminar == false) {
+                    buscadorEmpleados.setVisibility(View.GONE);
+                    botonCrear.setVisibility(View.GONE);
+                    botonActualizar.setVisibility(View.GONE);
+                    botonEliminar.setVisibility(View.GONE);
+
+                    scrollHorizontalBotones.setVisibility(View.GONE);
+                    scrollHorizontal.setVisibility(View.GONE);
+
+                    logitoEmpleados.setVisibility(VISIBLE);
+                    txtMensaje.setVisibility(VISIBLE);
+
+                    logitoEmpleados.setImageResource(R.drawable.icono_contenido_no_disponible);
+                    txtMensaje.setText(getString(R.string.AutorizacionDenegada));
+                    /* NOTA: El "getString(R.string.AutorizacionDenegada)", lo que hace es -
+                     * traer un mensaje que se coloco en: "strings.xml" para que el textview: -
+                     * "txtMensaje" pueda colocarlo en la pantalla del fragmento (osea en el -
+                     * fragment_perfil.xml), esto porque es una forma dinamica de hacerlo. */
+
+                    if(mensajeEmpleados != true) {
+                        AlertDialog.Builder construirAlertaAutorizacion = new AlertDialog.Builder(getActivity());
+                        construirAlertaAutorizacion.setIcon(R.drawable.icono_error);
+                        construirAlertaAutorizacion.setMessage("Pero no tienes la autorización necesaria para realizar alguna acción dentro de este apartado.")
+                                .setTitle("¡Lo sentimos!");
+
+                        construirAlertaAutorizacion.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mensajeEmpleados = true;
+                            }});
+
+                        AlertDialog ejecutarMensajeAutorizacion = construirAlertaAutorizacion.create();
+                        ejecutarMensajeAutorizacion.show();
+                    }
+
+                    return 0;
+                }
+
+
+                if(Leer == false) {
+                    buscadorEmpleados.setVisibility(View.GONE);
+                    botonCrear.setVisibility(View.GONE);
+                    botonActualizar.setVisibility(View.GONE);
+                    botonEliminar.setVisibility(View.GONE);
+
+                    scrollHorizontalBotones.setVisibility(GONE);
+                    scrollHorizontal.setVisibility(GONE);
+
+                    logitoEmpleados.setVisibility(VISIBLE);
+                    txtMensaje.setVisibility(VISIBLE);
+
+                    logitoEmpleados.setImageResource(R.drawable.icono_contenido_no_disponible);
+                    txtMensaje.setText(getString(R.string.AutorizacionDenegada));
+
+                    listaMensaje.add("- Visualizar esta información.\n\n");
+                }
+
+
+                if(Crear == false) {
+                    botonCrear.setVisibility(GONE);
+                    listaMensaje.add("- Crear un nuevo empleado(a) dentro de este apartado.\n\n");
+                }
+
+
+                if(Actualizar == false) {
+                    botonActualizar.setVisibility(GONE);
+                    listaMensaje.add("- Actualizar un empleado(a) respectivamente.\n\n");
+                }
+
+
+                if(Eliminar == false) {
+                    botonEliminar.setVisibility(GONE);
+                    listaMensaje.add("- Eliminar un empleado(a) respectivamente.");
+                }
+
+
+                if(Leer != true || Crear != true || Actualizar != true || Eliminar != true) {
+                    if(listaMensaje.size() == 3) {
+                        scrollHorizontalBotones.setVisibility(GONE);
+                    }
+
+                    if(mensajeEmpleados != true) {
+                        for(int i = 0; i < listaMensaje.size(); i++) {
+                            mensajeProveniente += listaMensaje.get(i);
                         }
-                    });
 
-                    AlertDialog ejecutarMensajeAutorizacion = construirAlertaAutorizacion.create();
-                    ejecutarMensajeAutorizacion.show();
+                        AlertDialog.Builder construirAlertaCrear = new AlertDialog.Builder(getActivity());
+                        construirAlertaCrear.setIcon(R.drawable.icono_error);
+
+                        construirAlertaCrear.setMessage("Pero no tienes la autorización necesaria para: \n\n" + mensajeProveniente)
+                                .setTitle("¡Lo sentimos!");
+
+                        construirAlertaCrear.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mensajeEmpleados = true;
+                            }
+                        });
+
+                        AlertDialog ejecutarMensajeCrear = construirAlertaCrear.create();
+                        ejecutarMensajeCrear.show();
+                    }
                 }
-            }
 
-            /* Aqui valida si el permiso de leer de ese usuario es falso -
-             * (dando a entender que no esta autorizado para visualizar los -
-             * datos (en este caso los permisos de la aplicación). Y si entra, -
-             * entonces se enviaria un mensaje mencionando que no esta autorizado -
-             * y luego un 1 para que el metodo: "VistaPermisos" pueda saber que no -
-             * esta autorizado. */
-            if(Eliminar == false) {
-                botonEliminar.setVisibility(GONE);
-
-                if(mensajePermisosEmpleado != true) {
-                    AlertDialog.Builder construirAlertaAutorizacion = new AlertDialog.Builder(getActivity());
-                    construirAlertaAutorizacion.setIcon(R.drawable.icono_error);
-                    construirAlertaAutorizacion.setMessage("Pero no tienes la autorización necesaria para eliminar un empleado(a) respectivamente.")
-                            .setTitle("¡Lo sentimos!");
-
-                    construirAlertaAutorizacion.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            mensajePermisosEmpleado = true;
-                        }
-                    });
-
-                    AlertDialog ejecutarMensajeAutorizacion = construirAlertaAutorizacion.create();
-                    ejecutarMensajeAutorizacion.show();
-                }
-            }
+                break;
         }
 
 
@@ -602,55 +545,62 @@ public class EmpleadoFragment extends Fragment {
                 MostrarEmpleados(tokenUsuario, datosFiltrados, false);
 
             } else {
-                for (ExtensionEmpleadoUsuarioEntitie empleadoUsuarioEntitie : listaDatos) {
-                    String Nombre = empleadoUsuarioEntitie.getNombre_Empleado().toLowerCase().trim();
-                    //String primerApellido = empleadoUsuarioEntitie.getApellido1_Empleado().toLowerCase().trim();
-                    //String segundoApellido = empleadoUsuarioEntitie.getApellido2_Empleado().toLowerCase().trim();
-                    //String busquedaCompleta = Nombre + " " + primerApellido + " " + segundoApellido;
-                    String busquedaCompleta = Nombre;
+                for (ExtensionEmpleadoUsuarioEntitie empleadoEntitie : listaDatos) {
+                    String nombreEmpleado = empleadoEntitie.getNombre_Empleado().toLowerCase().trim();
 
-                    if (busquedaCompleta.contains(textoIngresado.toLowerCase())) {
-                        datosFiltrados.add(empleadoUsuarioEntitie);
-
-                    /*if (empleadoUsuarioEntitie.getNombre_Empleado().toLowerCase().contains(textoIngresado.toLowerCase())) {
-                        datosFiltrados.add(empleadoUsuarioEntitie);
-                    }*/
+                    if (nombreEmpleado.contains(textoIngresado.toLowerCase())) {
+                        datosFiltrados.add(empleadoEntitie);
                     }
                 }
 
                 if(datosFiltrados.isEmpty()) {
                     AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
                     construirAlerta.setIcon(R.drawable.icono_advertencia);
-                    construirAlerta.setMessage("Pero no se pudo encontrar el registro del empleado(a) debido a que existen datos incorrectos o porque el registro no existe como tal." + "\n\nPor favor corriga los errores e intentelo de nuevo.")
+                    construirAlerta.setMessage("Pero no se pudo encontrar el registro del empleado(a) debido a que existen datos incorrectos o porque el registro no existe como tal. \n\nPor favor, corriga los errores e intentelo de nuevo.")
                             .setTitle("¡Lo sentimos!");
 
                     construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    });
+                        public void onClick(DialogInterface dialog, int which) {}});
 
                     AlertDialog ejecutarMensaje = construirAlerta.create();
                     ejecutarMensaje.show();
-                }
 
-                MostrarEmpleados(tokenUsuario, datosFiltrados, true);
+                    MostrarEmpleados(tokenUsuario, datosFiltrados, false);
+
+                } else {
+                    MostrarEmpleados(tokenUsuario, datosFiltrados, true);
+                }
             }
-        } catch (Exception error){
-                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
-                construirAlerta.setIcon(R.drawable.icono_error);
-                construirAlerta.setMessage("Pero no es posible posible visualizar la información del empleado(a) en estos momentos debido a un problema técnico. Por favor intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+
+        } catch (Exception error) {
+            buscadorEmpleados.setVisibility(View.GONE);
+            botonCrear.setVisibility(View.GONE);
+            botonActualizar.setVisibility(View.GONE);
+            botonEliminar.setVisibility(View.GONE);
+            botonPermisos.setVisibility(View.GONE);
+
+            scrollHorizontalBotones.setVisibility(View.GONE);
+            scrollHorizontal.setVisibility(View.GONE);
+
+            logitoEmpleados.setVisibility(VISIBLE);
+            txtMensaje.setVisibility(VISIBLE);
+
+            logitoEmpleados.setImageResource(R.drawable.icono_contenido_no_disponible);
+            txtMensaje.setText(getString(R.string.ErrorFragment));
+
+            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
+            construirAlerta.setIcon(R.drawable.icono_error);
+            construirAlerta.setMessage("Pero no es posible visualizar la información del empleado(a) en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
                     .setTitle("¡Lo sentimos!");
 
 
-                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
+            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {}});
 
-                AlertDialog ejecutarMensaje = construirAlerta.create();
-                ejecutarMensaje.show();
+            AlertDialog ejecutarMensaje = construirAlerta.create();
+            ejecutarMensaje.show();
         }
     }
 
@@ -753,19 +703,26 @@ public class EmpleadoFragment extends Fragment {
                             campoActivo = new TextView(getActivity());
 
 
-                            LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 205);
+                            LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 350);
                             AnchoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 205);
-                            Largo_CheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 35);
-                            Ancho_CheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
-                            TamañoLetraContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_SP, 8);
+                            LargoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
+                            AnchoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
+                            TamañoLetraContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_SP, 10);
 
 
-                            margenContenido = new TableRow.LayoutParams(LargoContenido, AnchoContenido);
-                            margen_CheckBox = new TableRow.LayoutParams(Largo_CheckBox, Ancho_CheckBox);
-                            margen = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 7);
-                            margenContenido.setMarginStart(margen);
-                            margen_CheckBox.setMarginStart(margen);
-                            margen_CheckBox.setMarginEnd(margen);
+                            parametrosContenido = new TableRow.LayoutParams(LargoContenido, AnchoContenido);
+                            parametrosCheckBox = new TableRow.LayoutParams(LargoCheckBox, AnchoCheckBox);
+                            margenContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, -1);
+                            margenCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 7);
+                            margenTop = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 5);
+
+                            paddingStartContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 11);
+                            paddingEndContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 5);
+                            paddingTopContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 5);
+
+                            parametrosContenido.setMarginStart(margenContenido);
+                            parametrosCheckBox.setMarginStart(margenCheckBox);
+                            parametrosCheckBox.setMarginEnd(margenCheckBox);
 
 
                             ExtensionEmpleadoUsuarioEntitie empleados = listaActualizada.get(i);
@@ -777,116 +734,139 @@ public class EmpleadoFragment extends Fragment {
                             String Correo_Electronico = empleados.getCorreo_Electronico_Empleado().trim();
                             String Contraseña = empleados.getContraseña_Empleado().trim();
                             String Nombre_Rol = empleados.getNombre_Rol().trim();
-                            String Fecha_Creacion = empleados.getFecha_Creacion_Empleado().trim();
+                            String Fecha_Creacion = empleados.getFecha_Creacion_Empleado().trim().replace("T", " ");
                             String Departamento = empleados.getDepartamento().trim();
                             Boolean Activo = empleados.getActivo();
 
 
-                            campoCheckBox.setWidth(Largo_CheckBox);
-                            campoCheckBox.setHeight(Ancho_CheckBox);
-                            campoCheckBox.setLayoutParams(margen_CheckBox);
-                            campoCheckBox.setButtonTintList(ColorStateList.valueOf(Color.WHITE));
+                            campoCheckBox.setWidth(LargoCheckBox);
+                            campoCheckBox.setHeight(AnchoCheckBox);
+                            campoCheckBox.setLayoutParams(parametrosCheckBox);
+                            campoCheckBox.setTop(margenTop);
+                            campoCheckBox.setPaddingRelative(0, paddingTopContenido, 0, 0);
+                            campoCheckBox.setButtonTintList(ColorStateList.valueOf(Color.BLACK));
                             campoCheckBox.setTag(empleados);
 
                             campoNombre.setText(Nombre);
                             campoNombre.setWidth(LargoContenido);
                             campoNombre.setHeight(AnchoContenido);
-                            campoNombre.setLayoutParams(margenContenido);
+                            campoNombre.setLayoutParams(parametrosContenido);
+                            campoNombre.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
                             campoNombre.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                             campoNombre.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
+                            campoNombre.setBackground(getActivity().getDrawable(R.drawable.border_table_row));
                             campoNombre.setTextColor(Color.BLACK);
                             campoNombre.setTextSize(TamañoLetraContenido);
 
                             campoApellidos.setText(Apellidos);
                             campoApellidos.setWidth(LargoContenido);
                             campoApellidos.setHeight(AnchoContenido);
-                            campoApellidos.setLayoutParams(margenContenido);
+                            campoApellidos.setLayoutParams(parametrosContenido);
+                            campoApellidos.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
                             campoApellidos.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                             campoApellidos.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
+                            campoApellidos.setBackground(getActivity().getDrawable(R.drawable.border_table_row));
                             campoApellidos.setTextColor(Color.BLACK);
                             campoApellidos.setTextSize(TamañoLetraContenido);
 
                             campoEdad.setText(Edad.toString());
                             campoEdad.setWidth(LargoContenido);
                             campoEdad.setHeight(AnchoContenido);
-                            campoEdad.setLayoutParams(margenContenido);
+                            campoEdad.setLayoutParams(parametrosContenido);
+                            campoEdad.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
                             campoEdad.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                             campoEdad.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
+                            campoEdad.setBackground(getActivity().getDrawable(R.drawable.border_table_row));
                             campoEdad.setTextColor(Color.BLACK);
                             campoEdad.setTextSize(TamañoLetraContenido);
 
                             campoCedula.setText(Cedula);
                             campoCedula.setWidth(LargoContenido);
                             campoCedula.setHeight(AnchoContenido);
-                            campoCedula.setLayoutParams(margenContenido);
+                            campoCedula.setLayoutParams(parametrosContenido);
+                            campoCedula.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
                             campoCedula.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                             campoCedula.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
+                            campoCedula.setBackground(getActivity().getDrawable(R.drawable.border_table_row));
                             campoCedula.setTextColor(Color.BLACK);
                             campoCedula.setTextSize(TamañoLetraContenido);
 
                             campoTelefono.setText(Telefono);
                             campoTelefono.setWidth(LargoContenido);
                             campoTelefono.setHeight(AnchoContenido);
-                            campoTelefono.setLayoutParams(margenContenido);
+                            campoTelefono.setLayoutParams(parametrosContenido);
+                            campoTelefono.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
                             campoTelefono.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                             campoTelefono.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
+                            campoTelefono.setBackground(getActivity().getDrawable(R.drawable.border_table_row));
                             campoTelefono.setTextColor(Color.BLACK);
                             campoTelefono.setTextSize(TamañoLetraContenido);
 
                             campoCorreo_Electronico.setText(Correo_Electronico);
                             campoCorreo_Electronico.setWidth(LargoContenido);
                             campoCorreo_Electronico.setHeight(AnchoContenido);
-                            campoCorreo_Electronico.setLayoutParams(margenContenido);
+                            campoCorreo_Electronico.setLayoutParams(parametrosContenido);
+                            campoCorreo_Electronico.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
                             campoCorreo_Electronico.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                             campoCorreo_Electronico.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
+                            campoCorreo_Electronico.setBackground(getActivity().getDrawable(R.drawable.border_table_row));
                             campoCorreo_Electronico.setTextColor(Color.BLACK);
                             campoCorreo_Electronico.setTextSize(TamañoLetraContenido);
 
                             campoContraseña.setText(Contraseña);
                             campoContraseña.setWidth(LargoContenido);
                             campoContraseña.setHeight(AnchoContenido);
-                            campoContraseña.setLayoutParams(margenContenido);
+                            campoContraseña.setLayoutParams(parametrosContenido);
+                            campoContraseña.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
                             campoContraseña.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                             campoContraseña.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
+                            campoContraseña.setBackground(getActivity().getDrawable(R.drawable.border_table_row));
                             campoContraseña.setTextColor(Color.BLACK);
                             campoContraseña.setTextSize(TamañoLetraContenido);
 
                             campoNombreRol.setText(Nombre_Rol);
                             campoNombreRol.setWidth(LargoContenido);
                             campoNombreRol.setHeight(AnchoContenido);
-                            campoNombreRol.setLayoutParams(margenContenido);
+                            campoNombreRol.setLayoutParams(parametrosContenido);
+                            campoNombreRol.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
                             campoNombreRol.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                             campoNombreRol.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
+                            campoNombreRol.setBackground(getActivity().getDrawable(R.drawable.border_table_row));
                             campoNombreRol.setTextColor(Color.BLACK);
                             campoNombreRol.setTextSize(TamañoLetraContenido);
 
                             campoFechaCreacion.setText(Fecha_Creacion);
                             campoFechaCreacion.setWidth(LargoContenido);
                             campoFechaCreacion.setHeight(AnchoContenido);
-                            campoFechaCreacion.setLayoutParams(margenContenido);
+                            campoFechaCreacion.setLayoutParams(parametrosContenido);
+                            campoFechaCreacion.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
                             campoFechaCreacion.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                             campoFechaCreacion.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
+                            campoFechaCreacion.setBackground(getActivity().getDrawable(R.drawable.border_table_row));
                             campoFechaCreacion.setTextColor(Color.BLACK);
                             campoFechaCreacion.setTextSize(TamañoLetraContenido);
 
                             campoDepartamento.setText(Departamento);
                             campoDepartamento.setWidth(LargoContenido);
                             campoDepartamento.setHeight(AnchoContenido);
-                            campoDepartamento.setLayoutParams(margenContenido);
+                            campoDepartamento.setLayoutParams(parametrosContenido);
+                            campoDepartamento.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
                             campoDepartamento.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                             campoDepartamento.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
+                            campoDepartamento.setBackground(getActivity().getDrawable(R.drawable.border_table_row));
                             campoDepartamento.setTextColor(Color.BLACK);
                             campoDepartamento.setTextSize(TamañoLetraContenido);
 
                             campoActivo.setText(Activo.toString());
                             campoActivo.setWidth(LargoContenido);
                             campoActivo.setHeight(AnchoContenido);
-                            campoActivo.setLayoutParams(margenContenido);
-                            campoActivo.setTextAlignment(TEXT_ALIGNMENT_CENTER);
+                            campoActivo.setLayoutParams(parametrosContenido);
+                            campoActivo.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
+                            campoActivo.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                             campoActivo.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD_ITALIC);
+                            campoActivo.setBackground(getActivity().getDrawable(R.drawable.border_table_row));
                             campoActivo.setTextColor(Color.BLACK);
                             campoActivo.setTextSize(TamañoLetraContenido);
-
 
                             nuevaFila.addView(campoCheckBox);
                             nuevaFila.addView(campoNombre);
@@ -923,19 +903,26 @@ public class EmpleadoFragment extends Fragment {
                             campoActivo = new TextView(getActivity());
 
 
-                            LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 205);
+                            LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 350);
                             AnchoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 205);
-                            Largo_CheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 35);
-                            Ancho_CheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
-                            TamañoLetraContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_SP, 8);
+                            LargoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
+                            AnchoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
+                            TamañoLetraContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_SP, 10);
 
 
-                            margenContenido = new TableRow.LayoutParams(LargoContenido, AnchoContenido);
-                            margen_CheckBox = new TableRow.LayoutParams(Largo_CheckBox, Ancho_CheckBox);
-                            margen = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 7);
-                            margenContenido.setMarginStart(margen);
-                            margen_CheckBox.setMarginStart(margen);
-                            margen_CheckBox.setMarginEnd(margen);
+                            parametrosContenido = new TableRow.LayoutParams(LargoContenido, AnchoContenido);
+                            parametrosCheckBox = new TableRow.LayoutParams(LargoCheckBox, AnchoCheckBox);
+                            margenContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, -1);
+                            margenCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 7);
+                            margenTop = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 5);
+
+                            paddingStartContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 11);
+                            paddingEndContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 5);
+                            paddingTopContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 5);
+
+                            parametrosContenido.setMarginStart(margenContenido);
+                            parametrosCheckBox.setMarginStart(margenCheckBox);
+                            parametrosCheckBox.setMarginEnd(margenCheckBox);
 
 
                             ExtensionEmpleadoUsuarioEntitie empleados = datosOrdenados.get(i);
@@ -947,116 +934,139 @@ public class EmpleadoFragment extends Fragment {
                             String Correo_Electronico = empleados.getCorreo_Electronico_Empleado().trim();
                             String Contraseña = empleados.getContraseña_Empleado().trim();
                             String Nombre_Rol = empleados.getNombre_Rol().trim();
-                            String Fecha_Creacion = empleados.getFecha_Creacion_Empleado().trim();
+                            String Fecha_Creacion = empleados.getFecha_Creacion_Empleado().trim().replace("T", " ");
                             String Departamento = empleados.getDepartamento().trim();
                             Boolean Activo = empleados.getActivo();
 
 
-                            campoCheckBox.setWidth(Largo_CheckBox);
-                            campoCheckBox.setHeight(Ancho_CheckBox);
-                            campoCheckBox.setLayoutParams(margen_CheckBox);
-                            campoCheckBox.setButtonTintList(ColorStateList.valueOf(Color.WHITE));
+                            campoCheckBox.setWidth(LargoCheckBox);
+                            campoCheckBox.setHeight(AnchoCheckBox);
+                            campoCheckBox.setLayoutParams(parametrosCheckBox);
+                            campoCheckBox.setTop(margenTop);
+                            campoCheckBox.setPaddingRelative(0, paddingTopContenido, 0, 0);
+                            campoCheckBox.setButtonTintList(ColorStateList.valueOf(Color.BLACK));
                             campoCheckBox.setTag(empleados);
 
                             campoNombre.setText(Nombre);
                             campoNombre.setWidth(LargoContenido);
                             campoNombre.setHeight(AnchoContenido);
-                            campoNombre.setLayoutParams(margenContenido);
+                            campoNombre.setLayoutParams(parametrosContenido);
+                            campoNombre.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
                             campoNombre.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                             campoNombre.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
+                            campoNombre.setBackground(getActivity().getDrawable(R.drawable.border_table_row));
                             campoNombre.setTextColor(Color.BLACK);
                             campoNombre.setTextSize(TamañoLetraContenido);
 
                             campoApellidos.setText(Apellidos);
                             campoApellidos.setWidth(LargoContenido);
                             campoApellidos.setHeight(AnchoContenido);
-                            campoApellidos.setLayoutParams(margenContenido);
+                            campoApellidos.setLayoutParams(parametrosContenido);
+                            campoApellidos.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
                             campoApellidos.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                             campoApellidos.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
+                            campoApellidos.setBackground(getActivity().getDrawable(R.drawable.border_table_row));
                             campoApellidos.setTextColor(Color.BLACK);
                             campoApellidos.setTextSize(TamañoLetraContenido);
 
                             campoEdad.setText(Edad.toString());
                             campoEdad.setWidth(LargoContenido);
                             campoEdad.setHeight(AnchoContenido);
-                            campoEdad.setLayoutParams(margenContenido);
+                            campoEdad.setLayoutParams(parametrosContenido);
+                            campoEdad.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
                             campoEdad.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                             campoEdad.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
+                            campoEdad.setBackground(getActivity().getDrawable(R.drawable.border_table_row));
                             campoEdad.setTextColor(Color.BLACK);
                             campoEdad.setTextSize(TamañoLetraContenido);
 
                             campoCedula.setText(Cedula);
                             campoCedula.setWidth(LargoContenido);
                             campoCedula.setHeight(AnchoContenido);
-                            campoCedula.setLayoutParams(margenContenido);
+                            campoCedula.setLayoutParams(parametrosContenido);
+                            campoCedula.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
                             campoCedula.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                             campoCedula.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
+                            campoCedula.setBackground(getActivity().getDrawable(R.drawable.border_table_row));
                             campoCedula.setTextColor(Color.BLACK);
                             campoCedula.setTextSize(TamañoLetraContenido);
 
                             campoTelefono.setText(Telefono);
                             campoTelefono.setWidth(LargoContenido);
                             campoTelefono.setHeight(AnchoContenido);
-                            campoTelefono.setLayoutParams(margenContenido);
+                            campoTelefono.setLayoutParams(parametrosContenido);
+                            campoTelefono.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
                             campoTelefono.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                             campoTelefono.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
+                            campoTelefono.setBackground(getActivity().getDrawable(R.drawable.border_table_row));
                             campoTelefono.setTextColor(Color.BLACK);
                             campoTelefono.setTextSize(TamañoLetraContenido);
 
                             campoCorreo_Electronico.setText(Correo_Electronico);
                             campoCorreo_Electronico.setWidth(LargoContenido);
                             campoCorreo_Electronico.setHeight(AnchoContenido);
-                            campoCorreo_Electronico.setLayoutParams(margenContenido);
+                            campoCorreo_Electronico.setLayoutParams(parametrosContenido);
+                            campoCorreo_Electronico.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
                             campoCorreo_Electronico.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                             campoCorreo_Electronico.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
+                            campoCorreo_Electronico.setBackground(getActivity().getDrawable(R.drawable.border_table_row));
                             campoCorreo_Electronico.setTextColor(Color.BLACK);
                             campoCorreo_Electronico.setTextSize(TamañoLetraContenido);
 
                             campoContraseña.setText(Contraseña);
                             campoContraseña.setWidth(LargoContenido);
                             campoContraseña.setHeight(AnchoContenido);
-                            campoContraseña.setLayoutParams(margenContenido);
+                            campoContraseña.setLayoutParams(parametrosContenido);
+                            campoContraseña.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
                             campoContraseña.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                             campoContraseña.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
+                            campoContraseña.setBackground(getActivity().getDrawable(R.drawable.border_table_row));
                             campoContraseña.setTextColor(Color.BLACK);
                             campoContraseña.setTextSize(TamañoLetraContenido);
 
                             campoNombreRol.setText(Nombre_Rol);
                             campoNombreRol.setWidth(LargoContenido);
                             campoNombreRol.setHeight(AnchoContenido);
-                            campoNombreRol.setLayoutParams(margenContenido);
+                            campoNombreRol.setLayoutParams(parametrosContenido);
+                            campoNombreRol.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
                             campoNombreRol.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                             campoNombreRol.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
+                            campoNombreRol.setBackground(getActivity().getDrawable(R.drawable.border_table_row));
                             campoNombreRol.setTextColor(Color.BLACK);
                             campoNombreRol.setTextSize(TamañoLetraContenido);
 
                             campoFechaCreacion.setText(Fecha_Creacion);
                             campoFechaCreacion.setWidth(LargoContenido);
                             campoFechaCreacion.setHeight(AnchoContenido);
-                            campoFechaCreacion.setLayoutParams(margenContenido);
+                            campoFechaCreacion.setLayoutParams(parametrosContenido);
+                            campoFechaCreacion.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
                             campoFechaCreacion.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                             campoFechaCreacion.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
+                            campoFechaCreacion.setBackground(getActivity().getDrawable(R.drawable.border_table_row));
                             campoFechaCreacion.setTextColor(Color.BLACK);
                             campoFechaCreacion.setTextSize(TamañoLetraContenido);
 
                             campoDepartamento.setText(Departamento);
                             campoDepartamento.setWidth(LargoContenido);
                             campoDepartamento.setHeight(AnchoContenido);
-                            campoDepartamento.setLayoutParams(margenContenido);
+                            campoDepartamento.setLayoutParams(parametrosContenido);
+                            campoDepartamento.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
                             campoDepartamento.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                             campoDepartamento.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
+                            campoDepartamento.setBackground(getActivity().getDrawable(R.drawable.border_table_row));
                             campoDepartamento.setTextColor(Color.BLACK);
                             campoDepartamento.setTextSize(TamañoLetraContenido);
 
                             campoActivo.setText(Activo.toString());
                             campoActivo.setWidth(LargoContenido);
                             campoActivo.setHeight(AnchoContenido);
-                            campoActivo.setLayoutParams(margenContenido);
-                            campoActivo.setTextAlignment(TEXT_ALIGNMENT_CENTER);
+                            campoActivo.setLayoutParams(parametrosContenido);
+                            campoActivo.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
+                            campoActivo.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                             campoActivo.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD_ITALIC);
+                            campoActivo.setBackground(getActivity().getDrawable(R.drawable.border_table_row));
                             campoActivo.setTextColor(Color.BLACK);
                             campoActivo.setTextSize(TamañoLetraContenido);
-
 
                             nuevaFila.addView(campoCheckBox);
                             nuevaFila.addView(campoNombre);
@@ -1079,14 +1089,22 @@ public class EmpleadoFragment extends Fragment {
                         /* Esto permite leer el error del Body, de modo -
                          * que sirva en el debug. */
                         String error = response.errorBody().string();
+                        int errorRaw = response.raw().code();
+
+                        if(errorRaw == 401) {
+                            error = "Se finalizo la sesión de su cuenta.";
+                        }
 
                         /* Aqui lo que se hace es ocultar los botones de crear, actualizar, -
                          * eliminar y seleccionar un registro de FAQ. Y luego se coloca el -
                          * logo de contenido por defecto. Esto por temas de buenas prácticas. */
+                        buscadorEmpleados.setVisibility(View.GONE);
                         botonCrear.setVisibility(View.GONE);
                         botonActualizar.setVisibility(View.GONE);
                         botonEliminar.setVisibility(View.GONE);
                         botonPermisos.setVisibility(View.GONE);
+
+                        scrollHorizontalBotones.setVisibility(View.GONE);
                         scrollHorizontal.setVisibility(View.GONE);
 
                         logitoEmpleados.setVisibility(VISIBLE);
@@ -1121,10 +1139,13 @@ public class EmpleadoFragment extends Fragment {
                         /* Aqui lo que se hace es ocultar los botones de crear, actualizar, -
                          * eliminar y seleccionar un registro de FAQ. Y luego se coloca el -
                          * logo de contenido por defecto. Esto por temas de buenas prácticas. */
+                        buscadorEmpleados.setVisibility(View.GONE);
                         botonCrear.setVisibility(View.GONE);
                         botonActualizar.setVisibility(View.GONE);
                         botonEliminar.setVisibility(View.GONE);
                         botonPermisos.setVisibility(View.GONE);
+
+                        scrollHorizontalBotones.setVisibility(View.GONE);
                         scrollHorizontal.setVisibility(View.GONE);
 
                         logitoEmpleados.setVisibility(VISIBLE);
@@ -1163,10 +1184,13 @@ public class EmpleadoFragment extends Fragment {
                 /* Aqui lo que se hace es ocultar los botones de crear, actualizar, -
                  * eliminar y seleccionar un registro de FAQ. Y luego se coloca el -
                  * logo de contenido por defecto. Esto por temas de buenas prácticas. */
+                buscadorEmpleados.setVisibility(View.GONE);
                 botonCrear.setVisibility(View.GONE);
                 botonActualizar.setVisibility(View.GONE);
                 botonEliminar.setVisibility(View.GONE);
                 botonPermisos.setVisibility(View.GONE);
+
+                scrollHorizontalBotones.setVisibility(View.GONE);
                 scrollHorizontal.setVisibility(View.GONE);
 
                 logitoEmpleados.setVisibility(VISIBLE);
@@ -1209,7 +1233,10 @@ public class EmpleadoFragment extends Fragment {
     private void VistaCrearEmpleados() {
         //Aqui le dice a que vista tiene que ir, como un hipervinculo basicamente.
         Intent intentCrearEmpleado = new Intent(getActivity(), EmpleadoCrearActivity.class);
+
         startActivity(intentCrearEmpleado);
+
+        getActivity().finish();
     }
 
     private void VistaActualizarEmpleados() {
@@ -1263,10 +1290,11 @@ public class EmpleadoFragment extends Fragment {
                 intentActualizarEmpleado.putExtra("Contraseña", Contraseña);
                 intentActualizarEmpleado.putExtra("Rol", Nombre_Rol);
                 intentActualizarEmpleado.putExtra("Departamento", Departamento);
-                intentActualizarEmpleado.putExtra("Activo", Activo);
-
+                intentActualizarEmpleado.putExtra("Activo", Activo.toString());
 
                 startActivity(intentActualizarEmpleado);
+
+                getActivity().finish();
 
             } else {
                 AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
@@ -1283,6 +1311,12 @@ public class EmpleadoFragment extends Fragment {
             }
 
         } catch (Exception error) {
+            buscadorEmpleados.setVisibility(View.GONE);
+            botonCrear.setVisibility(View.GONE);
+            botonActualizar.setVisibility(View.GONE);
+            botonEliminar.setVisibility(View.GONE);
+            botonPermisos.setVisibility(View.GONE);
+
             scrollHorizontalBotones.setVisibility(View.GONE);
             scrollHorizontal.setVisibility(View.GONE);
 
@@ -1351,6 +1385,11 @@ public class EmpleadoFragment extends Fragment {
                                 /* Esto permite leer el error del Body, de modo -
                                  * que sirva en el debug. */
                                 String error = response.errorBody().string();
+                                int errorRaw = response.raw().code();
+
+                                if(errorRaw == 401) {
+                                    error = "Se finalizo la sesión de su cuenta.";
+                                }
 
                                 /* Esto es para imprimir los mensajes de error. */
                                 AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
@@ -1412,9 +1451,7 @@ public class EmpleadoFragment extends Fragment {
                         AlertDialog ejecutarMensaje = construirAlerta.create();
                         ejecutarMensaje.show();
                     }
-
                 });
-
 
             } else {
                 AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
@@ -1428,10 +1465,15 @@ public class EmpleadoFragment extends Fragment {
 
                 AlertDialog ejecutarMensaje = construirAlerta.create();
                 ejecutarMensaje.show();
-
             }
 
         } catch (Exception error) {
+            buscadorEmpleados.setVisibility(View.GONE);
+            botonCrear.setVisibility(View.GONE);
+            botonActualizar.setVisibility(View.GONE);
+            botonEliminar.setVisibility(View.GONE);
+            botonPermisos.setVisibility(View.GONE);
+
             scrollHorizontalBotones.setVisibility(View.GONE);
             scrollHorizontal.setVisibility(View.GONE);
 
@@ -1486,11 +1528,12 @@ public class EmpleadoFragment extends Fragment {
 
                 startActivity(intentPermisos);
 
+                getActivity().finish();
 
             } else {
                 AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
                 construirAlerta.setIcon(R.drawable.icono_error);
-                construirAlerta.setMessage("Pero en este momento no es visualizar los permisos del empleado(a) debido a que se selecciono más de un dato o que incluso no se selecciono ninguno.")
+                construirAlerta.setMessage("Pero en este momento no es posible visualizar los permisos del empleado(a) debido a que se selecciono más de un dato o que incluso no se selecciono ninguno.")
                         .setTitle("¡Lo sentimos!");
 
                 construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -1502,6 +1545,12 @@ public class EmpleadoFragment extends Fragment {
             }
 
         } catch (Exception error) {
+            buscadorEmpleados.setVisibility(View.GONE);
+            botonCrear.setVisibility(View.GONE);
+            botonActualizar.setVisibility(View.GONE);
+            botonEliminar.setVisibility(View.GONE);
+            botonPermisos.setVisibility(View.GONE);
+
             scrollHorizontalBotones.setVisibility(View.GONE);
             scrollHorizontal.setVisibility(View.GONE);
 
@@ -1517,7 +1566,7 @@ public class EmpleadoFragment extends Fragment {
 
             AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
             construirAlerta.setIcon(R.drawable.icono_error);
-            construirAlerta.setMessage("Pero en este momento no es visualizar los permisos del empleado(a) debido a que se selecciono más de un dato o que incluso no se selecciono ninguno.")
+            construirAlerta.setMessage("Pero no fue posible asignar o visualizar los permisos del empleado(a) en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
                     .setTitle("¡Lo sentimos!");
 
             construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -1527,7 +1576,5 @@ public class EmpleadoFragment extends Fragment {
             AlertDialog ejecutarMensaje = construirAlerta.create();
             ejecutarMensaje.show();
         }
-
     }
-
 }

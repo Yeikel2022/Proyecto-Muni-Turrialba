@@ -5,7 +5,7 @@
     android:id="@+id/main_AdministracionArchivo"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/green">
+    android:background="@color/gris">
 
 
     <FrameLayout
@@ -16,18 +16,21 @@
         app:layout_constraintBottom_toTopOf="@+id/btnV_BarraNavegacion_AdministracionArchivos"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </FrameLayout>
+        app:layout_constraintTop_toTopOf="parent"></FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/btnV_BarraNavegacion_AdministracionArchivos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/green"
+        android:background="@color/gris"
+        app:activeIndicatorLabelPadding="6dp"
+        app:itemIconSize="27dp"
         app:itemIconTint="@color/black"
+        app:itemTextColor="@color/black"
+        app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/barra_opciones_administracion_archivos"/>
+        app:menu="@menu/barra_opciones_administracion_archivos" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

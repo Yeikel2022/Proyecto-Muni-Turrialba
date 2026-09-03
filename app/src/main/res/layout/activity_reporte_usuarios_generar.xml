@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_ReportesUsuarios_Generar"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/turrialba">
+
+
+    <ImageView
+        android:id="@+id/id_img_bienvenidaGenerarUsuarios"
+        android:layout_width="282dp"
+        android:layout_height="162dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/logito6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/id_SeccionesGenerarUsuarios"
+        android:layout_width="wrap_content"
+        android:layout_height="560dp"
+        android:background="@drawable/border_radius_new"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/id_img_bienvenidaGenerarUsuarios" />
+
+    <LinearLayout
+        android:id="@+id/lnl_ContenidoGenerarUsuarios"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/id_SeccionesGenerarUsuarios"
+        app:layout_constraintEnd_toEndOf="@+id/id_SeccionesGenerarUsuarios"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/id_SeccionesGenerarUsuarios"
+        app:layout_constraintTop_toTopOf="@+id/id_SeccionesGenerarUsuarios"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:id="@+id/txt_TituloGenerarUsuarios"
+            android:layout_width="325dp"
+            android:layout_height="33dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif"
+            android:paddingTop="5dp"
+            android:text="Generar reporte de usuario:"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:typeface="normal" />
+
+        <HorizontalScrollView
+            android:id="@+id/hsv_ScrollHorizontalReporteUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="310dp"
+            android:layout_marginTop="15dp">
+
+            <LinearLayout
+                android:id="@+id/lnl_ContenidoHorizontalReporteUsuario"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ScrollView
+                    android:id="@+id/sv_ScrollVerticalReporteUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:id="@+id/lnl_ContenidoVerticalReporteUsuario"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TableLayout
+                            android:id="@+id/tbl_TablaInfoReporteUsuario"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TableRow
+                                android:id="@+id/tbr_InfoFilaReporteUsuario"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/border_table">
+
+                                <TextView
+                                    android:id="@+id/txt_InfoSeleccionReporteUsuario"
+                                    android:layout_width="30dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_marginEnd="7dp"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingTop="5dp"
+                                    android:text="✓"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoNombreReporteUsuario"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Nombre:"
+                                    android:textAlignment="viewStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoApellidosReporteUsuario"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:layout_span="1"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Apellidos:"
+                                    android:textAlignment="viewStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoCedulaReporteUsuario"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Cédula:"
+                                    android:textAlignment="viewStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoCorreoReporteUsuario"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Correo Electrónico:"
+                                    android:textAlignment="viewStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoDepartamentoReporteUsuario"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Departamento:"
+                                    android:textAlignment="viewStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoRolReporteUsuario"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Rol:"
+                                    android:textAlignment="viewStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoFechaCreacionReporteUsuario"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Fecha de creación:"
+                                    android:textAlignment="viewStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoFechaInicioSesionReporteUsuario"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Fecha de inicio de sesión:"
+                                    android:textAlignment="viewStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoUltimaConexionReporteUsuario"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Ultima Conexión:"
+                                    android:textAlignment="viewStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+                            </TableRow>
+
+                        </TableLayout>
+
+                        <TableLayout
+                            android:id="@+id/tbl_TablaReporteUsuario"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/border_table">
+
+                            <TableRow
+                                android:id="@+id/tbr_PrimeraFilaReporteUsuario"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <CheckBox
+                                    android:id="@+id/btn_SeleccionDato_ReporteUsuario"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_marginEnd="7dp"
+                                    android:buttonTint="@color/black"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingTop="5dp"
+                                    android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_Nombre_ReporteUsuario"
+                                    android:layout_width="350dp"
+                                    android:layout_height="180dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Nombre:"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_Apellidos_ReporteUsuario"
+                                    android:layout_width="350dp"
+                                    android:layout_height="180dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Apellidos:"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_Cedula_ReporteUsuario"
+                                    android:layout_width="350dp"
+                                    android:layout_height="180dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Cédula:"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_Correo_ReporteUsuario"
+                                    android:layout_width="350dp"
+                                    android:layout_height="180dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Correo Electrónico:"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_Departamento_ReporteUsuario"
+                                    android:layout_width="350dp"
+                                    android:layout_height="180dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Departamento:"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_Rol_ReporteUsuario"
+                                    android:layout_width="350dp"
+                                    android:layout_height="180dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Rol:"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_FechaCreacion_ReporteUsuario"
+                                    android:layout_width="350dp"
+                                    android:layout_height="180dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Fecha de Creación:"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Fecha de creación:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_FechaInicioSesion_ReporteUsuario"
+                                    android:layout_width="350dp"
+                                    android:layout_height="180dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Fecha de inicio de sesión:"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_UltimaConexion_ReporteUsuario"
+                                    android:layout_width="350dp"
+                                    android:layout_height="180dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Ultima Conexión:"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+                            </TableRow>
+
+                        </TableLayout>
+                    </LinearLayout>
+                </ScrollView>
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_SeleccionarUsuarioEmpleado_GenerarReportesUsuarios"
+            android:layout_width="325dp"
+            android:layout_height="63dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/custom_information"
+            android:checked="true"
+            android:clickable="true"
+            android:text="¿Añadir otro registro?"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:backgroundTint="@null"
+            app:icon="@drawable/icono_agregar_reporte"
+            app:iconPadding="-15dp"
+            app:iconSize="40dp"
+            app:iconTint="@color/black" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_GenerarReporteUsuario"
+            android:layout_width="170dp"
+            android:layout_height="63dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/custom_buttons"
+            android:checked="true"
+            android:clickable="true"
+            android:fontFamily="sans-serif"
+            android:text="Generar"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:typeface="normal"
+            app:backgroundTint="@null"
+            app:icon="@drawable/icono_generar"
+            app:iconPadding="8dp"
+            app:iconSize="40dp"
+            app:iconTint="@color/black" />
+
+        <ImageView
+            android:id="@+id/img_fotoGenerarReportesUsuarios"
+            android:layout_width="304dp"
+            android:layout_height="226dp"
+            android:layout_marginTop="5dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icono_contenido_no_disponible"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/txt_MensajeGenerarReportesUsuarios"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignTop="@+id/id_SeccionesGenerarUsuarios"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="15dp"
+            android:fontFamily="sans-serif"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:typeface="normal"
+            android:visibility="gone" />
+    </LinearLayout>
+
+
+    <View
+        android:id="@+id/id_VistaDerechosCopy"
+        android:layout_width="345dp"
+        android:layout_height="72dp"
+        android:background="@drawable/border_radius"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/id_SeccionesGenerarUsuarios" />
+
+    <TextView
+        android:id="@+id/txt_DerechosCopy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:text="© Copyright - Municipalidad de Turrialba."
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold|italic"
+        android:typeface="normal"
+        app:layout_constraintBottom_toTopOf="@+id/txt_DerechosCopy1"
+        app:layout_constraintEnd_toEndOf="@+id/id_VistaDerechosCopy"
+        app:layout_constraintStart_toStartOf="@+id/id_VistaDerechosCopy"
+        app:layout_constraintTop_toTopOf="@+id/id_VistaDerechosCopy"
+        app:layout_constraintVertical_bias="0.65" />
+
+    <TextView
+        android:id="@+id/txt_DerechosCopy1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="sans-serif"
+        android:text="Todos los derechos reservados."
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold|italic"
+        android:typeface="normal"
+        app:layout_constraintBottom_toBottomOf="@+id/id_VistaDerechosCopy"
+        app:layout_constraintEnd_toEndOf="@+id/id_VistaDerechosCopy"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="@+id/id_VistaDerechosCopy" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

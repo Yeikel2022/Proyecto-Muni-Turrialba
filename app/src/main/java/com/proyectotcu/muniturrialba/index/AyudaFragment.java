@@ -1,7 +1,6 @@
 package com.proyectotcu.muniturrialba.index;
 
 import static android.view.View.GONE;
-import static android.view.View.TEXT_ALIGNMENT_CENTER;
 import static android.view.View.TEXT_ALIGNMENT_VIEW_START;
 import static android.view.View.VISIBLE;
 
@@ -52,22 +51,19 @@ import retrofit2.Response;
 public class AyudaFragment extends Fragment {
 
     //Variables globales para esta clase.
-    Integer LargoContenido, AnchoContenido, Largo_CheckBox, Ancho_CheckBox,
-            alturaScrollHorizontal, baseScrollHorizontal, TamañoLetraContenido,
-            margen;
-
+    Integer LargoContenido, AnchoContenido, LargoCheckBox, AnchoCheckBox, TamañoLetraContenido,
+            margenContenido, margenCheckBox, margenTop, paddingTopContenido, paddingStartContenido, paddingEndContenido;
     TextView txtPregunta, txtRespuesta, txtTipoPrioridad, campoPregunta, campoRespuesta,
              campoTipoPrioridad, txtMensaje;
-
-    TableRow.LayoutParams margenScrollHorizontal, margenContenido, margen_CheckBox;
-
     Button botonCrear, botonActualizar, botonEliminar;
+
+    TableRow.LayoutParams parametrosContenido, parametrosCheckBox;
+    HorizontalScrollView scrollHorizontal, scrollHorizontalBotones;
     CheckBox botonSeleccion, campoCheckBox;
     TableRow tbrPrimeraFila, nuevaFila;
 
     TableLayout tblTablaAyuda;
     ImageView logitoAyuda;
-    HorizontalScrollView scrollHorizontal, scrollHorizontalAyuda;
     SearchView buscadorAyuda;
     static Boolean mensajePermisosAyuda = false;
     List<FAQEntitie> datosOrdenados;
@@ -98,8 +94,8 @@ public class AyudaFragment extends Fragment {
         logitoAyuda = view.findViewById(R.id.img_fotoAyuda);
         buscadorAyuda = view.findViewById(R.id.sv_buscarTipoPrioridad);
 
-        botonCrear = view.findViewById(R.id.btn_CrearAyuda);
-        botonActualizar = view.findViewById(R.id.btn_ActualizarAyuda);
+        botonCrear = view.findViewById(R.id.btn_AñadirAyuda);
+        botonActualizar = view.findViewById(R.id.btn_EditarAyuda);
         botonEliminar = view.findViewById(R.id.btn_EliminarAyuda);
         botonSeleccion = view.findViewById(R.id.btn_SeleccionDato);
 
@@ -108,7 +104,7 @@ public class AyudaFragment extends Fragment {
         txtTipoPrioridad = view.findViewById(R.id.txt_TipoPrioridad);
         txtMensaje = view.findViewById(R.id.txt_MensajeAyuda);
 
-        scrollHorizontalAyuda = view.findViewById(R.id.hsv_ScrollHorizontalBotones_Ayuda);
+        scrollHorizontalBotones = view.findViewById(R.id.hsv_ScrollHorizontalBotones_Ayuda);
         scrollHorizontal = view.findViewById(R.id.hsv_ScrollHorizontal);
         tblTablaAyuda = view.findViewById(R.id.tbl_TablaAyuda);
         tbrPrimeraFila = view.findViewById(R.id.tbr_PrimeraFila);
@@ -191,6 +187,7 @@ public class AyudaFragment extends Fragment {
              * perfil. */
             if (campoRol == 1 || campoRol == 2) {
                 Integer respuestaPermisos = ValidarPermisosAdmin(campoPermisoLeer, campoPermisoCrear, campoPermisoActualizar, campoPermisoEliminar);
+
                 if (respuestaPermisos == 5) {
                     botonCrear.setOnClickListener(v -> VistaCrearAyudaFAQ());
                     botonActualizar.setOnClickListener(v -> VistaActualizarAyudaFAQ());
@@ -218,84 +215,7 @@ public class AyudaFragment extends Fragment {
                         ejecutarMensaje.show();
                     });
 
-                    MostrarAyudaFAQ(tokenGuardado,  null, false);
-                }
-
-                /* Asimismo, también se hace otra validación, ya que, si la respuesta que trae -
-                 * es un 3, quiere decir que ese usuario que inicio sesión no contiene el permiso -
-                 * de actualizar, por lo que no esta autorizado para hacer algun cambio en la foto -
-                 * de perfil respectivamente. */
-                if (respuestaPermisos == 2) {
-                    botonActualizar.setOnClickListener(v -> VistaActualizarAyudaFAQ());
-                    botonEliminar.setOnClickListener(v -> { AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
-                        construirAlerta.setIcon(R.drawable.icono_advertencia);
-                        construirAlerta.setMessage("¿Esta completamente seguro(a) de eliminar esta pregunta de forma permanentemente?")
-                                .setTitle("Eliminar FAQ.");
-
-
-                        construirAlerta.setPositiveButton("Si.", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                EliminarAyudaFAQ(tokenGuardado);
-                            }
-                        });
-
-                        construirAlerta.setNegativeButton("No.", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(getActivity(), "¡No se continuo con la eliminación!", Toast.LENGTH_LONG).show();
-                            }
-                        });
-
-                        AlertDialog ejecutarMensaje = construirAlerta.create();
-                        ejecutarMensaje.show();
-                    });
-
-                    MostrarAyudaFAQ(tokenGuardado,  null, false);
-                }
-
-                /* Asimismo, también se hace otra validación, ya que, si la respuesta que trae -
-                 * es un 3, quiere decir que ese usuario que inicio sesión no contiene el permiso -
-                 * de actualizar, por lo que no esta autorizado para hacer algun cambio en la foto -
-                 * de perfil respectivamente. */
-                if (respuestaPermisos == 3) {
-                    botonCrear.setOnClickListener(v -> VistaCrearAyudaFAQ());
-                    botonEliminar.setOnClickListener(v -> { AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
-                        construirAlerta.setIcon(R.drawable.icono_advertencia);
-                        construirAlerta.setMessage("¿Esta completamente seguro(a) de eliminar esta pregunta de forma permanentemente?")
-                                .setTitle("Eliminar FAQ.");
-
-
-                        construirAlerta.setPositiveButton("Si.", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                EliminarAyudaFAQ(tokenGuardado);
-                            }
-                        });
-
-                        construirAlerta.setNegativeButton("No.", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(getActivity(), "¡No se continuo con la eliminación!", Toast.LENGTH_LONG).show();
-                            }
-                        });
-
-                        AlertDialog ejecutarMensaje = construirAlerta.create();
-                        ejecutarMensaje.show();
-                    });
-
-                    MostrarAyudaFAQ(tokenGuardado,  null, false);
-                }
-
-                /* Asimismo, también se hace otra validación, ya que, si la respuesta que trae -
-                 * es un 3, quiere decir que ese usuario que inicio sesión no contiene el permiso -
-                 * de actualizar, por lo que no esta autorizado para hacer algun cambio en la foto -
-                 * de perfil respectivamente. */
-                if (respuestaPermisos == 4) {
-                    botonCrear.setOnClickListener(v -> VistaCrearAyudaFAQ());
-                    botonActualizar.setOnClickListener(v -> VistaActualizarAyudaFAQ());
-
-                    MostrarAyudaFAQ(tokenGuardado,  null, false);
+                    MostrarAyudaFAQ(tokenGuardado,null, false);
                 }
             }
 
@@ -305,23 +225,18 @@ public class AyudaFragment extends Fragment {
                 botonCrear.setVisibility(GONE);
                 botonActualizar.setVisibility(GONE);
                 botonEliminar.setVisibility(GONE);
-
-                alturaScrollHorizontal = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 380);
-                baseScrollHorizontal = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 410);
-                margenScrollHorizontal = new TableRow.LayoutParams(baseScrollHorizontal, alturaScrollHorizontal);
-
-                int margenTop = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 50);
-                margenScrollHorizontal.setMargins(0, margenTop, 0, 0);
-                scrollHorizontal.setLayoutParams(margenScrollHorizontal);
+                scrollHorizontalBotones.setVisibility(GONE);
 
                 MostrarAyudaFAQ(tokenGuardado,  null, false);
             }
 
         } catch (Exception error) {
+            buscadorAyuda.setVisibility(View.GONE);
             botonCrear.setVisibility(View.GONE);
             botonActualizar.setVisibility(View.GONE);
             botonEliminar.setVisibility(View.GONE);
-            scrollHorizontalAyuda.setVisibility(View.GONE);
+
+            scrollHorizontalBotones.setVisibility(View.GONE);
             scrollHorizontal.setVisibility(View.GONE);
 
             logitoAyuda.setVisibility(VISIBLE);
@@ -352,16 +267,20 @@ public class AyudaFragment extends Fragment {
 
 
     private Integer ValidarPermisosAdmin(Boolean Leer, Boolean Crear, Boolean Actualizar, Boolean Eliminar) {
+        ArrayList<String> listaMensaje = new ArrayList<String>();
+        String mensajeProveniente = "";
+
         /* Aqui valida si todos los permisos de ese usuario son falsos -
          * (dando a entender que no esta autorizado). Y si entra, entonces -
          * se ocultaria todos las opciones del perfil y se enviaria un mensaje -
          * mencionando que no tiene la autorización suficiente para poder continuar. */
         if(Leer == false && Crear == false && Actualizar == false && Eliminar == false) {
+            buscadorAyuda.setVisibility(View.GONE);
             botonCrear.setVisibility(View.GONE);
             botonActualizar.setVisibility(View.GONE);
             botonEliminar.setVisibility(View.GONE);
 
-            scrollHorizontalAyuda.setVisibility(View.GONE);
+            scrollHorizontalBotones.setVisibility(View.GONE);
             scrollHorizontal.setVisibility(GONE);
 
             logitoAyuda.setVisibility(VISIBLE);
@@ -374,17 +293,21 @@ public class AyudaFragment extends Fragment {
              * "txtMensaje" pueda colocarlo en la pantalla del fragmento (osea en el -
              * fragment_perfil.xml), esto porque es una forma dinamica de hacerlo. */
 
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
-            construirAlerta.setIcon(R.drawable.icono_error);
-            construirAlerta.setMessage("Pero no tienes la autorización necesaria para realizar las acciones dentro del foro.")
-                    .setTitle("¡Lo sentimos!");
+            if(mensajePermisosAyuda != true) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
+                construirAlerta.setIcon(R.drawable.icono_error);
+                construirAlerta.setMessage("Pero no tienes la autorización necesaria para realizar las acciones dentro del foro.")
+                        .setTitle("¡Lo sentimos!");
 
-            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}});
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mensajePermisosAyuda = true;
+                    }});
 
-            AlertDialog ejecutarMensaje = construirAlerta.create();
-            ejecutarMensaje.show();
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+            }
 
             return 0;
         }
@@ -397,11 +320,45 @@ public class AyudaFragment extends Fragment {
          * esta autorizado. */
         if(Crear == false) {
             botonCrear.setVisibility(GONE);
+            listaMensaje.add("- Crear una nueva pregunta dentro del foro.\n\n");
+        }
+
+        /* Aqui valida si el permiso de leer de ese usuario es falso -
+         * (dando a entender que no esta autorizado para visualizar los -
+         * datos (en este caso los permisos de la aplicación). Y si entra, -
+         * entonces se enviaria un mensaje mencionando que no esta autorizado -
+         * y luego un 1 para que el metodo: "VistaPermisos" pueda saber que no -
+         * esta autorizado. */
+        if(Actualizar == false) {
+            botonActualizar.setVisibility(GONE);
+            listaMensaje.add("- Actualizar una pregunta que está situada en el foro.\n\n");
+        }
+
+        /* Aqui valida si el permiso de leer de ese usuario es falso -
+         * (dando a entender que no esta autorizado para visualizar los -
+         * datos (en este caso los permisos de la aplicación). Y si entra, -
+         * entonces se enviaria un mensaje mencionando que no esta autorizado -
+         * y luego un 1 para que el metodo: "VistaPermisos" pueda saber que no -
+         * esta autorizado. */
+        if(Eliminar == false) {
+            botonEliminar.setVisibility(GONE);
+            listaMensaje.add("- Eliminar una pregunta que está situada en el foro.");
+        }
+
+        if(Crear != true || Actualizar != true || Eliminar != true) {
+            if(listaMensaje.size() == 3) {
+                scrollHorizontalBotones.setVisibility(GONE);
+            }
 
             if(mensajePermisosAyuda != true) {
+                for(int i = 0; i < listaMensaje.size(); i++) {
+                    mensajeProveniente += listaMensaje.get(i);
+                }
+
                 AlertDialog.Builder construirAlertaCrear = new AlertDialog.Builder(getActivity());
                 construirAlertaCrear.setIcon(R.drawable.icono_error);
-                construirAlertaCrear.setMessage("Pero no tienes la autorización necesaria para crear una nueva pregunta dentro del foro.")
+
+                construirAlertaCrear.setMessage("Pero no tienes la autorización necesaria para: \n\n" + mensajeProveniente)
                         .setTitle("¡Lo sentimos!");
 
                 construirAlertaCrear.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -414,68 +371,7 @@ public class AyudaFragment extends Fragment {
                 AlertDialog ejecutarMensajeCrear = construirAlertaCrear.create();
                 ejecutarMensajeCrear.show();
             }
-
-            return 2;
         }
-
-        /* Aqui valida si el permiso de leer de ese usuario es falso -
-         * (dando a entender que no esta autorizado para visualizar los -
-         * datos (en este caso los permisos de la aplicación). Y si entra, -
-         * entonces se enviaria un mensaje mencionando que no esta autorizado -
-         * y luego un 1 para que el metodo: "VistaPermisos" pueda saber que no -
-         * esta autorizado. */
-        if(Actualizar == false) {
-            botonActualizar.setVisibility(GONE);
-
-            if(mensajePermisosAyuda != true) {
-                AlertDialog.Builder construirAlertaActualizacion = new AlertDialog.Builder(getActivity());
-                construirAlertaActualizacion.setIcon(R.drawable.icono_error);
-                construirAlertaActualizacion.setMessage("Pero no tienes la autorización necesaria para actualizar una pregunta que está situada en el foro.")
-                        .setTitle("¡Lo sentimos!");
-
-                construirAlertaActualizacion.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mensajePermisosAyuda = true;
-                    }
-                });
-
-                AlertDialog ejecutarMensajeActualizacion = construirAlertaActualizacion.create();
-                ejecutarMensajeActualizacion.show();
-            }
-
-            return 3;
-        }
-
-        /* Aqui valida si el permiso de leer de ese usuario es falso -
-         * (dando a entender que no esta autorizado para visualizar los -
-         * datos (en este caso los permisos de la aplicación). Y si entra, -
-         * entonces se enviaria un mensaje mencionando que no esta autorizado -
-         * y luego un 1 para que el metodo: "VistaPermisos" pueda saber que no -
-         * esta autorizado. */
-        if(Eliminar == false) {
-            botonEliminar.setVisibility(GONE);
-
-            if(mensajePermisosAyuda != true) {
-                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
-                construirAlerta.setIcon(R.drawable.icono_error);
-                construirAlerta.setMessage("Pero no tienes la autorización necesaria para eliminar una pregunta que esta situada en el foro.")
-                        .setTitle("¡Lo sentimos!");
-
-                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mensajePermisosAyuda = true;
-                    }
-                });
-
-                AlertDialog ejecutarMensaje = construirAlerta.create();
-                ejecutarMensaje.show();
-            }
-
-            return 4;
-        }
-
 
         //El 5 se refiere a que el usuario que inicio sesión si esta autorizado.
         return 5;
@@ -491,7 +387,9 @@ public class AyudaFragment extends Fragment {
 
             } else {
                 for(FAQEntitie faqEntitie : listaDatos) {
-                    if(faqEntitie.getTipoPrioridad().toLowerCase().contains(textoIngresado.toLowerCase())) {
+                    String tipoPrioridad = faqEntitie.getTipoPrioridad().toLowerCase().trim();
+
+                    if(tipoPrioridad.contains(textoIngresado.toLowerCase())) {
                         datosFiltrados.add(faqEntitie);
                     }
                 }
@@ -499,40 +397,51 @@ public class AyudaFragment extends Fragment {
                 if(datosFiltrados.isEmpty()) {
                     AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
                     construirAlerta.setIcon(R.drawable.icono_advertencia);
-                    construirAlerta.setMessage("Pero no se pudo encontrar la pregunta debido a que existen datos incorrectos o porque el registro no existe como tal." + "\n\nPor favor corriga los errores e intentelo de nuevo.")
+                    construirAlerta.setMessage("Pero no se pudo encontrar la pregunta debido a que existen datos incorrectos o porque el registro no existe como tal." + "\n\nPor favor, corriga los errores e intentelo de nuevo.")
                             .setTitle("¡Lo sentimos!");
 
                     construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    });
+                        public void onClick(DialogInterface dialog, int which) {}});
 
                     AlertDialog ejecutarMensaje = construirAlerta.create();
                     ejecutarMensaje.show();
-                }
 
+                    MostrarAyudaFAQ(tokenUsuario, datosFiltrados, false);
+
+                } else {
+                    MostrarAyudaFAQ(tokenUsuario, datosFiltrados, true);
+                }
             }
 
-            MostrarAyudaFAQ(tokenUsuario, datosFiltrados, true);
-
         } catch (Exception error) {
+            buscadorAyuda.setVisibility(View.GONE);
+            botonCrear.setVisibility(View.GONE);
+            botonActualizar.setVisibility(View.GONE);
+            botonEliminar.setVisibility(View.GONE);
+
+            scrollHorizontalBotones.setVisibility(View.GONE);
+            scrollHorizontal.setVisibility(View.GONE);
+
+            logitoAyuda.setVisibility(VISIBLE);
+            txtMensaje.setVisibility(VISIBLE);
+
+            logitoAyuda.setImageResource(R.drawable.icono_contenido_no_disponible);
+            txtMensaje.setText(getString(R.string.ErrorFragment));
+
             AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
             construirAlerta.setIcon(R.drawable.icono_error);
-            construirAlerta.setMessage("Pero no es posible posible visualizar la información en estos momentos debido a un problema técnico. Por favor intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+            construirAlerta.setMessage("Pero no es posible visualizar la información en estos momentos debido a un problema técnico. Por favor intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
                     .setTitle("¡Lo sentimos!");
 
 
             construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
-                }
-            });
+                public void onClick(DialogInterface dialog, int which) {}});
 
             AlertDialog ejecutarMensaje = construirAlerta.create();
             ejecutarMensaje.show();
         }
-
     }
 
     private void MostrarAyudaFAQ(String tokenUsuario, List<FAQEntitie> listaActualizada, Boolean autorizacion) {
@@ -608,19 +517,24 @@ public class AyudaFragment extends Fragment {
                             campoTipoPrioridad = new TextView(getActivity());
 
 
-                            LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 205);
+                            LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 350);
                             AnchoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 205);
-                            Largo_CheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 35);
-                            Ancho_CheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
-                            TamañoLetraContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_SP, 8);
+                            LargoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
+                            AnchoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
+                            TamañoLetraContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_SP, 10);
 
 
-                            margenContenido = new TableRow.LayoutParams(LargoContenido, AnchoContenido);
-                            margen_CheckBox = new TableRow.LayoutParams(Largo_CheckBox, Ancho_CheckBox);
-                            margen = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 7);
-                            margenContenido.setMarginStart(margen);
-                            margen_CheckBox.setMarginStart(margen);
-                            margen_CheckBox.setMarginEnd(margen);
+                            parametrosContenido = new TableRow.LayoutParams(LargoContenido, AnchoContenido);
+                            parametrosCheckBox = new TableRow.LayoutParams(LargoCheckBox, AnchoCheckBox);
+                            margenContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, -1);
+                            margenCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 7);
+                            margenTop = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 5);
+                            paddingStartContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 11);
+                            paddingEndContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 5);
+                            paddingTopContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 5);
+                            parametrosContenido.setMarginStart(margenContenido);
+                            parametrosCheckBox.setMarginStart(margenCheckBox);
+                            parametrosCheckBox.setMarginEnd(margenCheckBox);
 
 
                             FAQEntitie faqEntitie = listaActualizada.get(i);
@@ -628,36 +542,44 @@ public class AyudaFragment extends Fragment {
                             String Respuesta = faqEntitie.getRespuesta().trim();
                             String Tipo_Prioridad = faqEntitie.getTipoPrioridad().trim();
 
-                            campoCheckBox.setWidth(Largo_CheckBox);
-                            campoCheckBox.setHeight(Ancho_CheckBox);
-                            campoCheckBox.setLayoutParams(margen_CheckBox);
-                            campoCheckBox.setButtonTintList(ColorStateList.valueOf(Color.WHITE));
+                            campoCheckBox.setWidth(LargoCheckBox);
+                            campoCheckBox.setHeight(AnchoCheckBox);
+                            campoCheckBox.setLayoutParams(parametrosCheckBox);
+                            campoCheckBox.setTop(margenTop);
+                            campoCheckBox.setPaddingRelative(0, paddingTopContenido, 0, 0);
+                            campoCheckBox.setButtonTintList(ColorStateList.valueOf(Color.BLACK));
                             campoCheckBox.setTag(faqEntitie);
 
                             campoPregunta.setText(Pregunta);
                             campoPregunta.setWidth(LargoContenido);
                             campoPregunta.setHeight(AnchoContenido);
-                            campoPregunta.setLayoutParams(margenContenido);
+                            campoPregunta.setLayoutParams(parametrosContenido);
+                            campoPregunta.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
                             campoPregunta.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                             campoPregunta.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
+                            campoPregunta.setBackground(getActivity().getDrawable(R.drawable.border_table_row));
                             campoPregunta.setTextColor(Color.BLACK);
                             campoPregunta.setTextSize(TamañoLetraContenido);
 
                             campoRespuesta.setText(Respuesta);
                             campoRespuesta.setWidth(LargoContenido);
                             campoRespuesta.setHeight(AnchoContenido);
-                            campoRespuesta.setLayoutParams(margenContenido);
+                            campoRespuesta.setLayoutParams(parametrosContenido);
+                            campoRespuesta.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
                             campoRespuesta.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                             campoRespuesta.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
+                            campoRespuesta.setBackground(getActivity().getDrawable(R.drawable.border_table_row));
                             campoRespuesta.setTextColor(Color.BLACK);
                             campoRespuesta.setTextSize(TamañoLetraContenido);
 
                             campoTipoPrioridad.setText(Tipo_Prioridad);
                             campoTipoPrioridad.setWidth(LargoContenido);
                             campoTipoPrioridad.setHeight(AnchoContenido);
-                            campoTipoPrioridad.setLayoutParams(margenContenido);
-                            campoTipoPrioridad.setTextAlignment(TEXT_ALIGNMENT_CENTER);
+                            campoTipoPrioridad.setLayoutParams(parametrosContenido);
+                            campoTipoPrioridad.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
+                            campoTipoPrioridad.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                             campoTipoPrioridad.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD_ITALIC);
+                            campoTipoPrioridad.setBackground(getActivity().getDrawable(R.drawable.border_table_row));
                             campoTipoPrioridad.setTextColor(Color.BLACK);
                             campoTipoPrioridad.setTextSize(TamañoLetraContenido);
 
@@ -681,19 +603,25 @@ public class AyudaFragment extends Fragment {
                             campoTipoPrioridad = new TextView(getActivity());
 
 
-                            LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 205);
+                            LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 350);
                             AnchoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 205);
-                            Largo_CheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 35);
-                            Ancho_CheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
-                            TamañoLetraContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_SP, 8);
+                            LargoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
+                            AnchoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
+                            TamañoLetraContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_SP, 10);
 
 
-                            margenContenido = new TableRow.LayoutParams(LargoContenido, AnchoContenido);
-                            margen_CheckBox = new TableRow.LayoutParams(Largo_CheckBox, Ancho_CheckBox);
-                            margen = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 7);
-                            margenContenido.setMarginStart(margen);
-                            margen_CheckBox.setMarginStart(margen);
-                            margen_CheckBox.setMarginEnd(margen);
+                            parametrosContenido = new TableRow.LayoutParams(LargoContenido, AnchoContenido);
+                            parametrosCheckBox = new TableRow.LayoutParams(LargoCheckBox, AnchoCheckBox);
+                            margenContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, -1);
+                            margenCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 7);
+                            margenTop = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 5);
+                            paddingStartContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 11);
+                            //PONERLO EN LOS DEMÁS, REVISAR LO DE GENERAR REPORTE, Y LUEGO LEER EL MENSAJE.
+                            paddingEndContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 5);
+                            paddingTopContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 5);
+                            parametrosContenido.setMarginStart(margenContenido);
+                            parametrosCheckBox.setMarginStart(margenCheckBox);
+                            parametrosCheckBox.setMarginEnd(margenCheckBox);
 
 
                             FAQEntitie faqEntitie = datosOrdenados.get(i);
@@ -701,36 +629,44 @@ public class AyudaFragment extends Fragment {
                             String Respuesta = faqEntitie.getRespuesta().trim();
                             String Tipo_Prioridad = faqEntitie.getTipoPrioridad().trim();
 
-                            campoCheckBox.setWidth(Largo_CheckBox);
-                            campoCheckBox.setHeight(Ancho_CheckBox);
-                            campoCheckBox.setLayoutParams(margen_CheckBox);
-                            campoCheckBox.setButtonTintList(ColorStateList.valueOf(Color.WHITE));
+                            campoCheckBox.setWidth(LargoCheckBox);
+                            campoCheckBox.setHeight(AnchoCheckBox);
+                            campoCheckBox.setLayoutParams(parametrosCheckBox);
+                            campoCheckBox.setTop(margenTop);
+                            campoCheckBox.setPaddingRelative(0, paddingTopContenido, 0, 0);
+                            campoCheckBox.setButtonTintList(ColorStateList.valueOf(Color.BLACK));
                             campoCheckBox.setTag(faqEntitie);
 
                             campoPregunta.setText(Pregunta);
                             campoPregunta.setWidth(LargoContenido);
                             campoPregunta.setHeight(AnchoContenido);
-                            campoPregunta.setLayoutParams(margenContenido);
+                            campoPregunta.setLayoutParams(parametrosContenido);
+                            campoPregunta.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
                             campoPregunta.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                             campoPregunta.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
+                            campoPregunta.setBackground(getActivity().getDrawable(R.drawable.border_table_row));
                             campoPregunta.setTextColor(Color.BLACK);
                             campoPregunta.setTextSize(TamañoLetraContenido);
 
                             campoRespuesta.setText(Respuesta);
                             campoRespuesta.setWidth(LargoContenido);
                             campoRespuesta.setHeight(AnchoContenido);
-                            campoRespuesta.setLayoutParams(margenContenido);
+                            campoRespuesta.setLayoutParams(parametrosContenido);
+                            campoRespuesta.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
                             campoRespuesta.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                             campoRespuesta.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
+                            campoRespuesta.setBackground(getActivity().getDrawable(R.drawable.border_table_row));
                             campoRespuesta.setTextColor(Color.BLACK);
                             campoRespuesta.setTextSize(TamañoLetraContenido);
 
                             campoTipoPrioridad.setText(Tipo_Prioridad);
                             campoTipoPrioridad.setWidth(LargoContenido);
                             campoTipoPrioridad.setHeight(AnchoContenido);
-                            campoTipoPrioridad.setLayoutParams(margenContenido);
-                            campoTipoPrioridad.setTextAlignment(TEXT_ALIGNMENT_CENTER);
+                            campoTipoPrioridad.setLayoutParams(parametrosContenido);
+                            campoTipoPrioridad.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
+                            campoTipoPrioridad.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                             campoTipoPrioridad.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD_ITALIC);
+                            campoTipoPrioridad.setBackground(getActivity().getDrawable(R.drawable.border_table_row));
                             campoTipoPrioridad.setTextColor(Color.BLACK);
                             campoTipoPrioridad.setTextSize(TamañoLetraContenido);
 
@@ -748,15 +684,21 @@ public class AyudaFragment extends Fragment {
                         /* Esto permite leer el error del Body, de modo -
                          * que sirva en el debug. */
                         String error = response.errorBody().string();
+                        int errorRaw = response.raw().code();
+
+                        if(errorRaw == 401) {
+                            error = "Se finalizo la sesión de su cuenta.";
+                        }
 
                         /* Aqui lo que se hace es ocultar los botones de crear, actualizar, -
                          * eliminar y seleccionar un registro de FAQ. Y luego se coloca el -
                          * logo de contenido por defecto. Esto por temas de buenas prácticas. */
+                        buscadorAyuda.setVisibility(View.GONE);
                         botonCrear.setVisibility(View.GONE);
                         botonActualizar.setVisibility(View.GONE);
                         botonEliminar.setVisibility(View.GONE);
 
-                        scrollHorizontalAyuda.setVisibility(View.GONE);
+                        scrollHorizontalBotones.setVisibility(View.GONE);
                         scrollHorizontal.setVisibility(View.GONE);
 
                         logitoAyuda.setVisibility(VISIBLE);
@@ -791,11 +733,12 @@ public class AyudaFragment extends Fragment {
                         /* Aqui lo que se hace es ocultar los botones de crear, actualizar, -
                          * eliminar y seleccionar un registro de FAQ. Y luego se coloca el -
                          * logo de contenido por defecto. Esto por temas de buenas prácticas. */
+                        buscadorAyuda.setVisibility(View.GONE);
                         botonCrear.setVisibility(View.GONE);
                         botonActualizar.setVisibility(View.GONE);
                         botonEliminar.setVisibility(View.GONE);
 
-                        scrollHorizontalAyuda.setVisibility(View.GONE);
+                        scrollHorizontalBotones.setVisibility(View.GONE);
                         scrollHorizontal.setVisibility(View.GONE);
 
                         logitoAyuda.setVisibility(VISIBLE);
@@ -834,11 +777,12 @@ public class AyudaFragment extends Fragment {
                 /* Aqui lo que se hace es ocultar los botones de crear, actualizar, -
                  * eliminar y seleccionar un registro de FAQ. Y luego se coloca el -
                  * logo de contenido por defecto. Esto por temas de buenas prácticas. */
+                buscadorAyuda.setVisibility(View.GONE);
                 botonCrear.setVisibility(View.GONE);
                 botonActualizar.setVisibility(View.GONE);
                 botonEliminar.setVisibility(View.GONE);
 
-                scrollHorizontalAyuda.setVisibility(View.GONE);
+                scrollHorizontalBotones.setVisibility(View.GONE);
                 scrollHorizontal.setVisibility(View.GONE);
 
                 logitoAyuda.setVisibility(VISIBLE);
@@ -881,7 +825,10 @@ public class AyudaFragment extends Fragment {
     private void VistaCrearAyudaFAQ() {
         //Aqui le dice a que vista tiene que ir, como un hipervinculo basicamente.
         Intent intentCrearAyuda = new Intent(getActivity(), AyudaCrearActivity.class);
+
         startActivity(intentCrearAyuda);
+
+        getActivity().finish();
     }
 
     private void VistaActualizarAyudaFAQ() {
@@ -916,8 +863,9 @@ public class AyudaFragment extends Fragment {
                 intentActualizarAyuda.putExtra("Respuesta", respuestaGuardado);
                 intentActualizarAyuda.putExtra("Tipo_Prioridad", tipoPrioridadGuardado);
 
-
                 startActivity(intentActualizarAyuda);
+
+                getActivity().finish();
 
             } else {
                 AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
@@ -934,11 +882,12 @@ public class AyudaFragment extends Fragment {
             }
 
         } catch (Exception error) {
+            buscadorAyuda.setVisibility(View.GONE);
             botonCrear.setVisibility(View.GONE);
             botonActualizar.setVisibility(View.GONE);
             botonEliminar.setVisibility(View.GONE);
 
-            scrollHorizontalAyuda.setVisibility(View.GONE);
+            scrollHorizontalBotones.setVisibility(View.GONE);
             scrollHorizontal.setVisibility(View.GONE);
 
             logitoAyuda.setVisibility(VISIBLE);
@@ -1006,6 +955,11 @@ public class AyudaFragment extends Fragment {
                                 /* Esto permite leer el error del Body, de modo -
                                  * que sirva en el debug. */
                                 String error = response.errorBody().string();
+                                int errorRaw = response.raw().code();
+
+                                if(errorRaw == 401) {
+                                    error = "Se finalizo la sesión de su cuenta.";
+                                }
 
                                 /* Esto es para imprimir los mensajes de error. */
                                 AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
@@ -1087,11 +1041,12 @@ public class AyudaFragment extends Fragment {
             }
 
         } catch (Exception error) {
+            buscadorAyuda.setVisibility(View.GONE);
             botonCrear.setVisibility(View.GONE);
             botonActualizar.setVisibility(View.GONE);
             botonEliminar.setVisibility(View.GONE);
 
-            scrollHorizontalAyuda.setVisibility(View.GONE);
+            scrollHorizontalBotones.setVisibility(View.GONE);
             scrollHorizontal.setVisibility(View.GONE);
 
             logitoAyuda.setVisibility(VISIBLE);
@@ -1117,8 +1072,4 @@ public class AyudaFragment extends Fragment {
             ejecutarMensaje.show();
         }
     }
-
-
-
-
 }

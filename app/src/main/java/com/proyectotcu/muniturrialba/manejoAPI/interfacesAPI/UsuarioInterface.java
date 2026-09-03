@@ -2,10 +2,7 @@ package com.proyectotcu.muniturrialba.manejoAPI.interfacesAPI;
 
 import com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI.ExtensionUsuarioEntitie;
 import com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI.JWTEntitie;
-import com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI.PermisoEntitie;
 import com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI.UsuarioEntitie;
-
-import java.util.List;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;
@@ -22,11 +19,6 @@ import retrofit2.http.Query;
 public interface UsuarioInterface {
 
     // |===========| Metodos de tipo: GET |===========|
-
-    /* Metodo que sirve para traer a todos los usuarios -
-     * del sistema. */
-    @GET("api/usuarios")
-    Call<List<UsuarioEntitie>> obtenerUsuarios();
 
     /* Metodo que sirve para traer el usuario deseado, -
      * por medio del correo electronico. */
@@ -61,11 +53,12 @@ public interface UsuarioInterface {
     Call<UsuarioEntitie> registrarUsuario(@Body UsuarioEntitie usuarioEntitie,
                                           @Query("tipo") boolean tipo);
 
-    /* Metodo que sirve para crearle los permisos al usuario -
-     * respectivamente. */
+    /* Metodo que sirve para crear a un nuevo usuario respectivamente. */
     @Headers("Content-Type: application/json")
-    @POST("pendiente")
-    Call<PermisoEntitie> crearPermisoUsuario(@Body PermisoEntitie permisosEntitie);
+    @POST("api/crearusuario")
+    Call<UsuarioEntitie> crearUsuario(@Body UsuarioEntitie usuarioEntitie,
+                                          @Query("tipo") boolean tipo,
+                                          @Query("tokenAcceso") String jwtToken);
 
     /* Metodo que sirve para enviar el correo electronico -
      * del usuario que esta intentando recuperar la contra-

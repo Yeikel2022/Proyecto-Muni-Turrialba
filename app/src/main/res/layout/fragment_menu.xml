@@ -34,8 +34,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="34dp"
-        android:background="@drawable/border_radius"
-        android:visibility="visible" />
+        android:background="@drawable/border_radius" />
 
     <ImageView
         android:id="@+id/img_Menu"
@@ -43,32 +42,31 @@
         android:layout_height="56dp"
         android:layout_alignStart="@+id/id_SeccionInformativa"
         android:layout_alignTop="@+id/id_SeccionInformativa"
-        android:layout_alignEnd="@+id/id_SeccionInformativa"
         android:layout_alignBottom="@+id/id_SeccionInformativa"
         android:layout_marginStart="15dp"
         android:layout_marginTop="13dp"
-        android:layout_marginEnd="285dp"
-        android:layout_marginBottom="11dp"
-        android:background="@drawable/icono_bienvenida"
-        android:visibility="visible" />
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/icono_bienvenida" />
 
     <TextView
         android:id="@+id/txt_menuBienvenida"
         android:layout_width="wrap_content"
         android:layout_height="56dp"
-        android:layout_alignStart="@+id/id_SeccionInformativa"
         android:layout_alignTop="@+id/id_SeccionInformativa"
         android:layout_alignEnd="@+id/id_SeccionInformativa"
         android:layout_alignBottom="@+id/id_SeccionInformativa"
-        android:layout_marginStart="76dp"
-        android:layout_marginTop="13dp"
-        android:layout_marginEnd="9dp"
-        android:layout_marginBottom="11dp"
+        android:layout_toEndOf="@+id/img_Menu"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
         android:paddingTop="3dp"
+        android:paddingEnd="25dp"
         android:text="¡Bienvenido(a) al menú de MuniTurrialba!"
-        android:textAlignment="viewStart"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textColor="@color/black"
-        android:textSize="18sp" />
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:typeface="normal" />
 
     <View
         android:id="@+id/id_SeccionesMenu"
@@ -81,8 +79,8 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="69dp"
         android:layout_marginEnd="0dp"
-        android:layout_marginBottom="127dp"
-        android:background="@drawable/border_radius" />
+        android:layout_marginBottom="67dp"
+        android:background="@drawable/border_radius_new" />
 <LinearLayout
         android:id="@+id/lnl_SeccionModulos"
         android:layout_width="match_parent"
@@ -93,83 +91,112 @@
         android:layout_marginBottom="-1dp"
         android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btn_ControlEmpleado"
-        android:layout_width="392dp"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/id_SeccionesMenu"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="34dp"
-        android:layout_marginEnd="9dp"
-        android:background="@drawable/custom_buttons_menu"
-        android:checked="true"
-        android:clickable="true"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:text="Control de empleados."
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:backgroundTint="@null"
-        app:cornerRadius="20dp"
-        app:icon="@drawable/icono_control_empleados"
-        app:iconPadding="0dp"
-        app:iconSize="80dp" />
+    <ScrollView
+        android:id="@+id/sv_ScrollVertical_Modulos"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btn_Reporteria"
-        android:layout_width="392dp"
-        android:layout_height="89dp"
-        android:layout_alignTop="@+id/btn_ControlEmpleado"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="34dp"
-        android:layout_marginEnd="9dp"
-        android:background="@drawable/custom_buttons_menu"
-        android:checked="true"
-        android:clickable="true"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:text="Reporteria."
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:backgroundTint="@null"
-        app:cornerRadius="20dp"
-        app:icon="@drawable/icono_reporteria"
-        app:iconPadding="0dp"
-        app:iconSize="80dp" />
+        <LinearLayout
+            android:id="@+id/lnl_ContenidoVertica_Modulos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btn_AdministracionArchivos"
-        android:layout_width="392dp"
-        android:layout_height="94dp"
-        android:layout_alignTop="@+id/btn_Reporteria"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="34dp"
-        android:layout_marginEnd="9dp"
-        android:background="@drawable/custom_buttons_menu"
-        android:checked="true"
-        android:clickable="true"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:text="Administración de archivos."
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:backgroundTint="@null"
-        app:cornerRadius="20dp"
-        app:icon="@drawable/icono_administracion_archivos"
-        app:iconPadding="0dp"
-        app:iconSize="80dp" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_ControlEmpleado"
+                android:layout_width="392dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="34dp"
+                android:layout_marginEnd="9dp"
+                android:background="@drawable/custom_buttons"
+                android:checked="true"
+                android:clickable="true"
+                android:fontFamily="sans-serif"
+                android:insetTop="0dp"
+                android:insetBottom="4dp"
+                android:text="Control de empleados."
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:typeface="normal"
+                app:backgroundTint="@null"
+                app:cornerRadius="20dp"
+                app:icon="@drawable/icono_control_empleados"
+                app:iconPadding="0dp"
+                app:iconSize="80dp"
+                app:iconTint="@color/black" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_Reporteria"
+                android:layout_width="392dp"
+                android:layout_height="89dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="34dp"
+                android:layout_marginEnd="9dp"
+                android:background="@drawable/custom_buttons"
+                android:checked="true"
+                android:clickable="true"
+                android:fontFamily="sans-serif"
+                android:insetTop="0dp"
+                android:insetBottom="4dp"
+                android:text="Reporteria."
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:typeface="normal"
+                app:backgroundTint="@null"
+                app:cornerRadius="20dp"
+                app:icon="@drawable/icono_reporteria"
+                app:iconPadding="-45dp"
+                app:iconSize="80dp"
+                app:iconTint="@color/black" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_AdministracionArchivos"
+                android:layout_width="392dp"
+                android:layout_height="94dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="34dp"
+                android:layout_marginEnd="9dp"
+                android:background="@drawable/custom_buttons"
+                android:checked="true"
+                android:clickable="true"
+                android:fontFamily="sans-serif"
+                android:insetTop="0dp"
+                android:insetBottom="4dp"
+                android:text="Administración de archivos."
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:typeface="normal"
+                app:backgroundTint="@null"
+                app:cornerRadius="20dp"
+                app:icon="@drawable/icono_administracion_archivos"
+                app:iconPadding="10dp"
+                app:iconSize="80dp"
+                app:iconTint="@color/black" />
+        </LinearLayout>
+    </ScrollView>
+
+    <ImageView
+        android:id="@+id/img_fotoMenu"
+        android:layout_width="match_parent"
+        android:layout_height="264dp"
+        android:layout_marginStart="67dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="70dp"
+        android:layout_marginBottom="-70dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/icono_contenido_no_disponible"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/txt_MensajeMenu"
@@ -179,15 +206,15 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="150dp"
-        android:layout_marginEnd="9dp"
+        android:layout_marginTop="87dp"
+        android:layout_marginEnd="10dp"
         android:fontFamily="sans-serif"
-        android:rotation="28"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="30sp"
         android:textStyle="bold"
-        android:visibility="visible" />
+        android:typeface="normal"
+        android:visibility="gone" />
 
 </LinearLayout>
 

@@ -1,6 +1,7 @@
 package com.proyectotcu.muniturrialba.index;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.widget.Toast;
@@ -50,6 +51,8 @@ public class RegistroActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         /* Sirve para llamar el metodo de registro, siempre y cuando el usuario presione -
          * el boton respectivo. */

@@ -18,8 +18,7 @@
         android:layout_marginStart="23dp"
         android:layout_marginTop="23dp"
         android:layout_marginEnd="32dp"
-        android:background="@drawable/border_radius"
-        android:visibility="visible" />
+        android:background="@drawable/border_radius" />
 
 
     <ImageView
@@ -28,31 +27,31 @@
         android:layout_height="56dp"
         android:layout_alignStart="@+id/id_SeccionInformativa"
         android:layout_alignTop="@+id/id_SeccionInformativa"
-        android:layout_alignEnd="@+id/id_SeccionInformativa"
         android:layout_alignBottom="@+id/id_SeccionInformativa"
         android:layout_marginStart="15dp"
         android:layout_marginTop="13dp"
-        android:layout_marginEnd="285dp"
-        android:layout_marginBottom="11dp"
+        android:layout_marginBottom="12dp"
         android:background="@drawable/icono_bienvenida" />
 
     <TextView
         android:id="@+id/txt_ayudaBienvenida"
         android:layout_width="wrap_content"
         android:layout_height="56dp"
-        android:layout_alignStart="@+id/id_SeccionInformativa"
         android:layout_alignTop="@+id/id_SeccionInformativa"
         android:layout_alignEnd="@+id/id_SeccionInformativa"
         android:layout_alignBottom="@+id/id_SeccionInformativa"
-        android:layout_marginStart="76dp"
-        android:layout_marginTop="13dp"
-        android:layout_marginEnd="9dp"
-        android:layout_marginBottom="11dp"
+        android:layout_toEndOf="@+id/img_Ayuda"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
         android:paddingTop="3dp"
+        android:paddingEnd="25dp"
         android:text="¡Bienvenido(a) a la ayuda MuniTurrialba!"
-        android:textAlignment="viewStart"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textColor="@color/black"
-        android:textSize="18sp" />
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:typeface="normal" />
 
     <SearchView
         android:id="@+id/sv_buscarTipoPrioridad"
@@ -100,7 +99,7 @@
 
         <HorizontalScrollView
             android:id="@+id/hsv_ScrollHorizontalBotones_Ayuda"
-            android:layout_width="410dp"
+            android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_marginStart="3dp"
             android:layout_marginTop="15dp"
@@ -115,89 +114,89 @@
                 android:layout_marginTop="-16dp"
                 android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/btn_CrearAyuda"
-                    android:layout_width="128dp"
-                    android:layout_height="56dp"
-                    android:layout_alignTop="@+id/hsv_ScrollHorizontalBotones_Ayuda"
-                    android:layout_alignBottom="@+id/hsv_ScrollHorizontalBotones_Ayuda"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_AñadirAyuda"
+                    android:layout_width="170dp"
+                    android:layout_height="63dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="25dp"
                     android:layout_marginEnd="5dp"
                     android:layout_marginBottom="25dp"
-                    android:background="@drawable/custom_buttons_menu"
+                    android:background="@drawable/custom_buttons"
                     android:clickable="true"
                     android:fontFamily="sans-serif"
                     android:paddingStart="12dp"
                     android:text="Añadir"
                     android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/black"
-                    android:textSize="13sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
+                    android:typeface="normal"
                     app:backgroundTint="@null"
-                    app:cornerRadius="20dp"
                     app:icon="@drawable/icono_agregar"
-                    app:iconPadding="2dp"
-                    app:iconSize="25dp" />
+                    app:iconPadding="8dp"
+                    app:iconSize="40dp"
+                    app:iconTint="@color/black" />
 
-                <Button
-                    android:id="@+id/btn_ActualizarAyuda"
-                    android:layout_width="128dp"
-                    android:layout_height="56dp"
-                    android:layout_alignTop="@+id/hsv_ScrollHorizontalBotones_Ayuda"
-                    android:layout_alignBottom="@+id/hsv_ScrollHorizontalBotones_Ayuda"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_EditarAyuda"
+                    android:layout_width="170dp"
+                    android:layout_height="63dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="25dp"
                     android:layout_marginEnd="5dp"
                     android:layout_marginBottom="25dp"
-                    android:background="@drawable/custom_buttons_menu"
+                    android:background="@drawable/custom_buttons"
                     android:clickable="true"
                     android:fontFamily="sans-serif"
                     android:paddingStart="12dp"
                     android:text="Editar"
                     android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/black"
-                    android:textSize="13sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
+                    android:typeface="normal"
                     app:backgroundTint="@null"
-                    app:cornerRadius="20dp"
                     app:icon="@drawable/icono_actualizar"
-                    app:iconPadding="2dp"
-                    app:iconSize="25dp" />
+                    app:iconPadding="8dp"
+                    app:iconSize="40dp"
+                    app:iconTint="@color/black" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_EliminarAyuda"
-                    android:layout_width="119dp"
-                    android:layout_height="56dp"
-                    android:layout_alignTop="@+id/hsv_ScrollHorizontalBotones_Ayuda"
-                    android:layout_alignBottom="@+id/hsv_ScrollHorizontalBotones_Ayuda"
+                    android:layout_width="170dp"
+                    android:layout_height="63dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="25dp"
                     android:layout_marginEnd="5dp"
                     android:layout_marginBottom="25dp"
-                    android:background="@drawable/custom_buttons_menu"
+                    android:background="@drawable/custom_buttons"
                     android:clickable="true"
                     android:fontFamily="sans-serif"
                     android:paddingStart="12dp"
                     android:text="Eliminar"
                     android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/black"
-                    android:textSize="13sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
+                    android:typeface="normal"
                     app:backgroundTint="@null"
-                    app:cornerRadius="20dp"
                     app:icon="@drawable/icono_eliminar"
-                    app:iconPadding="2dp"
-                    app:iconSize="25dp" />
+                    app:iconPadding="8dp"
+                    app:iconSize="40dp"
+                    app:iconTint="@color/black" />
             </LinearLayout>
         </HorizontalScrollView>
 
         <HorizontalScrollView
             android:id="@+id/hsv_ScrollHorizontal"
             android:layout_width="match_parent"
-            android:layout_height="410dp"
+            android:layout_height="350dp"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="11dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="0dp"
             android:layout_marginBottom="0dp"
             android:overScrollMode="never">
@@ -234,54 +233,70 @@
                                 <TextView
                                     android:id="@+id/txt_InfoSeleccionAyuda"
                                     android:layout_width="30dp"
-                                    android:layout_height="30dp"
+                                    android:layout_height="40dp"
                                     android:layout_marginStart="7dp"
                                     android:layout_marginEnd="7dp"
                                     android:fontFamily="sans-serif"
+                                    android:paddingTop="5dp"
                                     android:text="✓"
                                     android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold" />
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
 
                                 <TextView
                                     android:id="@+id/txt_InfoPregunta"
-                                    android:layout_width="160dp"
-                                    android:layout_height="30dp"
-                                    android:layout_marginStart="7dp"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
                                     android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
                                     android:text="Pregunta:"
-                                    android:textAlignment="viewStart"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold" />
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
 
                                 <TextView
                                     android:id="@+id/txt_InfoRespuesta"
-                                    android:layout_width="205dp"
-                                    android:layout_height="30dp"
-                                    android:layout_marginStart="55dp"
-                                    android:layout_span="1"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
                                     android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
                                     android:text="Respuesta:"
-                                    android:textAlignment="viewStart"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
                                     android:textColorHint="@color/black"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold" />
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
 
                                 <TextView
                                     android:id="@+id/txt_InfoTipoPrioridad"
-                                    android:layout_width="205dp"
-                                    android:layout_height="30dp"
-                                    android:layout_marginStart="85dp"
-                                    android:layout_span="1"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
                                     android:fontFamily="sans-serif"
-                                    android:text="Prioridad:"
-                                    android:textAlignment="viewStart"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Tipo de prioridad:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold" />
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
 
 
                             </TableRow>
@@ -301,52 +316,73 @@
 
                                 <CheckBox
                                     android:id="@+id/btn_SeleccionDato"
-                                    android:layout_width="35dp"
+                                    android:layout_width="30dp"
                                     android:layout_height="30dp"
                                     android:layout_marginStart="7dp"
+                                    android:layout_marginTop="5dp"
                                     android:layout_marginEnd="7dp"
-                                    android:buttonTint="@color/white" />
+                                    android:buttonTint="@color/black"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingTop="5dp"
+                                    android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
 
                                 <TextView
                                     android:id="@+id/txt_Pregunta"
-                                    android:layout_width="205dp"
+                                    android:layout_width="350dp"
                                     android:layout_height="205dp"
-                                    android:layout_marginStart="7dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
                                     android:fontFamily="sans-serif"
                                     android:hint="Pregunta:"
-                                    android:textAlignment="viewStart"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
                                     android:textColorHint="@color/black"
-                                    android:textSize="18sp"
-                                    android:textStyle="italic" />
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
 
                                 <TextView
                                     android:id="@+id/txt_Respuesta"
-                                    android:layout_width="205dp"
+                                    android:layout_width="350dp"
                                     android:layout_height="205dp"
-                                    android:layout_marginStart="7dp"
-                                    android:layout_span="1"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
                                     android:fontFamily="sans-serif"
                                     android:hint="Respuesta:"
-                                    android:textAlignment="viewStart"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
                                     android:textColorHint="@color/black"
-                                    android:textSize="18sp"
-                                    android:textStyle="italic" />
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
 
                                 <TextView
                                     android:id="@+id/txt_TipoPrioridad"
-                                    android:layout_width="205dp"
+                                    android:layout_width="350dp"
                                     android:layout_height="205dp"
-                                    android:layout_gravity="start|right"
-                                    android:layout_marginStart="7dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
                                     android:fontFamily="sans-serif"
                                     android:hint="Tipo de prioridad:"
-                                    android:textAlignment="viewStart"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
                                     android:textColorHint="@color/black"
-                                    android:textSize="18sp"
-                                    android:textStyle="italic" />
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
                             </TableRow>
 
                         </TableLayout>
@@ -361,7 +397,7 @@
             android:layout_width="match_parent"
             android:layout_height="264dp"
             android:layout_marginStart="67dp"
-            android:layout_marginTop="95dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="70dp"
             android:layout_marginBottom="-70dp"
             android:scaleType="fitCenter"
@@ -383,6 +419,7 @@
             android:textColor="@color/black"
             android:textSize="30sp"
             android:textStyle="bold"
+            android:typeface="normal"
             android:visibility="gone" />
 
     </LinearLayout>

@@ -1,6 +1,7 @@
 package com.proyectotcu.muniturrialba.index;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -35,6 +36,8 @@ public class MenuPrincipalActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         /* Sirve para llamar los fragmentos del menu, perfil, carnet virtual -
          * y ayuda, siempre y cuando el usuario presione el boton respectivo.

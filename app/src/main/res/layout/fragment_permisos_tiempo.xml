@@ -18,8 +18,7 @@
         android:layout_marginStart="23dp"
         android:layout_marginTop="23dp"
         android:layout_marginEnd="32dp"
-        android:background="@drawable/border_radius"
-        android:visibility="visible" />
+        android:background="@drawable/border_radius" />
 
 
     <ImageView
@@ -28,31 +27,31 @@
         android:layout_height="56dp"
         android:layout_alignStart="@+id/id_SeccionPermisosTiempo_Informativa"
         android:layout_alignTop="@+id/id_SeccionPermisosTiempo_Informativa"
-        android:layout_alignEnd="@+id/id_SeccionPermisosTiempo_Informativa"
         android:layout_alignBottom="@+id/id_SeccionPermisosTiempo_Informativa"
         android:layout_marginStart="15dp"
         android:layout_marginTop="13dp"
-        android:layout_marginEnd="285dp"
-        android:layout_marginBottom="11dp"
+        android:layout_marginBottom="12dp"
         android:background="@drawable/icono_bienvenida" />
 
     <TextView
         android:id="@+id/txt_permisosTiempo_Bienvenida"
         android:layout_width="wrap_content"
         android:layout_height="56dp"
-        android:layout_alignStart="@+id/id_SeccionPermisosTiempo_Informativa"
         android:layout_alignTop="@+id/id_SeccionPermisosTiempo_Informativa"
         android:layout_alignEnd="@+id/id_SeccionPermisosTiempo_Informativa"
         android:layout_alignBottom="@+id/id_SeccionPermisosTiempo_Informativa"
-        android:layout_marginStart="76dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="9dp"
-        android:layout_marginBottom="0dp"
+        android:layout_toEndOf="@+id/img_PermisosTiempo"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
         android:paddingTop="3dp"
+        android:paddingEnd="25dp"
         android:text="¡Bienvenido(a) al apartado de permisos de tiempo de MuniTurrialba!"
-        android:textAlignment="viewStart"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textColor="@color/black"
-        android:textSize="18sp" />
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:typeface="normal" />
 
     <SearchView
         android:id="@+id/sv_buscarPermisosTiempo"
@@ -67,8 +66,8 @@
         android:background="@drawable/border_radius"
         android:closeIcon="@drawable/icono_busqueda_cerrar"
         android:paddingStart="7dp"
-        android:searchHintIcon="@drawable/icono_busqueda_filtrar"
-        android:searchIcon="@drawable/icono_busqueda_filtrar" />
+        android:searchHintIcon="@drawable/icono_busqueda"
+        android:searchIcon="@drawable/icono_busqueda" />
 
     <View
         android:id="@+id/id_seccionesPermisosTiempo"
@@ -82,7 +81,7 @@
         android:layout_marginTop="19dp"
         android:layout_marginEnd="0dp"
         android:layout_marginBottom="29dp"
-        android:background="@drawable/border_radius" />
+        android:background="@drawable/border_radius_new" />
 
     <LinearLayout
         android:id="@+id/lnl_ContenidoPermisosTiempo"
@@ -100,7 +99,7 @@
 
         <HorizontalScrollView
             android:id="@+id/hsv_ScrollHorizontalBotones_PermisosTiempo"
-            android:layout_width="410dp"
+            android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_marginStart="3dp"
             android:layout_marginTop="15dp"
@@ -115,89 +114,89 @@
                 android:layout_marginTop="-16dp"
                 android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/btn_CrearPermisosTiempo"
-                    android:layout_width="128dp"
-                    android:layout_height="56dp"
-                    android:layout_alignTop="@+id/lnl_ContenidoPermisosTiempo"
-                    android:layout_alignBottom="@+id/lnl_ContenidoPermisosTiempo"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_AñadirPermisosTiempo"
+                    android:layout_width="170dp"
+                    android:layout_height="63dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="25dp"
                     android:layout_marginEnd="5dp"
                     android:layout_marginBottom="25dp"
-                    android:background="@drawable/custom_buttons_menu"
+                    android:background="@drawable/custom_buttons"
                     android:clickable="true"
                     android:fontFamily="sans-serif"
                     android:paddingStart="12dp"
                     android:text="Añadir"
                     android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/black"
-                    android:textSize="13sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
+                    android:typeface="normal"
                     app:backgroundTint="@null"
-                    app:cornerRadius="20dp"
                     app:icon="@drawable/icono_agregar"
-                    app:iconPadding="2dp"
-                    app:iconSize="25dp" />
+                    app:iconPadding="8dp"
+                    app:iconSize="40dp"
+                    app:iconTint="@color/black" />
 
-                <Button
-                    android:id="@+id/btn_ActualizarPermisosTiempo"
-                    android:layout_width="128dp"
-                    android:layout_height="56dp"
-                    android:layout_alignTop="@+id/lnl_ContenidoPermisosTiempo"
-                    android:layout_alignBottom="@+id/lnl_ContenidoPermisosTiempo"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_EditarPermisosTiempo"
+                    android:layout_width="170dp"
+                    android:layout_height="63dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="25dp"
                     android:layout_marginEnd="5dp"
                     android:layout_marginBottom="25dp"
-                    android:background="@drawable/custom_buttons_menu"
+                    android:background="@drawable/custom_buttons"
                     android:clickable="true"
                     android:fontFamily="sans-serif"
                     android:paddingStart="12dp"
                     android:text="Editar"
                     android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/black"
-                    android:textSize="13sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
+                    android:typeface="normal"
                     app:backgroundTint="@null"
-                    app:cornerRadius="20dp"
                     app:icon="@drawable/icono_actualizar"
-                    app:iconPadding="2dp"
-                    app:iconSize="25dp" />
+                    app:iconPadding="8dp"
+                    app:iconSize="40dp"
+                    app:iconTint="@color/black" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_EliminarPermisosTiempo"
-                    android:layout_width="119dp"
-                    android:layout_height="56dp"
-                    android:layout_alignTop="@+id/lnl_ContenidoPermisosTiempo"
-                    android:layout_alignBottom="@+id/lnl_ContenidoPermisosTiempo"
+                    android:layout_width="170dp"
+                    android:layout_height="63dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="25dp"
                     android:layout_marginEnd="5dp"
                     android:layout_marginBottom="25dp"
-                    android:background="@drawable/custom_buttons_menu"
+                    android:background="@drawable/custom_buttons"
                     android:clickable="true"
                     android:fontFamily="sans-serif"
                     android:paddingStart="12dp"
                     android:text="Eliminar"
                     android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/black"
-                    android:textSize="13sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
+                    android:typeface="normal"
                     app:backgroundTint="@null"
-                    app:cornerRadius="20dp"
                     app:icon="@drawable/icono_eliminar"
-                    app:iconPadding="2dp"
-                    app:iconSize="25dp" />
+                    app:iconPadding="8dp"
+                    app:iconSize="40dp"
+                    app:iconTint="@color/black" />
             </LinearLayout>
         </HorizontalScrollView>
 
         <HorizontalScrollView
             android:id="@+id/hsv_ScrollHorizontalPermisosTiempo"
             android:layout_width="match_parent"
-            android:layout_height="410dp"
+            android:layout_height="350dp"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="11dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="0dp"
             android:layout_marginBottom="0dp"
             android:overScrollMode="never">
@@ -235,119 +234,162 @@
                                 <TextView
                                     android:id="@+id/txt_InfoSeleccionPermisosTiempo"
                                     android:layout_width="30dp"
-                                    android:layout_height="30dp"
+                                    android:layout_height="40dp"
                                     android:layout_marginStart="7dp"
                                     android:layout_marginEnd="7dp"
                                     android:fontFamily="sans-serif"
+                                    android:paddingTop="5dp"
                                     android:text="✓"
                                     android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold" />
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
 
                                 <TextView
                                     android:id="@+id/txt_InfoNombrePermisosTiempo"
-                                    android:layout_width="160dp"
-                                    android:layout_height="30dp"
-                                    android:layout_marginStart="7dp"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
                                     android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
                                     android:text="Nombre:"
-                                    android:textAlignment="viewStart"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold" />
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
 
                                 <TextView
                                     android:id="@+id/txt_InfoApellidosPermisosTiempo"
-                                    android:layout_width="205dp"
-                                    android:layout_height="30dp"
-                                    android:layout_marginStart="55dp"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
                                     android:layout_span="1"
+                                    android:background="@drawable/border_table_row"
                                     android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
                                     android:text="Apellidos:"
-                                    android:textAlignment="viewStart"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
                                     android:textColorHint="@color/black"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold" />
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
 
                                 <TextView
                                     android:id="@+id/txt_InfoCedulaPermisosTiempo"
-                                    android:layout_width="205dp"
-                                    android:layout_height="30dp"
-                                    android:layout_marginStart="7dp"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
                                     android:layout_span="1"
+                                    android:background="@drawable/border_table_row"
                                     android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
                                     android:text="Cédula:"
-                                    android:textAlignment="viewStart"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold" />
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
 
                                 <TextView
                                     android:id="@+id/txt_InfoDepartamentoPermisosTiempo"
-                                    android:layout_width="205dp"
-                                    android:layout_height="30dp"
-                                    android:layout_marginStart="7dp"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
                                     android:layout_span="1"
+                                    android:background="@drawable/border_table_row"
                                     android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
                                     android:text="Departamento:"
-                                    android:textAlignment="viewStart"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold" />
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
 
                                 <TextView
                                     android:id="@+id/txt_InfoTipoPermisoTiempo"
-                                    android:layout_width="205dp"
-                                    android:layout_height="30dp"
-                                    android:layout_marginStart="7dp"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
                                     android:layout_span="1"
+                                    android:background="@drawable/border_table_row"
                                     android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
                                     android:text="Tipo de permiso:"
-                                    android:textAlignment="viewStart"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold" />
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
 
                                 <TextView
                                     android:id="@+id/txt_InfoDescripcionPermisosTiempo"
-                                    android:layout_width="205dp"
-                                    android:layout_height="30dp"
-                                    android:layout_marginStart="7dp"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
                                     android:layout_span="1"
+                                    android:background="@drawable/border_table_row"
                                     android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
                                     android:text="Descripción:"
-                                    android:textAlignment="viewStart"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold" />
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
 
                                 <TextView
                                     android:id="@+id/txt_InfoFechaAsignacionPermisosTiempo"
-                                    android:layout_width="205dp"
-                                    android:layout_height="30dp"
-                                    android:layout_marginStart="7dp"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
                                     android:layout_span="1"
+                                    android:background="@drawable/border_table_row"
                                     android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
                                     android:text="Fecha de asignación:"
-                                    android:textAlignment="viewStart"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold" />
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
 
                                 <TextView
                                     android:id="@+id/txt_InfoFechaFinalizacionPermisosTiempo"
-                                    android:layout_width="205dp"
-                                    android:layout_height="30dp"
-                                    android:layout_marginStart="7dp"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
                                     android:layout_span="1"
+                                    android:background="@drawable/border_table_row"
                                     android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
                                     android:text="Fecha de finalización:"
-                                    android:textAlignment="viewStart"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold" />
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
 
                             </TableRow>
 
@@ -366,122 +408,171 @@
 
                                 <CheckBox
                                     android:id="@+id/btn_SeleccionDatoPermisosTiempo"
-                                    android:layout_width="35dp"
+                                    android:layout_width="30dp"
                                     android:layout_height="30dp"
                                     android:layout_marginStart="7dp"
+                                    android:layout_marginTop="5dp"
                                     android:layout_marginEnd="7dp"
-                                    android:buttonTint="@color/white" />
+                                    android:buttonTint="@color/black"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingTop="5dp"
+                                    android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
 
                                 <TextView
                                     android:id="@+id/txt_NombrePermisosTiempo"
-                                    android:layout_width="205dp"
+                                    android:layout_width="350dp"
                                     android:layout_height="205dp"
-                                    android:layout_marginStart="7dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
                                     android:fontFamily="sans-serif"
                                     android:hint="Nombre:"
-                                    android:textAlignment="viewStart"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
                                     android:textColorHint="@color/black"
-                                    android:textSize="18sp"
-                                    android:textStyle="italic" />
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
 
                                 <TextView
                                     android:id="@+id/txt_ApellidosPermisosTiempo"
-                                    android:layout_width="205dp"
+                                    android:layout_width="350dp"
                                     android:layout_height="205dp"
-                                    android:layout_marginStart="7dp"
+                                    android:layout_marginStart="-1dp"
                                     android:layout_span="1"
+                                    android:background="@drawable/border_table_row"
                                     android:fontFamily="sans-serif"
                                     android:hint="Apellidos:"
-                                    android:textAlignment="viewStart"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
                                     android:textColorHint="@color/black"
-                                    android:textSize="18sp"
-                                    android:textStyle="italic" />
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
 
                                 <TextView
                                     android:id="@+id/txt_CedulaPermisosTiempo"
-                                    android:layout_width="205dp"
+                                    android:layout_width="350dp"
                                     android:layout_height="205dp"
-                                    android:layout_marginStart="7dp"
+                                    android:layout_marginStart="-1dp"
                                     android:layout_span="1"
+                                    android:background="@drawable/border_table_row"
                                     android:fontFamily="sans-serif"
                                     android:hint="Cédula:"
-                                    android:textAlignment="viewStart"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
                                     android:textColorHint="@color/black"
-                                    android:textSize="18sp"
-                                    android:textStyle="italic" />
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
 
                                 <TextView
                                     android:id="@+id/txt_DepartamentoPermisosTiempo"
-                                    android:layout_width="205dp"
+                                    android:layout_width="350dp"
                                     android:layout_height="205dp"
-                                    android:layout_marginStart="7dp"
+                                    android:layout_marginStart="-1dp"
                                     android:layout_span="1"
+                                    android:background="@drawable/border_table_row"
                                     android:fontFamily="sans-serif"
                                     android:hint="Departamento:"
-                                    android:textAlignment="viewStart"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
                                     android:textColorHint="@color/black"
-                                    android:textSize="18sp"
-                                    android:textStyle="italic" />
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
 
                                 <TextView
                                     android:id="@+id/txt_TipoPermisoTiempo"
-                                    android:layout_width="205dp"
+                                    android:layout_width="350dp"
                                     android:layout_height="205dp"
-                                    android:layout_marginStart="7dp"
+                                    android:layout_marginStart="-1dp"
                                     android:layout_span="1"
+                                    android:background="@drawable/border_table_row"
                                     android:fontFamily="sans-serif"
                                     android:hint="Tipo de permiso:"
-                                    android:textAlignment="viewStart"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
                                     android:textColorHint="@color/black"
-                                    android:textSize="18sp"
-                                    android:textStyle="italic" />
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
 
                                 <TextView
                                     android:id="@+id/txt_DescripcionPermisosTiempo"
-                                    android:layout_width="205dp"
+                                    android:layout_width="350dp"
                                     android:layout_height="205dp"
-                                    android:layout_marginStart="7dp"
+                                    android:layout_marginStart="-1dp"
                                     android:layout_span="1"
+                                    android:background="@drawable/border_table_row"
                                     android:fontFamily="sans-serif"
                                     android:hint="Descripción:"
-                                    android:textAlignment="viewStart"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
                                     android:textColorHint="@color/black"
-                                    android:textSize="18sp"
-                                    android:textStyle="italic" />
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
 
                                 <TextView
                                     android:id="@+id/txt_FechaAsignacion_PermisosTiempo"
-                                    android:layout_width="205dp"
+                                    android:layout_width="350dp"
                                     android:layout_height="205dp"
-                                    android:layout_marginStart="7dp"
+                                    android:layout_marginStart="-1dp"
                                     android:layout_span="1"
+                                    android:background="@drawable/border_table_row"
                                     android:fontFamily="sans-serif"
                                     android:hint="Fecha de asginación:"
-                                    android:textAlignment="viewStart"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
                                     android:textColorHint="@color/black"
-                                    android:textSize="18sp"
-                                    android:textStyle="italic" />
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
 
                                 <TextView
                                     android:id="@+id/txt_FechaFinalizacion_PermisosTiempo"
-                                    android:layout_width="205dp"
+                                    android:layout_width="350dp"
                                     android:layout_height="205dp"
-                                    android:layout_marginStart="7dp"
+                                    android:layout_marginStart="-1dp"
                                     android:layout_span="1"
+                                    android:background="@drawable/border_table_row"
                                     android:fontFamily="sans-serif"
                                     android:hint="Fecha de finalización:"
-                                    android:textAlignment="viewStart"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
                                     android:textColorHint="@color/black"
-                                    android:textSize="18sp"
-                                    android:textStyle="italic" />
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
                             </TableRow>
 
                         </TableLayout>
@@ -497,7 +588,7 @@
             android:layout_width="match_parent"
             android:layout_height="264dp"
             android:layout_marginStart="67dp"
-            android:layout_marginTop="95dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="70dp"
             android:layout_marginBottom="-70dp"
             android:scaleType="fitCenter"
@@ -519,6 +610,7 @@
             android:textColor="@color/black"
             android:textSize="30sp"
             android:textStyle="bold"
+            android:typeface="normal"
             android:visibility="gone" />
 
     </LinearLayout>

@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -25,6 +26,8 @@ import com.proyectotcu.muniturrialba.databinding.ActivityAyudaCrearBinding;
 import com.proyectotcu.muniturrialba.manejoAPI.ConexionAPI;
 import com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI.FAQEntitie;
 import com.proyectotcu.muniturrialba.manejoAPI.interfacesAPI.FAQInterface;
+import com.proyectotcu.muniturrialba.moduloEmpleados.ControlEmpleadosActivity;
+import com.proyectotcu.muniturrialba.moduloEmpleados.PermisoTiempoCrearActivity;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -124,8 +127,25 @@ public class AyudaCrearActivity extends AppCompatActivity {
 
             AlertDialog ejecutarMensaje = construirAlerta.create();
             ejecutarMensaje.show();
+        }
 
-    }
+        //METODO PARA DETECTAR SI EL USUARIO POR X O Y RAZÓN, DESEA REGRESARSE.
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                //Aqui le dice a que vista tiene que ir, como un hipervinculo basicamente.
+                Intent intentAyudaFAQ = new Intent(AyudaCrearActivity.this, MenuPrincipalActivity.class);
+
+                intentAyudaFAQ.putExtra("Seccion_A_Mostrar", "Ayuda");
+
+                //Le indica que ejecute el hipervinculo.
+                startActivity(intentAyudaFAQ);
+
+                /* Sirve para evitar que el usuario se regrese después.
+                 * Esto por temas de buenas prácticas. */
+                finish();
+            }
+        });
 }
 
 
@@ -166,6 +186,11 @@ public class AyudaCrearActivity extends AppCompatActivity {
                             /* Esto permite leer el error del Body, de modo -
                              * que sirva en el debug. */
                             String error = response.errorBody().string();
+                            int errorRaw = response.raw().code();
+
+                            if(errorRaw == 401) {
+                                error = "Se finalizo la sesión de su cuenta.";
+                            }
 
                             /* Esto es para imprimir los mensajes de error. */
                             AlertDialog.Builder construirAlerta = new AlertDialog.Builder(AyudaCrearActivity.this);

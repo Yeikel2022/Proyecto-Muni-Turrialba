@@ -1,0 +1,562 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_InfoUsuarioLista"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/turrialba">
+
+
+    <ImageView
+        android:id="@+id/img_bienvenidaInfoUsuarioLista"
+        android:layout_width="310dp"
+        android:layout_height="177dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="33dp"
+        android:background="@drawable/logito6"
+        app:layout_constraintBottom_toTopOf="@+id/sv_buscarInfoUsuarioLista"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <SearchView
+        android:id="@+id/sv_buscarInfoUsuarioLista"
+        android:layout_width="301dp"
+        android:layout_height="58dp"
+        android:layout_below="@+id/img_bienvenidaInfoUsuarioLista"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/border_radius"
+        android:closeIcon="@drawable/icono_busqueda_cerrar"
+        android:paddingStart="7dp"
+        android:searchHintIcon="@drawable/icono_busqueda"
+        android:searchIcon="@drawable/icono_busqueda"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_bienvenidaInfoUsuarioLista" />
+
+    <View
+        android:id="@+id/id_seccionesInfoUsuarioLista"
+        android:layout_width="wrap_content"
+        android:layout_height="551dp"
+        android:layout_below="@+id/sv_buscarInfoUsuarioLista"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="19dp"
+        android:background="@drawable/border_radius_new"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sv_buscarInfoUsuarioLista" />
+
+    <LinearLayout
+        android:id="@+id/lnl_ContenidoInfoUsuarioLista"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignTop="@+id/id_seccionesInfoUsuarioLista"
+        android:layout_alignBottom="@+id/id_seccionesInfoUsuarioLista"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/id_seccionesInfoUsuarioLista"
+        app:layout_constraintEnd_toEndOf="@+id/id_seccionesInfoUsuarioLista"
+        app:layout_constraintStart_toStartOf="@+id/id_seccionesInfoUsuarioLista"
+        app:layout_constraintTop_toTopOf="@+id/id_seccionesInfoUsuarioLista" >
+
+        <TextView
+            android:id="@+id/txt_Titulo_InfoUsuarioLista"
+            android:layout_width="400dp"
+            android:layout_height="73dp"
+            android:fontFamily="sans-serif"
+            android:paddingTop="15dp"
+            android:text="@string/Informacion_InfoUsuarioLista"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:typeface="normal" />
+
+        <HorizontalScrollView
+            android:id="@+id/hsv_ScrollHorizontalInfoUsuariosLista"
+            android:layout_width="match_parent"
+            android:layout_height="315dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="15dp"
+            android:overScrollMode="never">
+
+            <LinearLayout
+                android:id="@+id/lnl_ContenidoHorizontalInfoUsuariosLista"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ScrollView
+                    android:id="@+id/sv_ScrollVertical_ContenidoInfoUsuariosLista"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:overScrollMode="never">
+
+                    <LinearLayout
+                        android:id="@+id/lnl_ContenidoVerticalInfoUsuariosLista"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TableLayout
+                            android:id="@+id/tbl_TablaInfoUsuariosLista"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TableRow
+                                android:id="@+id/tbr_InfoFilaInfoUsuariosLista"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/border_table">
+
+                                <TextView
+                                    android:id="@+id/txt_InfoSeleccionInfo_UsuariosLista"
+                                    android:layout_width="30dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_marginEnd="7dp"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingTop="5dp"
+                                    android:text="✓"
+                                    android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoNombreInfo_UsuariosLista"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Nombre:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoApellidosInfo_UsuariosLista"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Apellidos:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoCedulaInfo_UsuariosLista"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Cédula:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoCorreoInfo_UsuariosLista"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Correo Electrónico:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoDepartamentoInfo_UsuariosLista"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Departamento:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoRolInfo_UsuariosLista"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Rol:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoFechaCreacionInfo_UsuariosLista"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Fecha de creación:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoFechaInicioSesionInfo_UsuariosLista"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Fecha de inicio de sesión:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoUltimaConexionInfo_UsuariosLista"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Ultima Conexión:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+
+                            </TableRow>
+
+                        </TableLayout>
+
+                        <TableLayout
+                            android:id="@+id/tbl_TablaContenido_InfoUsuariosLista"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TableRow
+                                android:id="@+id/tbr_PrimeraFilaContenido_InfoUsuariosLista"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/border_table">
+
+                                <CheckBox
+                                    android:id="@+id/btn_SeleccionDato_InfoUsuariosLista"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_marginEnd="7dp"
+                                    android:buttonTint="@color/black"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingTop="5dp"
+                                    android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_Nombre_InfoUsuariosLista"
+                                    android:layout_width="350dp"
+                                    android:layout_height="180dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Nombre:"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Nombre:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_Apellidos_InfoUsuariosLista"
+                                    android:layout_width="350dp"
+                                    android:layout_height="180dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Apellidos:"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Apellidos:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_Cedula_InfoUsuariosLista"
+                                    android:layout_width="350dp"
+                                    android:layout_height="180dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Cédula:"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Cédula:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_Correo_InfoUsuarioLista"
+                                    android:layout_width="350dp"
+                                    android:layout_height="180dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Correo Electrónico:"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Correo Electrónico:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_Departamento_InfoUsuariosLista"
+                                    android:layout_width="350dp"
+                                    android:layout_height="180dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Departamento:"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Departamento:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_Rol_InfoUsuariosLista"
+                                    android:layout_width="350dp"
+                                    android:layout_height="180dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Rol:"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Rol:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_FechaCreacion_InfoUsuariosLista"
+                                    android:layout_width="350dp"
+                                    android:layout_height="180dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Fecha de creación:"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Fecha de creación:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_FechaInicioSesion_InfoUsuariosLista"
+                                    android:layout_width="350dp"
+                                    android:layout_height="180dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Fecha de inicio de sesión:"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Fecha de inicio de sesión:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_UltimaConexion_InfoUsuariosLista"
+                                    android:layout_width="350dp"
+                                    android:layout_height="180dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Ultima Conexión:"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Ultima Conexión:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+
+                            </TableRow>
+
+                        </TableLayout>
+
+                    </LinearLayout>
+                </ScrollView>
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_ConfirmarInfoUsuarioLista"
+            android:layout_width="180dp"
+            android:layout_height="63dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="25dp"
+            android:background="@drawable/custom_buttons"
+            android:clickable="true"
+            android:fontFamily="sans-serif"
+            android:paddingStart="12dp"
+            android:text="Confirmar"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:typeface="normal"
+            app:backgroundTint="@null"
+            app:icon="@drawable/icono_confirmar"
+            app:iconPadding="8dp"
+            app:iconSize="40dp"
+            app:iconTint="@color/black" />
+
+        <ImageView
+            android:id="@+id/img_fotoInfoUsuarioLista"
+            android:layout_width="match_parent"
+            android:layout_height="264dp"
+            android:layout_marginStart="67dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="70dp"
+            android:layout_marginBottom="-70dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icono_contenido_no_disponible"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/txt_MensajeInfoUsuarioLista"
+            android:layout_width="392dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/id_seccionesInfoUsuarioLista"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="117dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="sans-serif"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:typeface="normal"
+            android:visibility="gone" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
