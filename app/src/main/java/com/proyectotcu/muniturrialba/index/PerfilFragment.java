@@ -16,7 +16,6 @@ import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts.*;
 import androidx.fragment.app.Fragment;
 
-import android.os.Handler;
 import android.provider.Settings;
 import android.util.Base64;
 import android.view.LayoutInflater;
@@ -25,7 +24,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +32,12 @@ import com.proyectotcu.muniturrialba.R;
 import com.proyectotcu.muniturrialba.manejoAPI.ConexionAPI;
 import com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI.UsuarioEntitie;
 import com.proyectotcu.muniturrialba.manejoAPI.interfacesAPI.UsuarioInterface;
+import com.proyectotcu.muniturrialba.moduloEmpleados.ControlEmpleadosActivity;
+import com.proyectotcu.muniturrialba.moduloEmpleados.ControlSalarioFragment;
+import com.proyectotcu.muniturrialba.moduloEmpleados.EmpleadoFragment;
+import com.proyectotcu.muniturrialba.moduloEmpleados.PermisoTiempoFragment;
+import com.proyectotcu.muniturrialba.moduloReporteria.ReporteUsuarioFragment;
+import com.proyectotcu.muniturrialba.moduloReporteria.ReporteriaActivity;
 
 import org.json.JSONObject;
 
@@ -51,11 +55,12 @@ import retrofit2.Response;
 public class PerfilFragment extends Fragment {
 
     //Variables globales para esta clase.
-    ImageButton botonEditarPerfil;
-    ImageView fotoPerfil;
-    Button botonPermisos, botonCerrar;
     TextView txtMensaje, txtNombre, txtApellidos, txtCorreo;
+    ImageView fotoPerfil, logitoPerfil;
+    Button botonPermisos, botonCerrar;
+    ImageButton botonEditarPerfil;
     String imagenBase64;
+    static Boolean mensajePerfil = false;
 
     //Variable global para detectar imagenes desde la galeria:
     ActivityResultLauncher<PickVisualMediaRequest> SelectorImagen;
@@ -83,6 +88,7 @@ public class PerfilFragment extends Fragment {
          * de los roles. */
         View view = inflater.inflate(R.layout.fragment_perfil, container, false);
         fotoPerfil = view.findViewById(R.id.img_fotoPerfil);
+        logitoPerfil = view.findViewById(R.id.img_errorFotoPerfil);
         botonEditarPerfil = view.findViewById(R.id.btn_editarPerfil);
         botonCerrar = view.findViewById(R.id.btn_CerrarSesion);
         botonPermisos = view.findViewById(R.id.btn_Permisos);
@@ -95,6 +101,8 @@ public class PerfilFragment extends Fragment {
         txtNombre.setVisibility(View.INVISIBLE);
         txtApellidos.setVisibility(View.INVISIBLE);
         txtCorreo.setVisibility(View.INVISIBLE);
+
+        logitoPerfil.setVisibility(View.GONE);
         txtMensaje.setVisibility(View.GONE);
 
         fotoPerfil.setVisibility(View.INVISIBLE);
@@ -146,9 +154,7 @@ public class PerfilFragment extends Fragment {
             String campoCorreo = json.optString("correo");
             Integer campoRol = Integer.parseInt(json.optString("rol"));
             Boolean campoPermisoLeer = Boolean.parseBoolean(json.optString("permiso_Leer"));
-            Boolean campoPermisoCrear = Boolean.parseBoolean(json.optString("permiso_Crear"));
             Boolean campoPermisoActualizar = Boolean.parseBoolean(json.optString("permiso_Actualizar"));
-            Boolean campoPermisoEliminar = Boolean.parseBoolean(json.optString("permiso_Eliminar"));
 
 
             /* Aqui lo que se esta haciendo es validar si el usuario tiene el rol: "Moderador", -
@@ -156,10 +162,10 @@ public class PerfilFragment extends Fragment {
              * opciones del perfil. */
             if (campoRol == 1 || campoRol == 2 || campoRol == 3) {
                 /* Una vez hecho eso, lo que seguiria seria validar los permisos del usuario -
-                 * que ha iniciado sesión. Y, si luego de eso, la respuesta que trae es un 4, -
+                 * que ha iniciado sesión. Y, si luego de eso, la respuesta que trae es un 5, -
                  * entonces quiere decir que si esta autorizado para acceder a las opciones del -
                  * perfil. */
-                Integer respuestaPermisos = ValidarPermisosUsuario(campoPermisoLeer, campoPermisoCrear, campoPermisoActualizar, campoPermisoEliminar);
+                Integer respuestaPermisos = ValidarPermisosUsuario(campoPermisoLeer, campoPermisoActualizar);
                 if (respuestaPermisos == 5) {
                     txtNombre.setVisibility(View.VISIBLE);
                     txtApellidos.setVisibility(View.VISIBLE);
@@ -195,7 +201,7 @@ public class PerfilFragment extends Fragment {
                         ejecutarMensaje.show();
                     });
 
-                    botonPermisos.setOnClickListener(v -> VistaPermisos(campoRol, campoPermisoLeer, campoPermisoCrear, campoPermisoActualizar, campoPermisoEliminar));
+                    botonPermisos.setOnClickListener(v -> VistaPermisos());
                     botonEditarPerfil.setOnClickListener(v -> SelectorImagen.launch(new PickVisualMediaRequest.
                             Builder().setMediaType(PickVisualMedia.ImageOnly.INSTANCE).build()));
                     /* NOTA: Aqui lo que se hace en el botonFotoPerfil, es usar el photo picker -
@@ -232,8 +238,6 @@ public class PerfilFragment extends Fragment {
                  * de actualizar, por lo que no esta autorizado para hacer algun cambio en la foto -
                  * de perfil respectivamente. */
                 if (respuestaPermisos == 3) {
-                    Toast.makeText(getActivity(), "¡No tienes la autorización necesaria para actualizar " + "la información de la cuenta!", Toast.LENGTH_LONG).show();
-
                     txtNombre.setVisibility(View.VISIBLE);
                     txtApellidos.setVisibility(View.VISIBLE);
                     txtCorreo.setVisibility(View.VISIBLE);
@@ -266,7 +270,7 @@ public class PerfilFragment extends Fragment {
                         AlertDialog ejecutarMensaje = construirAlerta.create();
                         ejecutarMensaje.show();
                     });
-                    botonPermisos.setOnClickListener(v -> VistaPermisos(campoRol, campoPermisoLeer, campoPermisoCrear, campoPermisoActualizar, campoPermisoEliminar));
+                    botonPermisos.setOnClickListener(v -> VistaPermisos());
 
                     MostrarDatosPerfil(campoCorreo, tokenGuardado);
                 }
@@ -275,8 +279,6 @@ public class PerfilFragment extends Fragment {
                  * es un 1, entonces quiere decir que ese usuario no esta autorizado para acceder -
                  * a los permisos de la aplicacion móvil respectivamente. */
                 if (respuestaPermisos == 1) {
-                    Toast.makeText(getActivity(), "¡No tienes la autorización necesaria para visualizar los permisos de la aplicación!", Toast.LENGTH_LONG).show();
-
                     txtNombre.setVisibility(View.VISIBLE);
                     txtApellidos.setVisibility(View.VISIBLE);
                     txtCorreo.setVisibility(View.VISIBLE);
@@ -340,7 +342,33 @@ public class PerfilFragment extends Fragment {
 
                     MostrarDatosPerfil(campoCorreo, tokenGuardado);
                 }
+
+                botonCerrar.setOnClickListener(v -> {
+                    AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
+
+                    construirAlerta.setIcon(R.drawable.icono_cancelar);
+                    construirAlerta.setMessage("¿Esta completamente seguro(a) de cerrar sesión?")
+                            .setTitle("Cerrar Sesión.");
+
+                    construirAlerta.setPositiveButton("Si.", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            VistaCerrarSesion();
+                        }
+                    });
+
+                    construirAlerta.setNegativeButton("No.", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(getActivity(), "¡No se cerro la sesión!", Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+                    AlertDialog ejecutarMensaje = construirAlerta.create();
+                    ejecutarMensaje.show();
+                });
             }
+
         } catch (Exception error) {
             /* Sirve para imprimir el mensaje que se recibio anteriormente.
              *
@@ -385,29 +413,49 @@ public class PerfilFragment extends Fragment {
     /* Metodo que sirve para validar los permisos del usuario -
      * que ha iniciado sesión, esto para poder continuar con -
      * la navegación dentro de la aplicación móvil respectivamente. */
-    private Integer ValidarPermisosUsuario(Boolean Leer, Boolean Crear, Boolean Actualizar, Boolean Eliminar) {
+    private Integer ValidarPermisosUsuario(Boolean Leer, Boolean Actualizar) {
         /* Aqui valida si todos los permisos de ese usuario son falsos -
          * (dando a entender que no esta autorizado). Y si entra, entonces -
          * se ocultaria todos las opciones del perfil y se enviaria un mensaje -
          * mencionando que no tiene la autorización suficiente para poder continuar. */
-        if(Leer == false && Crear == false && Actualizar == false && Eliminar == false) {
+        if(Leer == false && Actualizar == false) {
+            botonEditarPerfil.setVisibility(View.GONE);
+            fotoPerfil.setVisibility(View.GONE);
+
             txtNombre.setVisibility(View.GONE);
             txtApellidos.setVisibility(View.GONE);
             txtCorreo.setVisibility(View.GONE);
 
-            fotoPerfil.setVisibility(View.GONE);
-            botonEditarPerfil.setVisibility(View.GONE);
-            botonCerrar.setVisibility(View.GONE);
+            botonCerrar.setVisibility(View.VISIBLE);
             botonPermisos.setVisibility(View.GONE);
 
+            logitoPerfil.setVisibility(View.VISIBLE);
             txtMensaje.setVisibility(View.VISIBLE);
+
+            logitoPerfil.setImageResource(R.drawable.icono_contenido_no_disponible);
             txtMensaje.setText(getString(R.string.AutorizacionDenegada));
             /* NOTA: El "getString(R.string.AutorizacionDenegada)", lo que hace es -
              * traer un mensaje que se coloco en: "strings.xml" para que el textview: -
              * "txtMensaje" pueda colocarlo en la pantalla del fragmento (osea en el -
              * fragment_perfil.xml), esto porque es una forma dinamica de hacerlo. */
 
-            Toast.makeText(getActivity(), "¡No tienes la autorización necesaria para visualizar la información de la cuenta!", Toast.LENGTH_LONG).show();
+            if(mensajePerfil != true) {
+                AlertDialog.Builder construirAlertaCrear = new AlertDialog.Builder(getActivity());
+                construirAlertaCrear.setIcon(R.drawable.icono_error);
+
+                construirAlertaCrear.setMessage("Pero no tienes la autorización necesaria para visualizar la información de la cuenta.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlertaCrear.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mensajePerfil = true;
+                    }});
+
+                AlertDialog ejecutarMensajeCrear = construirAlertaCrear.create();
+                ejecutarMensajeCrear.show();
+            }
+
             return 0;
         }
 
@@ -419,8 +467,25 @@ public class PerfilFragment extends Fragment {
          * esta autorizado. */
         if(Leer == false) {
             botonPermisos.setVisibility(View.GONE);
-            LinearLayout.LayoutParams parametrosBotonCerrarSesion = (LinearLayout.LayoutParams) botonCerrar.getLayoutParams();
-            parametrosBotonCerrarSesion.setMarginStart(355);
+
+            if(mensajePerfil != true) {
+                AlertDialog.Builder construirAlertaCrear = new AlertDialog.Builder(getActivity());
+                construirAlertaCrear.setIcon(R.drawable.icono_error);
+
+                construirAlertaCrear.setMessage("Pero no tienes la autorización necesaria para visualizar los permisos de la aplicación respectivamente.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlertaCrear.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mensajePerfil = true;
+                    }
+                });
+
+                AlertDialog ejecutarMensajeCrear = construirAlertaCrear.create();
+                ejecutarMensajeCrear.show();
+            }
+
             return 1;
         }
 
@@ -430,6 +495,25 @@ public class PerfilFragment extends Fragment {
          * la opcion para editar la foto de perfil respectivamente. */
         if(Actualizar == false) {
             botonEditarPerfil.setVisibility(View.GONE);
+
+            if(mensajePerfil != true) {
+                AlertDialog.Builder construirAlertaCrear = new AlertDialog.Builder(getActivity());
+                construirAlertaCrear.setIcon(R.drawable.icono_error);
+
+                construirAlertaCrear.setMessage("Pero no tienes la autorización necesaria para actualizar la información de la cuenta.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlertaCrear.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mensajePerfil = true;
+                    }
+                });
+
+                AlertDialog ejecutarMensajeCrear = construirAlertaCrear.create();
+                ejecutarMensajeCrear.show();
+            }
+
             return 3;
         }
 
@@ -502,6 +586,11 @@ public class PerfilFragment extends Fragment {
                             /* Esto permite leer el error del Body, de modo -
                              * que sirva en el debug. */
                             String error = response.errorBody().string();
+                            int errorRaw = response.raw().code();
+
+                            if(errorRaw == 401) {
+                                error = "Se finalizo la sesión de su cuenta.";
+                            }
 
                             /* Aqui lo que se hace es colocar el logo de imagen por defecto y ocultar -
                              * la opcion de editar el perfil. Esto por temas de buenas prácticas. */
@@ -723,7 +812,7 @@ public class PerfilFragment extends Fragment {
     /* Metodo que sirve para ver los permisos que la aplicación -
      * móvil le ha solicitado al usuario para poder funcionar -
      * respectivamente. */
-    private void VistaPermisos(int Rol, Boolean Leer, Boolean Crear, Boolean Actualizar, Boolean Eliminar) {
+    private void VistaPermisos() {
         try {
             /* Aqui lo que se esta haciendo es primero realizar un intent, el cual, se le esta indicando -
              * que lo lleve hacia los detalles de una aplicación dentro de los ajustes del sistema, esto -
@@ -767,6 +856,29 @@ public class PerfilFragment extends Fragment {
             archivoXML.edit().clear().apply();
             MainActivity.botonActivado = false;
 
+            /* Esto es para resetear las variables que sirven para mostrar los mensajes de error, -
+             * más especificamente los que se encuentran en los métodos que validan los permisos -
+             * del usuario(a) respectivamente. */
+            //Administrativo:
+            MenuFragment.mensajeMenuPrincipal = false;
+            mensajePerfil = false;
+            CarnetVirtualFragment.mensajeCarnetVirtual = false;
+            AyudaFragment.mensajePermisosAyuda = false;
+
+            //Control de Empleados:
+            ControlEmpleadosActivity.mensajeControlEmpleados = false;
+            EmpleadoFragment.mensajeEmpleados = false;
+            PermisoTiempoFragment.mensajePermisosTiempo = false;
+            ControlSalarioFragment.mensajeSalarios = false;
+
+            //Reporteria:
+            ReporteriaActivity.mensajeReporteria = false;
+            ReporteUsuarioFragment.mensajeReportesUsuarios = false;
+            ReporteUsuarioFragment.autorizacionMantenerReporte = false;
+            ReporteUsuarioFragment.documentosPDF.clear();
+
+            //Administración de Archivos: (Pendiente).
+
             /* Esto solo seria si quisiera ver que pantalla es en el Debug.
             Activity nombreActividad = getActivity();
 
@@ -778,7 +890,7 @@ public class PerfilFragment extends Fragment {
             //Aqui le dice a que vista tiene que ir, como un hipervinculo basicamente.
             Intent intentPrincipal = new Intent(getActivity(), MainActivity.class);
             startActivity(intentPrincipal);
-            getActivity().finish();
+            getActivity().finishAffinity();
 
         } catch (Exception error) {
             Toast.makeText(getActivity(), "¡Lo sentimos!", Toast.LENGTH_LONG).show();

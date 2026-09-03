@@ -11,5 +11,14 @@
     <string name="InformacionCrearEmpleado">Aqui podra crear un nuevo empleado para el apartado de: "Empleados". Esto para que se pueda registrar en el sistema.</string>
     <string name="InformacionActualizarEmpleado">Aqui podra actualizar la pregunta, la respuesta o incluso su tipo de prioridad que fue seleccionada dentro del apartado de: "Ayuda". \n\nEso si, las preguntas no se podrán repetir respectivamente.</string>
 
-    <string name="InformacionPermisos_UsuarioEmpleado">Aqui podra actualizar o asignar los permisos que estan asociados al usuario o usuaria en cuestión. \n\nEso si, cabe aclarar que los empleados (as) son los usuarios de la aplicación móvil respectivamente.</string>
+    <string name="InformacionPermisos_UsuarioEmpleado">Aqui podra actualizar o asignar los permisos que estan asociados al - usuario(a) en cuestión. \n\nEso si, cabe aclarar que los emplea\ndos(as) son los usuarios de la apli-\ncación móvil respectivamente.</string>
+    <string name="Informacion_UsuarioEmpleado">Lista de usuarios relacionados a los empleados de la aplicación móvil:</string>
+    <string name="Informacion_InfoUsuarioLista">Lista de usuarios relacionados a los inicios de sesión de la aplicación móvil:</string>
+
+    <string name="InformacionFecha_PermisosTiempo">Formato de fecha: año/mes/dia hora:minutos:segundos.</string>
+
+    <string name="Informacion_CodigoRecuperacion">Se le envio al correo electrónico un código de restablecimiento. \n\nPara continuar con el procedimiento, digite por favor el código de restablecimiento.</string>
+    <string name="Informacion_RecuperarContraseña">Para poder recuperar su contraseña, es necesario que ingrese el correo - electrónico de su cuenta para poder continuar el procedimiento.</string>
+
+    <string name="Informacion_Registro">La contraseña necesita una longitud de 12 digitos como minimo.</string>
 </resources>

@@ -26,13 +26,12 @@ public class MensajeFragment extends Fragment {
         logitoEmpleados = view.findViewById(R.id.img_fotoMensajeError);
         txtMensaje = view.findViewById(R.id.txt_MensajeError);
 
-
         logitoEmpleados.setImageResource(R.drawable.icono_contenido_no_disponible);
 
         if(getArguments() != null) {
             String tipoMensaje = getArguments().getString("Tipo_Mensaje");
 
-            if(tipoMensaje.equals("Error")) {
+            if("Error".equals(tipoMensaje)) {
                 txtMensaje.setText(getString(R.string.ErrorFragment));
             }
 

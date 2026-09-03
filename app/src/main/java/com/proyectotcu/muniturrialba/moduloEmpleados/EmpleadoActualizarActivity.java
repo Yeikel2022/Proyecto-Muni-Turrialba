@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -73,6 +75,8 @@ public class EmpleadoActualizarActivity extends AppCompatActivity {
         empleadosActualizarBinding.txtMensajeActualizarEmpleado.setVisibility(GONE);
 
         try {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
             /* Aqui lo que se hace es obtener el correo -
              * que nosotros habiamos enviado anteriormente -
              * en la clase de: "VistaCodigo". De forma que -
@@ -128,8 +132,7 @@ public class EmpleadoActualizarActivity extends AppCompatActivity {
             empleadosActualizarBinding.spRolEmpleadoActualizado.setSelection(propiedadesSpinner.getPosition(rolRecorrido));
 
             empleadosActualizarBinding.edtxtDepartamentoEmpleadoActualizado.setText(departamentoRecorrido);
-            empleadosActualizarBinding.btnActivoEmpleado.setClickable(activoRecorrido);
-
+            empleadosActualizarBinding.btnActivoEmpleado.setChecked(activoRecorrido);
 
 
             empleadosActualizarBinding.btnActualizarEmpleado.setOnClickListener(v -> {
@@ -209,6 +212,22 @@ public class EmpleadoActualizarActivity extends AppCompatActivity {
             AlertDialog ejecutarMensaje = construirAlerta.create();
             ejecutarMensaje.show();
         }
+
+        //METODO PARA DETECTAR SI EL USUARIO POR X O Y RAZÓN, DESEA REGRESARSE.
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                //Aqui le dice a que vista tiene que ir, como un hipervinculo basicamente.
+                Intent intentEmpleado = new Intent(EmpleadoActualizarActivity.this, ControlEmpleadosActivity.class);
+
+                //Le indica que ejecute el hipervinculo.
+                startActivity(intentEmpleado);
+
+                /* Sirve para evitar que el usuario se regrese después.
+                 * Esto por temas de buenas prácticas. */
+                finish();
+            }
+        });
     }
 
 
@@ -305,6 +324,11 @@ public class EmpleadoActualizarActivity extends AppCompatActivity {
                                         /* Esto permite leer el error del Body, de modo -
                                          * que sirva en el debug. */
                                         String error = response.errorBody().string();
+                                        int errorRaw = response.raw().code();
+
+                                        if(errorRaw == 401) {
+                                            error = "Se finalizo la sesión de su cuenta.";
+                                        }
 
                                         /* Esto es para imprimir los mensajes de error. */
                                         AlertDialog.Builder construirAlerta = new AlertDialog.Builder(EmpleadoActualizarActivity.this);
@@ -377,6 +401,11 @@ public class EmpleadoActualizarActivity extends AppCompatActivity {
                             /* Esto permite leer el error del Body, de modo -
                              * que sirva en el debug. */
                             String error = response.errorBody().string();
+                            int errorRaw = response.raw().code();
+
+                            if(errorRaw == 401) {
+                                error = "Se finalizo la sesión de su cuenta.";
+                            }
 
                             AlertDialog.Builder construirAlerta = new AlertDialog.Builder(EmpleadoActualizarActivity.this);
                             construirAlerta.setIcon(R.drawable.icono_error);
@@ -704,7 +733,5 @@ public class EmpleadoActualizarActivity extends AppCompatActivity {
          * Esto por temas de buenas prácticas. */
         finish();
     }
-
-
 }
 

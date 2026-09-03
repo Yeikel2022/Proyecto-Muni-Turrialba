@@ -1,6 +1,7 @@
 package com.proyectotcu.muniturrialba.index;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.widget.Toast;
@@ -48,6 +49,7 @@ public class RecuperarPasswordActivity extends AppCompatActivity {
             return insets;
         });
 
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         /* Sirve para llamar el metodo de enviar un correo electrónico, siempre -
          * y cuando el usuario presione el boton respectivo. */

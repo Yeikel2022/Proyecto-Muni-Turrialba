@@ -8,10 +8,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -21,7 +23,6 @@ import com.proyectotcu.muniturrialba.R;
 import com.proyectotcu.muniturrialba.databinding.ActivityPermisosUsuarioEmpleadoBinding;
 import com.proyectotcu.muniturrialba.manejoAPI.ConexionAPI;
 import com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI.PermisoEntitie;
-import com.proyectotcu.muniturrialba.manejoAPI.interfacesAPI.EmpleadoInterface;
 import com.proyectotcu.muniturrialba.manejoAPI.interfacesAPI.PermisoInterface;
 
 import retrofit2.Call;
@@ -63,6 +64,8 @@ public class PermisosUsuarioEmpleadoActivity extends AppCompatActivity {
         permisosUsuario_EmpleadosCrearBinding.txtMensajePermisosUsuarioEmpleado.setVisibility(GONE);
 
         try {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
             /* Aqui lo que se hace es obtener el correo -
              * que nosotros habiamos enviado anteriormente -
              * en la clase de: "VistaCodigo". De forma que -
@@ -238,7 +241,6 @@ public class PermisosUsuarioEmpleadoActivity extends AppCompatActivity {
                 ejecutarMensaje.show();
             });
 
-
         } catch (Exception error) {
             permisosUsuario_EmpleadosCrearBinding.txtTituloPermisosUsuarioEmpleado.setVisibility(GONE);
             permisosUsuario_EmpleadosCrearBinding.txtInfoPermisosUsuarioEmpleado.setVisibility(GONE);
@@ -270,6 +272,22 @@ public class PermisosUsuarioEmpleadoActivity extends AppCompatActivity {
             AlertDialog ejecutarMensaje = construirAlerta.create();
             ejecutarMensaje.show();
         }
+
+        //METODO PARA DETECTAR SI EL USUARIO POR X O Y RAZÓN, DESEA REGRESARSE.
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                //Aqui le dice a que vista tiene que ir, como un hipervinculo basicamente.
+                Intent intentPermisos_UsuarioEmpleado = new Intent(PermisosUsuarioEmpleadoActivity.this, ControlEmpleadosActivity.class);
+
+                //Le indica que ejecute el hipervinculo.
+                startActivity(intentPermisos_UsuarioEmpleado);
+
+                /* Sirve para evitar que el usuario se regrese después.
+                 * Esto por temas de buenas prácticas. */
+                finish();
+            }
+        });
     }
 
 
@@ -318,6 +336,11 @@ public class PermisosUsuarioEmpleadoActivity extends AppCompatActivity {
                         /* Esto permite leer el error del Body, de modo -
                          * que sirva en el debug. */
                         String error = response.errorBody().string();
+                        int errorRaw = response.raw().code();
+
+                        if(errorRaw == 401) {
+                            error = "Se finalizo la sesión de su cuenta.";
+                        }
 
                         /* Esto es para imprimir los mensajes de error. */
                         AlertDialog.Builder construirAlerta = new AlertDialog.Builder(PermisosUsuarioEmpleadoActivity.this);
@@ -396,7 +419,4 @@ public class PermisosUsuarioEmpleadoActivity extends AppCompatActivity {
          * Esto por temas de buenas prácticas. */
         finish();
     }
-
-
-
 }

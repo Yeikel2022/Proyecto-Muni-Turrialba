@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.Menu;
@@ -29,6 +30,8 @@ public class ControlEmpleadosActivity extends AppCompatActivity {
 
     private ActivityControlEmpleadosBinding controlEmpleadosBinding;
 
+    public static Boolean mensajeControlEmpleados = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         controlEmpleadosBinding = ActivityControlEmpleadosBinding.inflate(getLayoutInflater());
@@ -42,6 +45,8 @@ public class ControlEmpleadosActivity extends AppCompatActivity {
         });
 
         try {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
             /* Luego, lo segundo seria acceder al archivo XML que tiene como nombre: -
              * "Archivo_Autenticacion", esto de forma privada. Y, si sucede que no -
              * esta creado, entonces el sistema lo crearia automaticamente. */
@@ -119,8 +124,7 @@ public class ControlEmpleadosActivity extends AppCompatActivity {
                     }
 
 
-
-                     controlEmpleadosBinding.btnVBarraNavegacionControlEmpleados.setOnItemSelectedListener(menuItem -> {
+                    controlEmpleadosBinding.btnVBarraNavegacionControlEmpleados.setOnItemSelectedListener(menuItem -> {
                         int idItem = menuItem.getItemId();
 
                         if (idItem == R.id.itm_Empleados) {
@@ -133,31 +137,10 @@ public class ControlEmpleadosActivity extends AppCompatActivity {
                             Fragmentos(new ControlSalarioFragment());
                         }
 
-
                         return true;
                     });
                 }
-
-
-                /* Asimismo, también se hace otra validación, ya que, si la respuesta que trae -
-                 * es un 3, quiere decir que ese usuario que inicio sesión no contiene el permiso -
-                 * de actualizar, por lo que no esta autorizado para hacer algun cambio en la foto -
-                 * de perfil respectivamente. */
-                if (respuestaPermisos == 1) {
-                    AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ControlEmpleadosActivity.this);
-                    construirAlerta.setIcon(R.drawable.icono_error);
-                    construirAlerta.setMessage("No tienes la autorización necesaria para visualizar esta información.")
-                            .setTitle("¡Lo sentimos!");
-
-                    construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {}});
-
-                    AlertDialog ejecutarMensaje = construirAlerta.create();
-                    ejecutarMensaje.show();
-                }
             }
-
 
 
             if (campoRol == 3) {
@@ -180,27 +163,7 @@ public class ControlEmpleadosActivity extends AppCompatActivity {
                         return true;
                     });
                 }
-
-
-                /* Asimismo, también se hace otra validación, ya que, si la respuesta que trae -
-                 * es un 3, quiere decir que ese usuario que inicio sesión no contiene el permiso -
-                 * de actualizar, por lo que no esta autorizado para hacer algun cambio en la foto -
-                 * de perfil respectivamente. */
-                if (respuestaPermisos == 1) {
-                    AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ControlEmpleadosActivity.this);
-                    construirAlerta.setIcon(R.drawable.icono_error);
-                    construirAlerta.setMessage("No tienes la autorización necesaria para visualizar esta información.")
-                            .setTitle("¡Lo sentimos!");
-
-                    construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {}});
-
-                    AlertDialog ejecutarMensaje = construirAlerta.create();
-                    ejecutarMensaje.show();
-                }
             }
-
 
         } catch (Exception error) {
             Menu itemsMenu = controlEmpleadosBinding.btnVBarraNavegacionControlEmpleados.getMenu();
@@ -248,18 +211,21 @@ public class ControlEmpleadosActivity extends AppCompatActivity {
             Fragmentos(new MensajeFragment());
             controlEmpleadosBinding.btnVBarraNavegacionControlEmpleados.setSelectedItemId(R.id.itm_Mensaje);
 
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ControlEmpleadosActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_error);
-            construirAlerta.setMessage("No tienes la autorización necesaria para visualizar estos apartados de control de empleados.")
-                    .setTitle("¡Lo sentimos!");
+            if (mensajeControlEmpleados != true) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ControlEmpleadosActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_error);
+                construirAlerta.setMessage("Pero no tienes la autorización necesaria para visualizar estos apartados de control de empleados.")
+                        .setTitle("¡Lo sentimos!");
 
-            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}});
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mensajeControlEmpleados = true;
+                    }});
 
-            AlertDialog ejecutarMensaje = construirAlerta.create();
-            ejecutarMensaje.show();
-
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+            }
 
             return 0;
         }
@@ -281,8 +247,23 @@ public class ControlEmpleadosActivity extends AppCompatActivity {
             Fragmentos(new MensajeFragment());
             controlEmpleadosBinding.btnVBarraNavegacionControlEmpleados.setSelectedItemId(R.id.itm_Mensaje);
 
+            if (mensajeControlEmpleados != true) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ControlEmpleadosActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_error);
+                construirAlerta.setMessage("Pero no tienes la autorización necesaria para visualizar estos apartados de control de empleados.")
+                        .setTitle("¡Lo sentimos!");
 
-            return 1;
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mensajeControlEmpleados = true;
+                    }});
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+            }
+
+            return 0;
         }
 
 
@@ -300,6 +281,4 @@ public class ControlEmpleadosActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.framL_PlantillaControlEmpleados, fragmentoSeleccionado).commit();
     }
-
-
 }

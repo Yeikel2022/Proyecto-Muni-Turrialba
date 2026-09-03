@@ -7,63 +7,51 @@ public class ExtensionEmpleadoUsuarioEntitie {
     @SerializedName("nombre_Empleado")
     @Expose
     private String nombre_Empleado;
+
     @SerializedName("apellido_1_Empleado")
     @Expose
     private String apellido1_Empleado;
+
     @SerializedName("apellido_2_Empleado")
     @Expose
     private String apellido2_Empleado;
+
     @SerializedName("edad_Empleado")
     @Expose
     private Integer edad_Empleado;
+
     @SerializedName("cedula_Empleado")
     @Expose
     private String cedula_Empleado;
+
     @SerializedName("telefono_Empleado")
     @Expose
     private String telefono_Empleado;
+
     @SerializedName("correo_Electronico_Empleado")
     @Expose
     private String correo_Electronico_Empleado;
+
     @SerializedName("contraseña_Empleado")
     @Expose
     private String contraseña_Empleado;
+
     @SerializedName("nombre_Rol")
     @Expose
     private String nombre_Rol;
+
     @SerializedName("fecha_Creacion_Empleado")
     @Expose
     private String fecha_Creacion_Empleado;
+
     @SerializedName("departamento")
     @Expose
     private String departamento;
+
     @SerializedName("activo")
     @Expose
     private Boolean activo;
 
-
-    /* Este constructor parametrizado, nos ayudara -
-     * a realizar aquellos procesos donde se necesita -
-     * enviar, actualizar o eliminar información de los -
-     * usuarios. Además de indicarle al sistema, donde -
-     * debe guardar la información respectivamente. */
-    public ExtensionEmpleadoUsuarioEntitie(String nombre, String apellido_1, String apellido_2, int edad,
-                                           String cedula, String telefono, String correo_Electronico,
-                                           String contraseña, String nombre_Rol, String fecha_CreacionEmpleado,
-                                           String departamento, boolean activo) {
-        this.nombre_Empleado = nombre;
-        this.apellido1_Empleado = apellido_1;
-        this.apellido2_Empleado = apellido_2;
-        this.edad_Empleado = edad;
-        this.cedula_Empleado = cedula;
-        this.telefono_Empleado = telefono;
-        this.correo_Electronico_Empleado = correo_Electronico;
-        this.contraseña_Empleado = contraseña;
-        this.nombre_Rol = nombre_Rol;
-        this.fecha_Creacion_Empleado = fecha_CreacionEmpleado;
-        this.departamento = departamento;
-        this.activo = activo;
-    }
 
 
     public String getNombre_Empleado() {

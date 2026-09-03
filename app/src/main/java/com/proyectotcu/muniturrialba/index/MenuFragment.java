@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +34,9 @@ public class MenuFragment extends Fragment {
     //Variables globales para esta clase.
     Button botonEmpleado, botonReporteria, botonAdministracionArchivos;
     TextView txtMensaje;
+    ImageView logitoMenu;
+    ScrollView scrollVerticalMenu;
+    static Boolean mensajeMenuPrincipal = false;
 
 
     /* A diferencia de las actividades, al ser esto un fragmento, no se -
@@ -53,12 +58,16 @@ public class MenuFragment extends Fragment {
         botonEmpleado = view.findViewById(R.id.btn_ControlEmpleado);
         botonReporteria = view.findViewById(R.id.btn_Reporteria);
         botonAdministracionArchivos = view.findViewById(R.id.btn_AdministracionArchivos);
+        scrollVerticalMenu = view.findViewById(R.id.sv_ScrollVertical_Modulos);
 
         botonEmpleado.setVisibility(View.INVISIBLE);
         botonReporteria.setVisibility(View.INVISIBLE);
         botonAdministracionArchivos.setVisibility(View.INVISIBLE);
 
+        logitoMenu = view.findViewById(R.id.img_fotoMenu);
         txtMensaje = view.findViewById(R.id.txt_MensajeMenu);
+
+        logitoMenu.setVisibility(View.GONE);
         txtMensaje.setVisibility(View.GONE);
 
         try {
@@ -108,11 +117,11 @@ public class MenuFragment extends Fragment {
             Boolean campoPermisoEliminar = Boolean.parseBoolean(json.optString("permiso_Eliminar"));
 
             /* Una vez hecho eso, lo que seguiria seria validar los permisos del usuario -
-             * que ha iniciado sesión. Y, si luego de eso, la respuesta que trae es un true,-
+             * que ha iniciado sesión. Y, si luego de eso, la respuesta que trae es un 5,-
              * entonces quiere decir que si esta autorizado para acceder a los módulos corres-
              * pondientes. */
-            Boolean respuestaPermisos = ValidarPermisos(campoPermisoLeer, campoPermisoCrear, campoPermisoActualizar, campoPermisoEliminar);
-            if (respuestaPermisos != false) {
+            Integer respuestaPermisos = ValidarPermisos(campoPermisoLeer, campoPermisoCrear, campoPermisoActualizar, campoPermisoEliminar);
+            if (respuestaPermisos == 5) {
                 /* Aqui lo que se esta haciendo es validar si el usuario tiene -
                  * el rol: "Moderador". Y si no, entonces no lo dejaria acceder -
                  * a los modulos respectivos. */
@@ -185,7 +194,7 @@ public class MenuFragment extends Fragment {
     /* Metodo que sirve para validar los permisos del usuario -
      * que ha iniciado sesión, esto para poder continuar con -
      * la navegación dentro de la aplicación móvil respectivamente. */
-    private boolean ValidarPermisos(Boolean Leer, Boolean Crear, Boolean Actualizar, Boolean Eliminar) {
+    private Integer ValidarPermisos(Boolean Leer, Boolean Crear, Boolean Actualizar, Boolean Eliminar) {
         /* Aqui valida si todos los permisos de ese usuario son falsos -
          * (dando a entender que no esta autorizado). Y si entra, entonces -
          * se ocultaria todos los modulos y se enviaria un mensaje mencionando -
@@ -194,19 +203,81 @@ public class MenuFragment extends Fragment {
             botonEmpleado.setVisibility(View.GONE);
             botonReporteria.setVisibility(View.GONE);
             botonAdministracionArchivos.setVisibility(View.GONE);
+            scrollVerticalMenu.setVisibility(View.GONE);
 
+            logitoMenu.setVisibility(View.VISIBLE);
             txtMensaje.setVisibility(View.VISIBLE);
+
+            logitoMenu.setImageResource(R.drawable.icono_contenido_no_disponible);
             txtMensaje.setText(getString(R.string.AutorizacionDenegada));
             /* NOTA: El "getString(R.string.AutorizacionDenegada)", lo que hace es -
              * traer un mensaje que se coloco en: "strings.xml" para que el textview: -
              * "txtMensaje" pueda colocarlo en la pantalla del fragmento (osea en el -
              * fragment_menu.xml), esto porque es una forma dinamica de hacerlo. */
 
-            Toast.makeText(getActivity(), "¡No tienes la autorización suficiente para este apartado!", Toast.LENGTH_LONG).show();
-            return false;
+            if(mensajeMenuPrincipal != true) {
+                AlertDialog.Builder construirAlertaAutorizacion = new AlertDialog.Builder(getActivity());
+                construirAlertaAutorizacion.setIcon(R.drawable.icono_error);
+                construirAlertaAutorizacion.setMessage("Pero no tienes la autorización necesaria para visualizar estos apartados en el menú principal.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlertaAutorizacion.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mensajeMenuPrincipal = true;
+                    }});
+
+                AlertDialog ejecutarMensajeAutorizacion = construirAlertaAutorizacion.create();
+                ejecutarMensajeAutorizacion.show();
+            }
+
+            return 0;
         }
 
-        return true;
+        /* Aqui valida si ese usuario no esta autorizado para visualizar el menu. -
+         * Y si entra, entonces se ocultaria todos los modulos y se enviaria un -
+         * mensaje mencionando que no tiene la autorización para visualizar los -
+         * apartados del menú respectivamente. */
+        if(Leer == false) {
+            botonEmpleado.setVisibility(View.GONE);
+            botonReporteria.setVisibility(View.GONE);
+            botonAdministracionArchivos.setVisibility(View.GONE);
+            scrollVerticalMenu.setVisibility(View.GONE);
+
+            logitoMenu.setVisibility(View.VISIBLE);
+            txtMensaje.setVisibility(View.VISIBLE);
+
+            logitoMenu.setImageResource(R.drawable.icono_contenido_no_disponible);
+            txtMensaje.setText(getString(R.string.AutorizacionDenegada));
+            /* NOTA: El "getString(R.string.AutorizacionDenegada)", lo que hace es -
+             * traer un mensaje que se coloco en: "strings.xml" para que el textview: -
+             * "txtMensaje" pueda colocarlo en la pantalla del fragmento (osea en el -
+             * fragment_menu.xml), esto porque es una forma dinamica de hacerlo. */
+
+            /* Esto es para que muestre el mensaje una sola vez. De forma que, a la -
+             * de volver, el usuario no tenga que estar quitando el mensaje a cada -
+             * rato. En resumen, es por temas de experiencia de usuario. */
+            if(mensajeMenuPrincipal != true) {
+                AlertDialog.Builder construirAlertaAutorizacion = new AlertDialog.Builder(getActivity());
+                construirAlertaAutorizacion.setIcon(R.drawable.icono_error);
+                construirAlertaAutorizacion.setMessage("Pero no tienes la autorización necesaria para visualizar estos apartados en el menú principal.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlertaAutorizacion.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mensajeMenuPrincipal = true;
+                    }});
+
+                AlertDialog ejecutarMensajeAutorizacion = construirAlertaAutorizacion.create();
+                ejecutarMensajeAutorizacion.show();
+            }
+
+            return 0;
+        }
+
+        //El 5 se refiere a que el usuario que inicio sesión si esta autorizado.
+        return 5;
     }
 
 

@@ -2,7 +2,6 @@ package com.proyectotcu.muniturrialba.manejoAPI.interfacesAPI;
 
 import com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI.EmpleadoEntitie;
 import com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI.ExtensionEmpleadoUsuarioEntitie;
-import com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI.FAQEntitie;
 
 import java.util.List;
 

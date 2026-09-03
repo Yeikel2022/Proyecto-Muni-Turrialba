@@ -33,8 +33,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="34dp"
-        android:background="@drawable/border_radius"
-        android:visibility="visible" />
+        android:background="@drawable/border_radius" />
 
 
     <ImageView
@@ -43,44 +42,43 @@
         android:layout_height="56dp"
         android:layout_alignStart="@+id/id_SeccionInformativa"
         android:layout_alignTop="@+id/id_SeccionInformativa"
-        android:layout_alignEnd="@+id/id_SeccionInformativa"
         android:layout_alignBottom="@+id/id_SeccionInformativa"
         android:layout_marginStart="15dp"
         android:layout_marginTop="13dp"
-        android:layout_marginEnd="285dp"
-        android:layout_marginBottom="11dp"
-        android:background="@drawable/icono_bienvenida"
-        android:visibility="visible" />
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/icono_bienvenida" />
 
     <TextView
         android:id="@+id/txt_carnetBienvenida"
         android:layout_width="wrap_content"
         android:layout_height="56dp"
-        android:layout_alignStart="@+id/id_SeccionInformativa"
         android:layout_alignTop="@+id/id_SeccionInformativa"
         android:layout_alignEnd="@+id/id_SeccionInformativa"
         android:layout_alignBottom="@+id/id_SeccionInformativa"
-        android:layout_marginStart="76dp"
-        android:layout_marginTop="13dp"
-        android:layout_marginEnd="9dp"
-        android:layout_marginBottom="11dp"
+        android:layout_toEndOf="@+id/img_CarnetVirtual"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
         android:paddingTop="3dp"
+        android:paddingEnd="25dp"
         android:text="¡Bienvenido(a) al carnet virtual de MuniTurrialba!"
-        android:textAlignment="viewStart"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textColor="@color/black"
-        android:textSize="18sp" />
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:typeface="normal" />
 
     <ImageView
         android:id="@+id/img_carnetFotoPerfil"
-        android:layout_width="274dp"
+        android:layout_width="374dp"
         android:layout_height="164dp"
         android:layout_below="@+id/id_Vistabienvenida"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="64dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="14dp"
-        android:layout_marginEnd="70dp"
-        android:background="@drawable/border_radius"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/border_radius_new"
         android:scaleType="fitCenter"
         tools:src="@drawable/icono_perfil_logo" />
 
@@ -95,8 +93,8 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="22dp"
         android:layout_marginEnd="0dp"
-        android:layout_marginBottom="127dp"
-        android:background="@drawable/border_radius" />
+        android:layout_marginBottom="77dp"
+        android:background="@drawable/border_radius_new" />
 
     <LinearLayout
         android:id="@+id/lnl_SeccionCarnet"
@@ -110,6 +108,7 @@
         android:layout_marginTop="-1dp"
         android:layout_marginEnd="0dp"
         android:layout_marginBottom="1dp"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <ImageView
@@ -122,8 +121,19 @@
             android:layout_marginBottom="0dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            android:src="@drawable/icono_carnet_virtual"
-            android:visibility="visible" />
+            android:src="@drawable/icono_carnet_virtual" />
+
+        <ImageView
+            android:id="@+id/img_fotoCarnet"
+            android:layout_width="match_parent"
+            android:layout_height="264dp"
+            android:layout_marginStart="67dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="70dp"
+            android:layout_marginBottom="-70dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icono_contenido_no_disponible"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/txt_MensajeCarnet"
@@ -133,15 +143,15 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="165dp"
+            android:layout_marginTop="87dp"
             android:layout_marginEnd="10dp"
             android:fontFamily="sans-serif"
-            android:rotation="28"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="30sp"
             android:textStyle="bold"
-            android:visibility="visible" />
+            android:typeface="normal"
+            android:visibility="gone" />
 
     </LinearLayout>
 

@@ -23,6 +23,62 @@
              hay que configurarlo para que acepte solo HTTPS y realice -
              transacciones bajo ese protocolo en producción. -->
 
+        <!-- Esto es para indicarle al manifest donde esta la vista: "ReporteUsuarioEditarActivity".
+             Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
+             (vista), lo que daria un error en el mismo. -->
+        <activity
+            android:name=".moduloReporteria.ReporteUsuarioEditarActivity"
+            android:exported="false" />
+
+        <!-- Esto es para indicarle al manifest donde esta la vista: "ReporteUsuarioInfoActivity".
+             Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
+             (vista), lo que daria un error en el mismo. -->
+        <activity
+            android:name=".moduloReporteria.ReporteUsuarioInfoActivity"
+            android:exported="false" />
+
+        <!-- Esto es para indicarle al manifest donde esta la vista: "ReporteUsuarioGenerarActivity".
+             Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
+             (vista), lo que daria un error en el mismo. -->
+        <activity
+            android:name=".moduloReporteria.ReporteUsuarioGenerarActivity"
+            android:exported="false" />
+
+        <!-- Esto es para indicarle al manifest donde esta la vista: "ControlSalarioActualizarActivity".
+             Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
+             (vista), lo que daria un error en el mismo. -->
+        <activity
+            android:name=".moduloEmpleados.ControlSalarioActualizarActivity"
+            android:exported="false" />
+
+        <!-- Esto es para indicarle al manifest donde esta la vista: "ControlSalarioCrearActivity".
+             Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
+             (vista), lo que daria un error en el mismo. -->
+        <activity
+            android:name=".moduloEmpleados.ControlSalarioCrearActivity"
+            android:exported="false" />
+
+        <!-- Esto es para indicarle al manifest donde esta la vista: "UsuarioEmpleadoActivity".
+             Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
+             (vista), lo que daria un error en el mismo. -->
+        <activity
+            android:name=".moduloEmpleados.UsuarioEmpleadoActivity"
+            android:exported="false" />
+
+        <!-- Esto es para indicarle al manifest donde esta la vista: "PermisoTiempoActualizarActivity".
+             Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
+             (vista), lo que daria un error en el mismo. -->
+        <activity
+            android:name=".moduloEmpleados.PermisoTiempoActualizarActivity"
+            android:exported="false" />
+
+        <!-- Esto es para indicarle al manifest donde esta la vista: "PermisoTiempoCrearActivity".
+             Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
+             (vista), lo que daria un error en el mismo. -->
+        <activity
+            android:name=".moduloEmpleados.PermisoTiempoCrearActivity"
+            android:exported="false" />
+
         <!-- Esto es para indicarle al manifest donde esta la vista: "PermisosUsuarioEmpleadoActivity".
              Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
              (vista), lo que daria un error en el mismo. -->
@@ -126,6 +182,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

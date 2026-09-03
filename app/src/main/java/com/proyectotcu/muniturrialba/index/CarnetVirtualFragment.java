@@ -1,7 +1,9 @@
 package com.proyectotcu.muniturrialba.index;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -33,8 +35,9 @@ import retrofit2.Response;
 public class CarnetVirtualFragment extends Fragment {
 
     //Variables globales para esta clase.
-    ImageView carnetQR, fotoPerfil;
+    ImageView carnetQR, fotoPerfil, logitoCarnet;
     TextView txtMensaje;
+    static Boolean mensajeCarnetVirtual = false;
 
     //Interfaz que contiene los métodos de la entidad usuario.
     UsuarioInterface usuarioInterface;
@@ -56,12 +59,16 @@ public class CarnetVirtualFragment extends Fragment {
          * los botones para evitar cualquier situación de que alguien logre -
          * saltarse la validación de los roles. */
         View view = inflater.inflate(R.layout.fragment_carnet_virtual, container, false);
-        carnetQR = view.findViewById(R.id.img_CarnetQR);
         fotoPerfil = view.findViewById(R.id.img_carnetFotoPerfil);
+        carnetQR = view.findViewById(R.id.img_CarnetQR);
+
+        logitoCarnet = view.findViewById(R.id.img_fotoCarnet);
         txtMensaje = view.findViewById(R.id.txt_MensajeCarnet);
 
-        carnetQR.setVisibility(View.INVISIBLE);
         fotoPerfil.setVisibility(View.INVISIBLE);
+        carnetQR.setVisibility(View.INVISIBLE);
+
+        logitoCarnet.setVisibility(View.GONE);
         txtMensaje.setVisibility(View.GONE);
 
         try {
@@ -107,35 +114,25 @@ public class CarnetVirtualFragment extends Fragment {
             String campoNombre = json.optString("nombre");
             String campoApellidos = json.optString("primer_Apellido") + " " + json.optString("segundo_Apellido");
             String campoCorreo = json.optString("correo");
-            Integer campoRol = Integer.parseInt(json.optString("rol"));
 
+            Integer campoRol = Integer.parseInt(json.optString("rol"));
             Boolean campoPermisoLeer = Boolean.parseBoolean(json.optString("permiso_Leer"));
-            Boolean campoPermisoCrear = Boolean.parseBoolean(json.optString("permiso_Crear"));
-            Boolean campoPermisoActualizar = Boolean.parseBoolean(json.optString("permiso_Actualizar"));
-            Boolean campoPermisoEliminar = Boolean.parseBoolean(json.optString("permiso_Eliminar"));
 
             /* Aqui lo que se esta haciendo es validar si el usuario tiene el rol: "Moderador", -
              * "Administrador" o "Empleado". Y si no, entonces no lo dejaria acceder a las -
              * opciones del perfil. */
             if (campoRol == 1 || campoRol == 2 || campoRol == 3) {
                 /* Una vez hecho eso, lo que seguiria seria validar los permisos del usuario -
-                 * que ha iniciado sesión. Y, si luego de eso, la respuesta que trae es un 4, -
+                 * que ha iniciado sesión. Y, si luego de eso, la respuesta que trae es un 5, -
                  * entonces quiere decir que si esta autorizado para acceder al carnet virtual. */
-                Integer respuestaPermisos = ValidarPermisos(campoPermisoLeer, campoPermisoCrear, campoPermisoActualizar, campoPermisoEliminar);
-                if (respuestaPermisos == 4) {
+                Integer respuestaPermisos = ValidarPermisos(campoPermisoLeer);
+                if (respuestaPermisos == 5) {
                     carnetQR.setVisibility(View.VISIBLE);
                     fotoPerfil.setVisibility(View.VISIBLE);
                     MostrarQR(campoNombre, campoApellidos, campoCorreo, tokenGuardado);
                 }
-
-                /* Asimismo, también se hace otra validación, ya que, si la respuesta que trae -
-                 * es un 1, quiere decir que ese usuario que inicio sesión no contiene el permiso -
-                 * de leer, por lo que no esta autorizado para visualizar el carnet respectivamente. */
-                if (respuestaPermisos == 1) {
-                    carnetQR.setVisibility(View.GONE);
-                    fotoPerfil.setVisibility(View.GONE);
-                }
             }
+
         } catch (Exception error) {
             Toast.makeText(getActivity(), "¡Lo sentimos, pero parece que hubo un problema técnico!", Toast.LENGTH_LONG).show();
             Toast.makeText(getActivity(), "Por favor, intentelo más tarde.", Toast.LENGTH_LONG).show();
@@ -201,6 +198,11 @@ public class CarnetVirtualFragment extends Fragment {
                         /* Esto permite leer el error del Body, de modo -
                          * que sirva en el debug. */
                         String error = response.errorBody().string();
+                        int errorRaw = response.raw().code();
+
+                        if(errorRaw == 401) {
+                            error = "Se finalizo la sesión de su cuenta.";
+                        }
 
                         /* Aqui lo que se hace es colocar el logo del carnet por defecto.
                          * Esto por temas de buenas prácticas. */
@@ -286,6 +288,11 @@ public class CarnetVirtualFragment extends Fragment {
                         /* Esto permite leer el error del Body, de modo -
                          * que sirva en el debug. */
                         String error = response.errorBody().string();
+                        int errorRaw = response.raw().code();
+
+                        if(errorRaw == 401) {
+                            error = "Se finalizo la sesión de su cuenta.";
+                        }
 
                         /* Aqui lo que se hace es colocar el logo de imagen por defecto.
                          * Esto por temas de buenas prácticas. */
@@ -347,40 +354,48 @@ public class CarnetVirtualFragment extends Fragment {
     /* Metodo que sirve para validar los permisos del usuario -
      * que ha iniciado sesión, esto para poder continuar con -
      * la navegación dentro de la aplicación móvil respectivamente. */
-    private Integer ValidarPermisos(Boolean Leer, Boolean Crear, Boolean Actualizar, Boolean Eliminar) {
-        /* Aqui valida si todos los permisos de ese usuario son falsos -
-         * (dando a entender que no esta autorizado). Y si entra, entonces -
-         * se ocultaria todas las opciones del carnet virtual y se enviaria -
-         * un mensaje mencionando que no tiene la autorización suficiente -
-         * para poder continuar. */
-        if(Leer == false && Crear == false && Actualizar == false && Eliminar == false) {
-            carnetQR.setVisibility(View.GONE);
+    private Integer ValidarPermisos(Boolean Leer) {
+        /* Aqui valida si el permiso de leer de ese usuario es falso -
+         * (dando a entender que no esta autorizado para visualizar los -
+         * datos (en este caso el carnet virtual). Y si entra, entonces -
+         * se ocultaria todas las opciones del carnet virtual y devolveria -
+         * un 0, indicando que no puede ver dichas opciones. */
+        if(Leer == false) {
             fotoPerfil.setVisibility(View.GONE);
+            carnetQR.setVisibility(View.GONE);
 
+            logitoCarnet.setVisibility(View.VISIBLE);
             txtMensaje.setVisibility(View.VISIBLE);
+
+            logitoCarnet.setImageResource(R.drawable.icono_contenido_no_disponible);
             txtMensaje.setText(getString(R.string.AutorizacionDenegada));
             /* NOTA: El "getString(R.string.AutorizacionDenegada)", lo que hace es -
              * traer un mensaje que se coloco en: "strings.xml" para que el textview: -
              * "txtMensaje" pueda colocarlo en la pantalla del fragmento (osea en el -
              * fragment_carnet_virtual.xml), esto porque es una forma dinamica de hacerlo. */
 
-            Toast.makeText(getActivity(), "¡No tienes la autorización necesaria para visualizar esta información!", Toast.LENGTH_LONG).show();
+            if(mensajeCarnetVirtual != true) {
+                AlertDialog.Builder construirAlertaCrear = new AlertDialog.Builder(getActivity());
+                construirAlertaCrear.setIcon(R.drawable.icono_error);
+
+                construirAlertaCrear.setMessage("Pero no tienes la autorización necesaria para visualizar esta información.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlertaCrear.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mensajeCarnetVirtual = true;
+                    }
+                });
+
+                AlertDialog ejecutarMensajeCrear = construirAlertaCrear.create();
+                ejecutarMensajeCrear.show();
+            }
+
             return 0;
         }
 
-        /* Aqui valida si el permiso de leer de ese usuario es falso -
-         * (dando a entender que no esta autorizado para visualizar los -
-         * datos (en este caso el carnet virtual). Y si entra, entonces -
-         * se ocultaria todas las opciones del carnet virtual y devolveria -
-         * un 1, indicando que no puede ver dichas opciones. */
-        if(Leer == false) {
-            Toast.makeText(getActivity(), "¡No tienes la autorización necesaria para visualizar esta información!", Toast.LENGTH_LONG).show();
-            return 1;
-        }
-
-        //El 4 se refiere a que el usuario que inicio sesión si esta autorizado.
-        return 4;
+        //El 5 se refiere a que el usuario que inicio sesión si esta autorizado.
+        return 5;
     }
-
-
 }
