@@ -39,6 +39,8 @@ import android.widget.Toast;
 import com.proyectotcu.muniturrialba.R;
 import com.proyectotcu.muniturrialba.manejoAPI.ConexionAPI;
 import com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI.ExtensionInicioSesionEntitie;
+import com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI.ExtensionReporteUsuarioEntitie;
+import com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI.ReporteUsuarioEntitie;
 import com.proyectotcu.muniturrialba.manejoAPI.interfacesAPI.InicioSesionInterface;
 
 import org.json.JSONObject;
@@ -54,7 +56,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 
 public class ReporteUsuarioFragment extends Fragment {
 
@@ -78,14 +79,18 @@ public class ReporteUsuarioFragment extends Fragment {
 
     ImageView logitoReportesUsuarios;
     SearchView buscadorReportesUsuarios;
-    Integer contadorNumeroReporte = 0;
+    Uri documentoPDF;
+    String idDocumento;
 
     List<ExtensionInicioSesionEntitie> datosOrdenados = new ArrayList<>();
     ArrayList<ExtensionInicioSesionEntitie> Lista_Tabla = new ArrayList<>();
+    ArrayList<ExtensionInicioSesionEntitie> ListaDatos_DocumentoPDF = new ArrayList<>();
 
-    public static ArrayList<String> documentosPDF = new ArrayList<>();
+    public static ArrayList<ReporteUsuarioEntitie> documentosPDF = new ArrayList<>();
+    public static ArrayList<ExtensionReporteUsuarioEntitie> respaldoReporteUsuario = new ArrayList<>();
     public static Boolean mensajeReportesUsuarios = false;
     public static Boolean autorizacionMantenerReporte = false;
+    public static Integer contadorNumeroReporte = 0;
 
     //Interfaz que contiene los métodos de la entidad FAQ.
     InicioSesionInterface inicioSesionInterface;
@@ -180,7 +185,7 @@ public class ReporteUsuarioFragment extends Fragment {
                     botonActualizar.setOnClickListener(v -> VistaEditarReportesUsuario());
                     botonEliminar.setOnClickListener(v -> { AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
                         construirAlerta.setIcon(R.drawable.icono_eliminar);
-                        construirAlerta.setMessage("¿Esta completamente seguro(a) de eliminar este reporte de usuario de forma permanentemente?")
+                        construirAlerta.setMessage("¿Esta completamente seguro(a) de eliminar este reporte de forma permanente?")
                                 .setTitle("Eliminar Reporte de Usuario.");
 
 
@@ -201,11 +206,43 @@ public class ReporteUsuarioFragment extends Fragment {
                         AlertDialog ejecutarMensaje = construirAlerta.create();
                         ejecutarMensaje.show();
                     });
-                    botonDescargar.setOnClickListener(v -> DescargarDocumentoPDF());
+                    botonDescargar.setOnClickListener(v ->  { AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
+                        construirAlerta.setIcon(R.drawable.icono_descargar);
+                        construirAlerta.setMessage("¿Esta completamente seguro(a) de descargar este reporte de usuario(a)?")
+                                .setTitle("Descargar Reporte de Usuario.");
+
+
+                        construirAlerta.setPositiveButton("Si.", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                DescargarDocumentoPDF();
+                            }
+                        });
+
+                        construirAlerta.setNegativeButton("No.", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(getActivity(), "¡No se continuo con la descarga del reporte!", Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+                        AlertDialog ejecutarMensaje = construirAlerta.create();
+                        ejecutarMensaje.show();
+                    });
 
                     if(getArguments() != null) {
-                        Uri documentoPDF = Uri.parse(getArguments().getString("Documento-PDF"));
-                        documentosPDF.add(documentoPDF.toString());
+                        documentoPDF = Uri.parse(getArguments().getString("Documento-PDF"));
+                        ListaDatos_DocumentoPDF = getArguments().getParcelableArrayList("ListaDatos_DocumentoPDF_Generado");
+                        idDocumento = getArguments().getString("idDocumento");
+
+                        if(idDocumento == null) {
+                            documentosPDF.add(new ReporteUsuarioEntitie(contadorNumeroReporte.toString(), documentoPDF.toString()));
+
+                        } else {
+                            documentosPDF.add(new ReporteUsuarioEntitie(idDocumento, documentoPDF.toString()));
+                        }
+
+                        respaldoReporteUsuario.add(new ExtensionReporteUsuarioEntitie(documentoPDF, ListaDatos_DocumentoPDF));
                         autorizacionMantenerReporte = true;
                     }
 
@@ -388,7 +425,7 @@ public class ReporteUsuarioFragment extends Fragment {
                 if(datosFiltrados.isEmpty()) {
                     AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
                     construirAlerta.setIcon(R.drawable.icono_advertencia);
-                    construirAlerta.setMessage("Pero no se pudo encontrar el reporte de usuario debido a que existen datos incorrectos o porque el registro no existe como tal. \n\nPor favor corriga los errores e intentelo de nuevo.")
+                    construirAlerta.setMessage("Pero no se pudo encontrar el usuario(a) debido a que existen datos incorrectos o porque el registro no existe como tal. \n\nPor favor corriga los errores e intentelo de nuevo.")
                             .setTitle("¡Lo sentimos!");
 
                     construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -916,7 +953,7 @@ public class ReporteUsuarioFragment extends Fragment {
         try {
             tblTablaReportesPDF.removeAllViews();
 
-            if(documentosPDF.size() == 0) {
+            if(documentosPDF.isEmpty()) {
                 tblTablaReportesPDF.addView(tbrPrimeraFilaReportesPDF);
             }
 
@@ -953,7 +990,10 @@ public class ReporteUsuarioFragment extends Fragment {
                 parametrosCheckBox.setMarginStart(margenCheckBox);
                 parametrosCheckBox.setMarginEnd(margenCheckBox);
 
-                String ReporteUsuario  = documentosPDF.get(i).toString();
+
+                ReporteUsuarioEntitie ReporteUsuario = documentosPDF.get(i);
+                String numeroReporte = ReporteUsuario.getNumeroDocumento().trim();
+                String documentoPDF = ReporteUsuario.getDocumentoPDF().trim();
 
                 campoCheckBoxReporte.setWidth(LargoCheckBox);
                 campoCheckBoxReporte.setHeight(AnchoCheckBox);
@@ -963,8 +1003,7 @@ public class ReporteUsuarioFragment extends Fragment {
                 campoCheckBoxReporte.setButtonTintList(ColorStateList.valueOf(Color.BLACK));
                 campoCheckBoxReporte.setTag(ReporteUsuario);
 
-                contadorNumeroReporte++;
-                campoNumeroReporte.setText(contadorNumeroReporte.toString());
+                campoNumeroReporte.setText(numeroReporte);
                 campoNumeroReporte.setWidth(LargoContenido);
                 campoNumeroReporte.setHeight(AnchoContenido);
                 campoNumeroReporte.setLayoutParams(parametrosNumeroReporte);
@@ -975,7 +1014,7 @@ public class ReporteUsuarioFragment extends Fragment {
                 campoNumeroReporte.setTextColor(Color.BLACK);
                 campoNumeroReporte.setTextSize(TamañoLetraContenido);
 
-                campoReporteUsuario.setText(ReporteUsuario);
+                campoReporteUsuario.setText(documentoPDF);
                 campoReporteUsuario.setWidth(LargoContenido);
                 campoReporteUsuario.setHeight(AnchoContenido);
                 campoReporteUsuario.setLayoutParams(parametrosContenido);
@@ -1073,14 +1112,12 @@ public class ReporteUsuarioFragment extends Fragment {
             } else {
                 AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
                 construirAlerta.setIcon(R.drawable.icono_error);
-                construirAlerta.setMessage("Pero en este momento no es posible generar el reporte de usuario debido a que no se selecciono ningún dato.")
+                construirAlerta.setMessage("Pero en este momento no es posible generar el reporte debido a que no se selecciono ningún dato.")
                         .setTitle("¡Lo sentimos!");
 
                 construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    });
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
 
                 AlertDialog ejecutarMensaje = construirAlerta.create();
                 ejecutarMensaje.show();
@@ -1120,7 +1157,61 @@ public class ReporteUsuarioFragment extends Fragment {
 
     private void VistaEditarReportesUsuario() {
         try {
-            //Pendiente.
+            Integer cantidadChecks = 0;
+            ReporteUsuarioEntitie datoSeleccionado = null;
+
+            for(int i = 0; i < tblTablaReportesPDF.getChildCount(); i++) {
+                TableRow reportesDatos = (TableRow) tblTablaReportesPDF.getChildAt(i);
+                CheckBox seleccionReportes = (CheckBox) reportesDatos.getChildAt(0);
+
+
+                if(seleccionReportes.isChecked()) {
+                    cantidadChecks++;
+                    datoSeleccionado = (ReporteUsuarioEntitie) seleccionReportes.getTag();
+                }
+            }
+
+
+            if (cantidadChecks == 1 && datoSeleccionado != null && respaldoReporteUsuario != null) {
+                ArrayList<ExtensionInicioSesionEntitie> listaDatos = new ArrayList<>();
+                Uri reporteSeleccionado = Uri.parse(datoSeleccionado.getDocumentoPDF());
+                String idReporteSeleccionado = datoSeleccionado.getNumeroDocumento();
+
+                for(ExtensionReporteUsuarioEntitie listaReporte : respaldoReporteUsuario) {
+                    Uri documentoPDF_Recorrido = listaReporte.getDocumentoPDF();
+
+                    if(documentoPDF_Recorrido.equals(reporteSeleccionado)) {
+                        for(int i = 0; i < listaReporte.getListaDatos_DocumentoPDF().size(); i++) {
+                            listaDatos.add(listaReporte.getListaDatos_DocumentoPDF().get(i));
+                        }
+                    }
+                }
+
+
+                Intent intentReporteEditarUsuario = new Intent(getActivity(), ReporteUsuarioEditarActivity.class);
+
+                intentReporteEditarUsuario.putParcelableArrayListExtra("ListaDatos_DocumentoPDF_Seleccionado", listaDatos);
+                intentReporteEditarUsuario.putExtra("Documento_PDF_Seleccionado", reporteSeleccionado.toString());
+                intentReporteEditarUsuario.putExtra("idDocumento_PDF_Seleccionado", idReporteSeleccionado);
+
+                startActivity(intentReporteEditarUsuario);
+
+                getActivity().finish();
+
+            } else {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
+                construirAlerta.setIcon(R.drawable.icono_error);
+                construirAlerta.setMessage("Pero en este momento no es posible actualizar el reporte debido a que selecciono más de un dato o que incluso no se selecciono ninguno.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+            }
+
         } catch (Exception error) {
             buscadorReportesUsuarios.setVisibility(GONE);
             botonCrear.setVisibility(View.GONE);
@@ -1156,7 +1247,7 @@ public class ReporteUsuarioFragment extends Fragment {
     private void EliminarReportesUsuario() {
         try {
             Integer cantidadChecks = 0;
-            String datoSeleccionado = null;
+            ReporteUsuarioEntitie datoSeleccionado = null;
 
             for(int i = 0; i < tblTablaReportesPDF.getChildCount(); i++) {
                 TableRow reportesDatos = (TableRow) tblTablaReportesPDF.getChildAt(i);
@@ -1165,20 +1256,31 @@ public class ReporteUsuarioFragment extends Fragment {
 
                 if(seleccionReportes.isChecked()) {
                     cantidadChecks++;
-                    datoSeleccionado = (String) seleccionReportes.getTag();
+                    datoSeleccionado = (ReporteUsuarioEntitie) seleccionReportes.getTag();
                 }
             }
 
 
             if(cantidadChecks == 1 && datoSeleccionado != null) {
+                Uri datoEliminar = Uri.parse(datoSeleccionado.getDocumentoPDF());
+                ExtensionReporteUsuarioEntitie respaldoDatoEliminar = null;
+
+                for(ExtensionReporteUsuarioEntitie listaReporte : respaldoReporteUsuario) {
+                    Uri documentoPDF_Recorrido = listaReporte.getDocumentoPDF();
+
+                    if(documentoPDF_Recorrido.equals(datoEliminar)) {
+                        respaldoDatoEliminar = listaReporte;
+                    }
+                }
+
                 documentosPDF.remove(datoSeleccionado);
-                contadorNumeroReporte = 0;
+                respaldoReporteUsuario.remove(respaldoDatoEliminar);
                 MostrarDocumento_ReportesUsuario();
 
             } else {
                 AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
                 construirAlerta.setIcon(R.drawable.icono_error);
-                construirAlerta.setMessage("Pero en este momento no es posible eliminar el reporte de usuario debido a que selecciono más de un dato o que incluso no se selecciono ninguno.")
+                construirAlerta.setMessage("Pero en este momento no es posible eliminar el reporte debido a que selecciono más de un dato o que incluso no se selecciono ninguno.")
                         .setTitle("¡Lo sentimos!");
 
                 construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -1224,7 +1326,7 @@ public class ReporteUsuarioFragment extends Fragment {
     private void DescargarDocumentoPDF() {
         try {
             Integer cantidadChecks = 0;
-            String datoSeleccionado = null;
+            ReporteUsuarioEntitie datoSeleccionado = null;
 
             //En esta primera parte buscara y guardara el documento PDF que el usuario desea descargar.
             for (int i = 0; i < tblTablaReportesPDF.getChildCount(); i++) {
@@ -1234,14 +1336,16 @@ public class ReporteUsuarioFragment extends Fragment {
 
                 if (seleccionDato.isChecked()) {
                     cantidadChecks++;
-                    datoSeleccionado = (String) seleccionDato.getTag();
+                    datoSeleccionado = (ReporteUsuarioEntitie) seleccionDato.getTag();
                 }
             }
 
 
             if (cantidadChecks == 1 && datoSeleccionado != null) {
+                Uri documentoDescargar = Uri.parse(datoSeleccionado.getDocumentoPDF());
+
                 //Esto es para poder leer y acceder al URI del documento PDF que fue seleccionado(a):
-                InputStream lector = getActivity().getContentResolver().openInputStream(Uri.parse(datoSeleccionado));
+                InputStream lector = getActivity().getContentResolver().openInputStream(documentoDescargar);
                 byte[] documentoPDF = null;
 
                 //Esto es para que se pueda ejecutar bien en versiones de Android 13 en adelante.
@@ -1302,7 +1406,7 @@ public class ReporteUsuarioFragment extends Fragment {
             } else {
                 AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
                 construirAlerta.setIcon(R.drawable.icono_error);
-                construirAlerta.setMessage("Pero en este momento no es posible descargar el reporte de usuario debido a que se selecciono más de un dato o que incluso no se selecciono ninguno.")
+                construirAlerta.setMessage("Pero en este momento no es posible descargar el reporte debido a que se selecciono más de un dato o que incluso no se selecciono ninguno.")
                         .setTitle("¡Lo sentimos!");
 
                 construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {

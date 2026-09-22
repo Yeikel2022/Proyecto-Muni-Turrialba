@@ -2,14 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_ReportesUsuarios_Editar"
+    android:id="@+id/main_ReportesSalariales_Editar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/turrialba">
 
 
     <ImageView
-        android:id="@+id/id_img_bienvenidaEditarUsuarios"
+        android:id="@+id/id_img_bienvenidaEditarSalariales"
         android:layout_width="282dp"
         android:layout_height="162dp"
         android:layout_marginStart="32dp"
@@ -20,35 +20,35 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
-        android:id="@+id/id_SeccionesEditarUsuarios"
+        android:id="@+id/id_SeccionesEditarSalariales"
         android:layout_width="wrap_content"
         android:layout_height="560dp"
         android:background="@drawable/border_radius_new"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/id_img_bienvenidaEditarUsuarios" />
+        app:layout_constraintTop_toBottomOf="@+id/id_img_bienvenidaEditarSalariales" />
 
     <LinearLayout
-        android:id="@+id/lnl_ContenidoEditarUsuarios"
+        android:id="@+id/lnl_ContenidoEditarSalariales"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@+id/id_SeccionesEditarUsuarios"
-        app:layout_constraintEnd_toEndOf="@+id/id_SeccionesEditarUsuarios"
+        app:layout_constraintBottom_toBottomOf="@+id/id_SeccionesEditarSalariales"
+        app:layout_constraintEnd_toEndOf="@+id/id_SeccionesEditarSalariales"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/id_SeccionesEditarUsuarios"
-        app:layout_constraintTop_toTopOf="@+id/id_SeccionesEditarUsuarios"
+        app:layout_constraintStart_toStartOf="@+id/id_SeccionesEditarSalariales"
+        app:layout_constraintTop_toTopOf="@+id/id_SeccionesEditarSalariales"
         app:layout_constraintVertical_bias="0.0">
 
         <TextView
-            android:id="@+id/txt_TituloEditarUsuarios"
+            android:id="@+id/txt_TituloEditarSalariales"
             android:layout_width="325dp"
             android:layout_height="33dp"
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif"
             android:paddingTop="5dp"
-            android:text="Editar reporte de usuario:"
+            android:text="Editar reporte salarial:"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="@color/black"
@@ -57,41 +57,41 @@
             android:typeface="normal" />
 
         <HorizontalScrollView
-            android:id="@+id/hsv_ScrollHorizontal_EditarReporteUsuario"
+            android:id="@+id/hsv_ScrollHorizontal_EditarReporteSalarial"
             android:layout_width="match_parent"
             android:layout_height="270dp"
             android:layout_marginTop="15dp">
 
             <LinearLayout
-                android:id="@+id/lnl_ContenidoHorizontal_EditarReporteUsuario"
+                android:id="@+id/lnl_ContenidoHorizontal_EditarReporteSalarial"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <ScrollView
-                    android:id="@+id/sv_ScrollVertical_EditarReporteUsuario"
+                    android:id="@+id/sv_ScrollVertical_EditarReporteSalarial"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
                     <LinearLayout
-                        android:id="@+id/lnl_ContenidoVertical_EditarReporteUsuario"
+                        android:id="@+id/lnl_ContenidoVertical_EditarReporteSalarial"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
                         <TableLayout
-                            android:id="@+id/tbl_TablaInfo_EditarReporteUsuario"
+                            android:id="@+id/tbl_TablaInfo_EditarReporteSalarial"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
                             <TableRow
-                                android:id="@+id/tbr_InfoFila_EditarReporteUsuario"
+                                android:id="@+id/tbr_InfoFila_EditarReporteSalarial"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:background="@drawable/border_table">
 
                                 <TextView
-                                    android:id="@+id/txt_InfoSeleccion_EditarReporteUsuario"
+                                    android:id="@+id/txt_InfoSeleccionReportes_SalarialesEditar"
                                     android:layout_width="30dp"
                                     android:layout_height="40dp"
                                     android:layout_marginStart="7dp"
@@ -100,13 +100,14 @@
                                     android:paddingTop="5dp"
                                     android:text="✓"
                                     android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
                                     android:textSize="20sp"
                                     android:textStyle="bold"
                                     android:typeface="normal" />
 
                                 <TextView
-                                    android:id="@+id/txt_InfoNombre_EditarReporteUsuario"
+                                    android:id="@+id/txt_InfoNombreReportes_SalarialesEditar"
                                     android:layout_width="350dp"
                                     android:layout_height="40dp"
                                     android:layout_marginStart="-1dp"
@@ -115,7 +116,7 @@
                                     android:paddingStart="11dp"
                                     android:paddingTop="5dp"
                                     android:text="Nombre:"
-                                    android:textAlignment="viewStart"
+                                    android:textAlignment="textStart"
                                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
                                     android:textSize="20sp"
@@ -123,17 +124,16 @@
                                     android:typeface="normal" />
 
                                 <TextView
-                                    android:id="@+id/txt_InfoApellidos_EditarReporteUsuario"
+                                    android:id="@+id/txt_InfoApellidosReportes_SalarialesEditar"
                                     android:layout_width="350dp"
                                     android:layout_height="40dp"
                                     android:layout_marginStart="-1dp"
-                                    android:layout_span="1"
                                     android:background="@drawable/border_table_row"
                                     android:fontFamily="sans-serif"
                                     android:paddingStart="11dp"
                                     android:paddingTop="5dp"
                                     android:text="Apellidos:"
-                                    android:textAlignment="viewStart"
+                                    android:textAlignment="textStart"
                                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
                                     android:textColorHint="@color/black"
@@ -142,7 +142,7 @@
                                     android:typeface="normal" />
 
                                 <TextView
-                                    android:id="@+id/txt_InfoCedula_EditarReporteUsuario"
+                                    android:id="@+id/txt_InfoCedulaReportes_SalarialesEditar"
                                     android:layout_width="350dp"
                                     android:layout_height="40dp"
                                     android:layout_marginStart="-1dp"
@@ -151,7 +151,7 @@
                                     android:paddingStart="11dp"
                                     android:paddingTop="5dp"
                                     android:text="Cédula:"
-                                    android:textAlignment="viewStart"
+                                    android:textAlignment="textStart"
                                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
                                     android:textSize="20sp"
@@ -159,24 +159,7 @@
                                     android:typeface="normal" />
 
                                 <TextView
-                                    android:id="@+id/txt_InfoCorreo_EditarReporteUsuario"
-                                    android:layout_width="350dp"
-                                    android:layout_height="40dp"
-                                    android:layout_marginStart="-1dp"
-                                    android:background="@drawable/border_table_row"
-                                    android:fontFamily="sans-serif"
-                                    android:paddingStart="11dp"
-                                    android:paddingTop="5dp"
-                                    android:text="Correo Electrónico:"
-                                    android:textAlignment="viewStart"
-                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                                    android:textColor="@color/black"
-                                    android:textSize="20sp"
-                                    android:textStyle="bold"
-                                    android:typeface="normal" />
-
-                                <TextView
-                                    android:id="@+id/txt_InfoDepartamento_EditarReporteUsuario"
+                                    android:id="@+id/txt_InfoDepartamentoReportes_SalarialesEditar"
                                     android:layout_width="350dp"
                                     android:layout_height="40dp"
                                     android:layout_marginStart="-1dp"
@@ -185,7 +168,7 @@
                                     android:paddingStart="11dp"
                                     android:paddingTop="5dp"
                                     android:text="Departamento:"
-                                    android:textAlignment="viewStart"
+                                    android:textAlignment="textStart"
                                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
                                     android:textSize="20sp"
@@ -193,7 +176,7 @@
                                     android:typeface="normal" />
 
                                 <TextView
-                                    android:id="@+id/txt_InfoRol_EditarReporteUsuario"
+                                    android:id="@+id/txt_InfoFechaEntregaReportes_SalarialesEditar"
                                     android:layout_width="350dp"
                                     android:layout_height="40dp"
                                     android:layout_marginStart="-1dp"
@@ -201,8 +184,8 @@
                                     android:fontFamily="sans-serif"
                                     android:paddingStart="11dp"
                                     android:paddingTop="5dp"
-                                    android:text="Rol:"
-                                    android:textAlignment="viewStart"
+                                    android:text="Fecha de entrega:"
+                                    android:textAlignment="textStart"
                                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
                                     android:textSize="20sp"
@@ -210,7 +193,7 @@
                                     android:typeface="normal" />
 
                                 <TextView
-                                    android:id="@+id/txt_InfoFechaCreacion_EditarReporteUsuario"
+                                    android:id="@+id/txt_InfoSalarioReportes_SalarialesEditar"
                                     android:layout_width="350dp"
                                     android:layout_height="40dp"
                                     android:layout_marginStart="-1dp"
@@ -218,8 +201,8 @@
                                     android:fontFamily="sans-serif"
                                     android:paddingStart="11dp"
                                     android:paddingTop="5dp"
-                                    android:text="Fecha de creación:"
-                                    android:textAlignment="viewStart"
+                                    android:text="Salario:"
+                                    android:textAlignment="textStart"
                                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
                                     android:textSize="20sp"
@@ -227,7 +210,7 @@
                                     android:typeface="normal" />
 
                                 <TextView
-                                    android:id="@+id/txt_InfoFechaInicioSesion_EditarReporteUsuario"
+                                    android:id="@+id/txt_InfoDescripcionReportes_SalarialesEditar"
                                     android:layout_width="350dp"
                                     android:layout_height="40dp"
                                     android:layout_marginStart="-1dp"
@@ -235,47 +218,31 @@
                                     android:fontFamily="sans-serif"
                                     android:paddingStart="11dp"
                                     android:paddingTop="5dp"
-                                    android:text="Fecha de inicio de sesión:"
-                                    android:textAlignment="viewStart"
+                                    android:text="Descripción:"
+                                    android:textAlignment="textStart"
                                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
                                     android:textSize="20sp"
                                     android:textStyle="bold"
                                     android:typeface="normal" />
 
-                                <TextView
-                                    android:id="@+id/txt_InfoUltimaConexion_EditarReporteUsuario"
-                                    android:layout_width="350dp"
-                                    android:layout_height="40dp"
-                                    android:layout_marginStart="-1dp"
-                                    android:background="@drawable/border_table_row"
-                                    android:fontFamily="sans-serif"
-                                    android:paddingStart="11dp"
-                                    android:paddingTop="5dp"
-                                    android:text="Ultima Conexión:"
-                                    android:textAlignment="viewStart"
-                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                                    android:textColor="@color/black"
-                                    android:textSize="20sp"
-                                    android:textStyle="bold"
-                                    android:typeface="normal" />
                             </TableRow>
 
                         </TableLayout>
 
                         <TableLayout
-                            android:id="@+id/tbl_TablaEditarReporteUsuario"
+                            android:id="@+id/tbl_TablaEditarReporteSalarial"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@drawable/border_table">
 
                             <TableRow
-                                android:id="@+id/tbr_PrimeraFila_EditarReporteUsuario"
+                                android:id="@+id/tbr_PrimeraFila_EditarReporteSalarial"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent">
 
                                 <CheckBox
-                                    android:id="@+id/btn_SeleccionDato_EditarReporteUsuario"
+                                    android:id="@+id/btn_SeleccionDatoReportes_SalarialesEditar"
                                     android:layout_width="30dp"
                                     android:layout_height="30dp"
                                     android:layout_marginStart="7dp"
@@ -292,7 +259,7 @@
                                     android:typeface="normal" />
 
                                 <TextView
-                                    android:id="@+id/txt_Nombre_EditarReporteUsuario"
+                                    android:id="@+id/txt_NombreReportes_SalarialesEditar"
                                     android:layout_width="350dp"
                                     android:layout_height="180dp"
                                     android:layout_marginStart="-1dp"
@@ -301,6 +268,7 @@
                                     android:hint="Nombre:"
                                     android:paddingStart="11dp"
                                     android:paddingTop="5dp"
+                                    android:text="Nombre:"
                                     android:textAlignment="textStart"
                                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
@@ -310,7 +278,7 @@
                                     android:typeface="normal" />
 
                                 <TextView
-                                    android:id="@+id/txt_Apellidos_EditarReporteUsuario"
+                                    android:id="@+id/txt_ApellidosReportes_SalarialesEditar"
                                     android:layout_width="350dp"
                                     android:layout_height="180dp"
                                     android:layout_marginStart="-1dp"
@@ -319,6 +287,7 @@
                                     android:hint="Apellidos:"
                                     android:paddingStart="11dp"
                                     android:paddingTop="5dp"
+                                    android:text="Apellidos:"
                                     android:textAlignment="textStart"
                                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
@@ -328,7 +297,7 @@
                                     android:typeface="normal" />
 
                                 <TextView
-                                    android:id="@+id/txt_Cedula_EditarReporteUsuario"
+                                    android:id="@+id/txt_CedulaReportes_SalarialesEditar"
                                     android:layout_width="350dp"
                                     android:layout_height="180dp"
                                     android:layout_marginStart="-1dp"
@@ -337,6 +306,7 @@
                                     android:hint="Cédula:"
                                     android:paddingStart="11dp"
                                     android:paddingTop="5dp"
+                                    android:text="Cédula:"
                                     android:textAlignment="textStart"
                                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
@@ -346,25 +316,7 @@
                                     android:typeface="normal" />
 
                                 <TextView
-                                    android:id="@+id/txt_Correo_EditarReporteUsuario"
-                                    android:layout_width="350dp"
-                                    android:layout_height="180dp"
-                                    android:layout_marginStart="-1dp"
-                                    android:background="@drawable/border_table_row"
-                                    android:fontFamily="sans-serif"
-                                    android:hint="Correo Electrónico:"
-                                    android:paddingStart="11dp"
-                                    android:paddingTop="5dp"
-                                    android:textAlignment="textStart"
-                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                                    android:textColor="@color/black"
-                                    android:textColorHint="@color/black"
-                                    android:textSize="20sp"
-                                    android:textStyle="italic"
-                                    android:typeface="normal" />
-
-                                <TextView
-                                    android:id="@+id/txt_Departamento_EditarReporteUsuario"
+                                    android:id="@+id/txt_DepartamentoReportes_SalarialesEditar"
                                     android:layout_width="350dp"
                                     android:layout_height="180dp"
                                     android:layout_marginStart="-1dp"
@@ -373,6 +325,7 @@
                                     android:hint="Departamento:"
                                     android:paddingStart="11dp"
                                     android:paddingTop="5dp"
+                                    android:text="Departamento:"
                                     android:textAlignment="textStart"
                                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
@@ -382,31 +335,13 @@
                                     android:typeface="normal" />
 
                                 <TextView
-                                    android:id="@+id/txt_Rol_EditarReporteUsuario"
+                                    android:id="@+id/txt_FechaEntregaReportes_SalarialesEditar"
                                     android:layout_width="350dp"
                                     android:layout_height="180dp"
                                     android:layout_marginStart="-1dp"
                                     android:background="@drawable/border_table_row"
                                     android:fontFamily="sans-serif"
-                                    android:hint="Rol:"
-                                    android:paddingStart="11dp"
-                                    android:paddingTop="5dp"
-                                    android:textAlignment="textStart"
-                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                                    android:textColor="@color/black"
-                                    android:textColorHint="@color/black"
-                                    android:textSize="20sp"
-                                    android:textStyle="italic"
-                                    android:typeface="normal" />
-
-                                <TextView
-                                    android:id="@+id/txt_FechaCreacion_EditarReporteUsuario"
-                                    android:layout_width="350dp"
-                                    android:layout_height="180dp"
-                                    android:layout_marginStart="-1dp"
-                                    android:background="@drawable/border_table_row"
-                                    android:fontFamily="sans-serif"
-                                    android:hint="Fecha de Creación:"
+                                    android:hint="Fecha de creación:"
                                     android:paddingStart="11dp"
                                     android:paddingTop="5dp"
                                     android:text="Fecha de creación:"
@@ -419,15 +354,16 @@
                                     android:typeface="normal" />
 
                                 <TextView
-                                    android:id="@+id/txt_FechaInicioSesion_EditarReporteUsuario"
+                                    android:id="@+id/txt_SalarioReportes_SalarialesEditar"
                                     android:layout_width="350dp"
                                     android:layout_height="180dp"
                                     android:layout_marginStart="-1dp"
                                     android:background="@drawable/border_table_row"
                                     android:fontFamily="sans-serif"
-                                    android:hint="Fecha de inicio de sesión:"
+                                    android:hint="Departamento:"
                                     android:paddingStart="11dp"
                                     android:paddingTop="5dp"
+                                    android:text="Salario:"
                                     android:textAlignment="textStart"
                                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
@@ -437,15 +373,16 @@
                                     android:typeface="normal" />
 
                                 <TextView
-                                    android:id="@+id/txt_UltimaConexion_EditarReporteUsuario"
+                                    android:id="@+id/txt_DescripcionReportes_SalarialesEditar"
                                     android:layout_width="350dp"
                                     android:layout_height="180dp"
                                     android:layout_marginStart="-1dp"
                                     android:background="@drawable/border_table_row"
                                     android:fontFamily="sans-serif"
-                                    android:hint="Ultima Conexión:"
+                                    android:hint="Departamento:"
                                     android:paddingStart="11dp"
                                     android:paddingTop="5dp"
+                                    android:text="Descripción:"
                                     android:textAlignment="textStart"
                                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                                     android:textColor="@color/black"
@@ -453,6 +390,7 @@
                                     android:textSize="20sp"
                                     android:textStyle="italic"
                                     android:typeface="normal" />
+
                             </TableRow>
                         </TableLayout>
                     </LinearLayout>
@@ -461,7 +399,7 @@
         </HorizontalScrollView>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_SeleccionarUsuarioEmpleado_EditarReportesUsuarios"
+            android:id="@+id/btn_SeleccionarSalario_ExtraEditar"
             android:layout_width="325dp"
             android:layout_height="63dp"
             android:layout_marginTop="25dp"
@@ -480,18 +418,18 @@
             app:iconTint="@color/black" />
 
         <HorizontalScrollView
-            android:id="@+id/hsv_ScrollHorizontalBotones_EditarReporteUsuario"
+            android:id="@+id/hsv_ScrollHorizontalBotones_EditarReporteSalarial"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <LinearLayout
-                android:id="@+id/lnl_ContenidoHorizontalBotones_EditarReporteUsuario"
+                android:id="@+id/lnl_ContenidoHorizontalBotones_EditarReporteSalarial"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_EditarReporteUsuario"
+                    android:id="@+id/btn_EditarReporteSalarial"
                     android:layout_width="188dp"
                     android:layout_height="63dp"
                     android:layout_marginStart="12dp"
@@ -514,7 +452,7 @@
                     app:iconTint="@color/black" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_EliminarReporteUsuario"
+                    android:id="@+id/btn_EliminarReporteSalarial"
                     android:layout_width="188dp"
                     android:layout_height="63dp"
                     android:layout_marginStart="12dp"
@@ -540,7 +478,7 @@
 
 
         <ImageView
-            android:id="@+id/img_fotoEditarReportesUsuarios"
+            android:id="@+id/img_fotoEditarReportesSalariales"
             android:layout_width="304dp"
             android:layout_height="226dp"
             android:layout_marginTop="5dp"
@@ -549,10 +487,10 @@
             android:visibility="gone" />
 
         <TextView
-            android:id="@+id/txt_MensajeEditarReportesUsuarios"
+            android:id="@+id/txt_MensajeEditarReportesSalariales"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignTop="@+id/id_SeccionesEditarUsuarios"
+            android:layout_alignTop="@+id/id_SeccionesEditarSalariales"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="15dp"
@@ -574,7 +512,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/id_SeccionesEditarUsuarios"/>
+        app:layout_constraintTop_toBottomOf="@+id/id_SeccionesEditarSalariales" />
 
     <TextView
         android:id="@+id/txt_DerechosCopy"

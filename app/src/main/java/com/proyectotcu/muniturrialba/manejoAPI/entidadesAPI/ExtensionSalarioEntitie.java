@@ -1,9 +1,14 @@
 package com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ExtensionSalarioEntitie {
+public class ExtensionSalarioEntitie implements Parcelable {
     @SerializedName("nombre")
     @Expose
     private String nombre;
@@ -39,6 +44,46 @@ public class ExtensionSalarioEntitie {
     @SerializedName("descripcion")
     @Expose
     private String descripcion;
+
+    protected ExtensionSalarioEntitie(Parcel tipo) {
+        nombre = tipo.readString();
+        apellido_1 = tipo.readString();
+        apellido_2 = tipo.readString();
+        cedula = tipo.readString();
+        departamento = tipo.readString();
+        fecha_Entrega = tipo.readString();
+        salario = Double.parseDouble(tipo.readString());
+        descripcion = tipo.readString();
+    }
+
+    public static final Parcelable.Creator<ExtensionSalarioEntitie> CREATOR = new Parcelable.Creator<ExtensionSalarioEntitie>() {
+        @Override
+        public ExtensionSalarioEntitie createFromParcel(Parcel source) {
+            return new ExtensionSalarioEntitie(source);
+        }
+
+        @Override
+        public ExtensionSalarioEntitie[] newArray(int size) {
+            return new ExtensionSalarioEntitie[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(nombre);
+        dest.writeString(apellido_1);
+        dest.writeString(apellido_2);
+        dest.writeString(cedula);
+        dest.writeString(departamento);
+        dest.writeString(fecha_Entrega);
+        dest.writeString(salario.toString());
+        dest.writeString(descripcion);
+    }
 
 
     public String getNombre() {

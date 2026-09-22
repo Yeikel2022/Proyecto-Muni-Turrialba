@@ -3,9 +3,8 @@ package com.proyectotcu.muniturrialba.moduloReporteria;
 import static android.view.View.GONE;
 import static android.view.View.TEXT_ALIGNMENT_VIEW_START;
 import static android.view.View.VISIBLE;
-
-import static com.proyectotcu.muniturrialba.moduloReporteria.ReporteUsuarioFragment.documentosPDF;
-import static com.proyectotcu.muniturrialba.moduloReporteria.ReporteUsuarioFragment.respaldoReporteUsuario;
+import static com.proyectotcu.muniturrialba.moduloReporteria.ReportePermisoTiempoFragment.documentosPDFTiempo;
+import static com.proyectotcu.muniturrialba.moduloReporteria.ReportePermisoTiempoFragment.respaldoReporteTiempo;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -39,10 +38,10 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.proyectotcu.muniturrialba.R;
-import com.proyectotcu.muniturrialba.databinding.ActivityReporteUsuariosEditarBinding;
-import com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI.ExtensionInicioSesionEntitie;
-import com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI.ExtensionReporteUsuarioEntitie;
-import com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI.ReporteUsuarioEntitie;
+import com.proyectotcu.muniturrialba.databinding.ActivityReportePermisosTiempoEditarBinding;
+import com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI.ExtensionPermisoTiempoEntitie;
+import com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI.ExtensionReportePermisoTiempoEntitie;
+import com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI.ReportePermisoTiempoEntitie;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -51,16 +50,16 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class ReporteUsuarioEditarActivity extends AppCompatActivity {
+public class ReportePermisoTiempoEditarActivity extends AppCompatActivity {
     //Variable para usar el ViewBinding de esta clase.
-    private ActivityReporteUsuariosEditarBinding reporteUsuariosEditarBinding;
+    private ActivityReportePermisosTiempoEditarBinding reporteTiempoEditarBinding;
 
     //Variables globales:
     Integer LargoContenido, AnchoContenido, LargoCheckBox, AnchoCheckBox, TamañoLetraContenido, margenContenido, margenCheckBox,
             margenTop, paddingTopContenido, paddingStartContenido, paddingEndContenido;
 
-    TextView campoNombreGuardado, campoApellidosGuardado, campoCedulaGuardado, campoCorreoGuardado, campoDepartamentoGuardado,
-            campoRolGuardado, campoFechaCreacionGuardado, campoFechaInicioSesionGuardado, campoUltimaConexionGuardado;
+    TextView campoNombreGuardado, campoApellidosGuardado, campoCedulaGuardado, campoDepartamentoGuardado, campoTipoPermisoGuardado,
+             campoDescripcionGuardado, campoFechaAsignacionGuardado, campoFechaFinalizacionGuardado;
 
     TableRow.LayoutParams parametrosContenido, parametrosCheckBox;
     String documentoRecorrido, idDocumentoRecorrido;
@@ -69,28 +68,28 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
     CheckBox campoCheckBoxGuardado;
     Gson gson = new Gson();
 
-    ArrayList<ExtensionInicioSesionEntitie> datosOrdenados = new ArrayList<>();
-    ArrayList<ExtensionInicioSesionEntitie> ListaDatosRecorrido = new ArrayList<>();
-    ArrayList<ExtensionInicioSesionEntitie> Lista_Usuarios = new ArrayList<>();
+    ArrayList<ExtensionPermisoTiempoEntitie> datosOrdenados = new ArrayList<>();
+    ArrayList<ExtensionPermisoTiempoEntitie> ListaDatosRecorrido = new ArrayList<>();
+    ArrayList<ExtensionPermisoTiempoEntitie> Lista_PermisosTiempo = new ArrayList<>();
 
     private static String listaTemporal, listaIdTemporal, listaDocumentoTemporal;
-    protected static boolean Autorizacion = false;
+    protected static boolean AutorizacionTiempoEditar = false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        reporteUsuariosEditarBinding = ActivityReporteUsuariosEditarBinding.inflate(getLayoutInflater());
+        reporteTiempoEditarBinding = ActivityReportePermisosTiempoEditarBinding.inflate(getLayoutInflater());
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(reporteUsuariosEditarBinding.getRoot());
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_ReportesUsuarios_Editar), (v, insets) -> {
+        setContentView(reporteTiempoEditarBinding.getRoot());
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_ReportesTiempo_Editar), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        reporteUsuariosEditarBinding.imgFotoEditarReportesUsuarios.setVisibility(GONE);
-        reporteUsuariosEditarBinding.txtMensajeEditarReportesUsuarios.setVisibility(GONE);
+        reporteTiempoEditarBinding.imgFotoEditarReportesTiempo.setVisibility(GONE);
+        reporteTiempoEditarBinding.txtMensajeEditarReportesTiempo.setVisibility(GONE);
 
         try {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -107,8 +106,8 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
              * NOTA: Esto se hace para evitar que en la siguiente validación, la variable: tablaRecorrida genere un error, porque -
              * puede contener un nulo si no recibe nada por parte del intent. */
             if(ListaDatosRecorrido == null) {
-                Type listaParseada = new TypeToken<ArrayList<ExtensionInicioSesionEntitie>>(){}.getType();
-                ArrayList<ExtensionInicioSesionEntitie> tablaOriginal = gson.fromJson(listaTemporal, listaParseada);
+                Type listaParseada = new TypeToken<ArrayList<ExtensionPermisoTiempoEntitie>>(){}.getType();
+                ArrayList<ExtensionPermisoTiempoEntitie> tablaOriginal = gson.fromJson(listaTemporal, listaParseada);
 
                 datosOrdenados = tablaOriginal;
 
@@ -117,9 +116,9 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
                  * el usuario habia confirmado con añadir otro registro a la lista, y este mismo llego a la variable: tablaRecorrida, -
                  * de forma que se realiza un parseo para obtener la lista previa y añadirla a esos nuevos datos, teniendo de esta -
                  * manera, la lista con los datos actualizados. */
-                if(Autorizacion != false) {
-                    Type listaParseada = new TypeToken<ArrayList<ExtensionInicioSesionEntitie>>(){}.getType();
-                    ArrayList<ExtensionInicioSesionEntitie> tablaActualizada = gson.fromJson(listaTemporal, listaParseada);
+                if(AutorizacionTiempoEditar != false) {
+                    Type listaParseada = new TypeToken<ArrayList<ExtensionPermisoTiempoEntitie>>(){}.getType();
+                    ArrayList<ExtensionPermisoTiempoEntitie> tablaActualizada = gson.fromJson(listaTemporal, listaParseada);
 
                     for(int i = 0; i < tablaActualizada.size(); i++) {
                         ListaDatosRecorrido.add(tablaActualizada.get(i));
@@ -136,21 +135,21 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
             }
 
             //Aqui ordena los datos de forma alfabetica:
-            datosOrdenados.sort(new Comparator<ExtensionInicioSesionEntitie>() {
+            datosOrdenados.sort(new Comparator<ExtensionPermisoTiempoEntitie>() {
                 @Override
-                public int compare(ExtensionInicioSesionEntitie o1, ExtensionInicioSesionEntitie o2) {
+                public int compare(ExtensionPermisoTiempoEntitie o1, ExtensionPermisoTiempoEntitie o2) {
                     return o1.getNombre().compareToIgnoreCase(o2.getNombre());
                 }
             });
 
             MostrarContenidoReporte();
 
-            reporteUsuariosEditarBinding.btnSeleccionarUsuarioEmpleadoEditarReportesUsuarios.setOnClickListener(v -> VistaOtroRegistro());
-            reporteUsuariosEditarBinding.btnEditarReporteUsuario.setOnClickListener(v ->  {
-                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ReporteUsuarioEditarActivity.this);
+            reporteTiempoEditarBinding.btnSeleccionarPermisoTiempoExtraEditar.setOnClickListener(v -> VistaOtroRegistro());
+            reporteTiempoEditarBinding.btnEditarReporteTiempo.setOnClickListener(v -> {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ReportePermisoTiempoEditarActivity.this);
                 construirAlerta.setIcon(R.drawable.icono_actualizar);
                 construirAlerta.setMessage("¿Esta completamente seguro(a) de actualizar este reporte respectivamente?")
-                        .setTitle("Actualizar Reporte Usuario.");
+                        .setTitle("Actualizar Reporte Tiempo.");
 
 
                 construirAlerta.setPositiveButton("Si.", new DialogInterface.OnClickListener() {
@@ -163,17 +162,17 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
                 construirAlerta.setNegativeButton("No.", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(ReporteUsuarioEditarActivity.this, "¡No se continuo con la actualización!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(ReportePermisoTiempoEditarActivity.this, "¡No se continuo con la actualización!", Toast.LENGTH_LONG).show();
                     }
                 });
 
                 AlertDialog ejecutarMensaje = construirAlerta.create();
                 ejecutarMensaje.show();
             });
-            reporteUsuariosEditarBinding.btnEliminarReporteUsuario.setOnClickListener(v -> { AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ReporteUsuarioEditarActivity.this);
+            reporteTiempoEditarBinding.btnEliminarReporteTiempo.setOnClickListener(v -> { AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ReportePermisoTiempoEditarActivity.this);
                 construirAlerta.setIcon(R.drawable.icono_eliminar);
                 construirAlerta.setMessage("¿Esta completamente seguro(a) de eliminar estos datos del usuario(a) de forma permanente?")
-                        .setTitle("Eliminar Datos Usuario(a).");
+                        .setTitle("Eliminar Datos Tiempo.");
 
 
                 construirAlerta.setPositiveButton("Si.", new DialogInterface.OnClickListener() {
@@ -186,7 +185,7 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
                 construirAlerta.setNegativeButton("No.", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(ReporteUsuarioEditarActivity.this, "¡No se continuo con la eliminación!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(ReportePermisoTiempoEditarActivity.this, "¡No se continuo con la eliminación!", Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -195,20 +194,20 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
             });
 
         } catch (Exception error) {
-            reporteUsuariosEditarBinding.txtTituloEditarUsuarios.setVisibility(GONE);
-            reporteUsuariosEditarBinding.hsvScrollHorizontalEditarReporteUsuario.setVisibility(GONE);
-            reporteUsuariosEditarBinding.hsvScrollHorizontalBotonesEditarReporteUsuario.setVisibility(GONE);
+            reporteTiempoEditarBinding.txtTituloEditarTiempo.setVisibility(GONE);
+            reporteTiempoEditarBinding.hsvScrollHorizontalEditarReporteTiempo.setVisibility(GONE);
+            reporteTiempoEditarBinding.hsvScrollHorizontalBotonesEditarReporteTiempo.setVisibility(GONE);
 
-            reporteUsuariosEditarBinding.btnSeleccionarUsuarioEmpleadoEditarReportesUsuarios.setVisibility(GONE);
-            reporteUsuariosEditarBinding.btnEditarReporteUsuario.setVisibility(GONE);
+            reporteTiempoEditarBinding.btnSeleccionarPermisoTiempoExtraEditar.setVisibility(GONE);
+            reporteTiempoEditarBinding.btnEditarReporteTiempo.setVisibility(GONE);
 
-            reporteUsuariosEditarBinding.imgFotoEditarReportesUsuarios.setVisibility(VISIBLE);
-            reporteUsuariosEditarBinding.txtMensajeEditarReportesUsuarios.setVisibility(VISIBLE);
+            reporteTiempoEditarBinding.imgFotoEditarReportesTiempo.setVisibility(VISIBLE);
+            reporteTiempoEditarBinding.txtMensajeEditarReportesTiempo.setVisibility(VISIBLE);
 
-            reporteUsuariosEditarBinding.imgFotoEditarReportesUsuarios.setImageResource(R.drawable.icono_contenido_no_disponible);
-            reporteUsuariosEditarBinding.txtMensajeEditarReportesUsuarios.setText(getString(R.string.ErrorFragment));
+            reporteTiempoEditarBinding.imgFotoEditarReportesTiempo.setImageResource(R.drawable.icono_contenido_no_disponible);
+            reporteTiempoEditarBinding.txtMensajeEditarReportesTiempo.setText(getString(R.string.ErrorFragment));
 
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ReporteUsuarioEditarActivity.this);
+            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ReportePermisoTiempoEditarActivity.this);
             construirAlerta.setIcon(R.drawable.icono_error);
             construirAlerta.setMessage("Pero no fue posible finalizar el proceso en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
                     .setTitle("¡Lo sentimos!");
@@ -234,17 +233,19 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
                     datosOrdenados.clear();
                 }
 
-                if(Lista_Usuarios != null) {
-                    Lista_Usuarios.clear();
+                if(Lista_PermisosTiempo != null) {
+                    Lista_PermisosTiempo.clear();
                 }
 
                 listaTemporal = null;
                 listaIdTemporal = null;
                 listaDocumentoTemporal = null;
-                Autorizacion = false;
+                AutorizacionTiempoEditar = false;
 
                 //Aqui le dice a que vista tiene que ir, como un hipervinculo basicamente.
-                Intent intentEditarReporte = new Intent(ReporteUsuarioEditarActivity.this, ReporteriaActivity.class);
+                Intent intentEditarReporte = new Intent(ReportePermisoTiempoEditarActivity.this, ReporteriaActivity.class);
+
+                intentEditarReporte.putExtra("Seccion_A_Mostrar", "Permisos_Tiempo");
 
                 //Le indica que ejecute el hipervinculo.
                 startActivity(intentEditarReporte);
@@ -276,26 +277,25 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
 
     private void MostrarContenidoReporte() {
         try {
-            reporteUsuariosEditarBinding.tblTablaEditarReporteUsuario.removeAllViews();
+            reporteTiempoEditarBinding.tblTablaEditarReporteTiempo.removeAllViews();
 
             if(datosOrdenados.isEmpty()) {
-                reporteUsuariosEditarBinding.tblTablaEditarReporteUsuario.addView(reporteUsuariosEditarBinding.tbrPrimeraFilaEditarReporteUsuario);
+                reporteTiempoEditarBinding.tblTablaEditarReporteTiempo.addView(reporteTiempoEditarBinding.tbrPrimeraFilaEditarReporteTiempo);
             }
 
             //Aqui se encarga de mostrar los datos que el usuario selecciono:
-            for (ExtensionInicioSesionEntitie extensionInicioSesionEntitie : datosOrdenados) {
-                filaGuardada = new TableRow(ReporteUsuarioEditarActivity.this);
-                filaGuardada.setBackground(ReporteUsuarioEditarActivity.this.getDrawable(R.drawable.border_table));
-                campoCheckBoxGuardado = new CheckBox(ReporteUsuarioEditarActivity.this);
-                campoNombreGuardado = new TextView(ReporteUsuarioEditarActivity.this);
-                campoApellidosGuardado = new TextView(ReporteUsuarioEditarActivity.this);
-                campoCedulaGuardado = new TextView(ReporteUsuarioEditarActivity.this);
-                campoCorreoGuardado = new TextView(ReporteUsuarioEditarActivity.this);
-                campoDepartamentoGuardado = new TextView(ReporteUsuarioEditarActivity.this);
-                campoRolGuardado = new TextView(ReporteUsuarioEditarActivity.this);
-                campoFechaCreacionGuardado = new TextView(ReporteUsuarioEditarActivity.this);
-                campoFechaInicioSesionGuardado = new TextView(ReporteUsuarioEditarActivity.this);
-                campoUltimaConexionGuardado = new TextView(ReporteUsuarioEditarActivity.this);
+            for (ExtensionPermisoTiempoEntitie extensionPermisoTiempoEntitie : datosOrdenados) {
+                filaGuardada = new TableRow(ReportePermisoTiempoEditarActivity.this);
+                filaGuardada.setBackground(ReportePermisoTiempoEditarActivity.this.getDrawable(R.drawable.border_table));
+                campoCheckBoxGuardado = new CheckBox(ReportePermisoTiempoEditarActivity.this);
+                campoNombreGuardado = new TextView(ReportePermisoTiempoEditarActivity.this);
+                campoApellidosGuardado = new TextView(ReportePermisoTiempoEditarActivity.this);
+                campoCedulaGuardado = new TextView(ReportePermisoTiempoEditarActivity.this);
+                campoDepartamentoGuardado = new TextView(ReportePermisoTiempoEditarActivity.this);
+                campoTipoPermisoGuardado = new TextView(ReportePermisoTiempoEditarActivity.this);
+                campoDescripcionGuardado = new TextView(ReportePermisoTiempoEditarActivity.this);
+                campoFechaAsignacionGuardado = new TextView(ReportePermisoTiempoEditarActivity.this);
+                campoFechaFinalizacionGuardado = new TextView(ReportePermisoTiempoEditarActivity.this);
 
 
                 LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 350);
@@ -319,15 +319,14 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
                 parametrosCheckBox.setMarginEnd(margenCheckBox);
 
 
-                String Nombre = extensionInicioSesionEntitie.getNombre().trim();
-                String Apellidos = extensionInicioSesionEntitie.getApellido_1().trim() + " " + extensionInicioSesionEntitie.getApellido_2().trim();
-                String Cedula = extensionInicioSesionEntitie.getCedula().toString().trim();
-                String Correo = extensionInicioSesionEntitie.getCorreo_Electronico().trim();
-                String Departamento = extensionInicioSesionEntitie.getDepartamento().trim();
-                String NombreRol = extensionInicioSesionEntitie.getNombre_Rol().trim();
-                String FechaCreacion = extensionInicioSesionEntitie.getFecha_Creacion().toString().trim().replace("T", " ");
-                String FechaInicioSesion = extensionInicioSesionEntitie.getFecha_Inicio_Sesion().trim().substring(0, 10);
-                String UltimaConexion = extensionInicioSesionEntitie.getUltima_Conexion().trim().replace("T", " ");
+                String Nombre = extensionPermisoTiempoEntitie.getNombre().trim();
+                String Apellidos = extensionPermisoTiempoEntitie.getApellido_1().trim() + " " + extensionPermisoTiempoEntitie.getApellido_2().trim();
+                String Cedula = extensionPermisoTiempoEntitie.getCedula().trim();
+                String Departamento = extensionPermisoTiempoEntitie.getDepartamento().trim();
+                String TipoPermiso = extensionPermisoTiempoEntitie.getTipoPermiso().trim();
+                String Descripcion = extensionPermisoTiempoEntitie.getDescripcion().trim();
+                String FechaAsignacion = extensionPermisoTiempoEntitie.getFechaAsignacion().trim().replace("T", " ");
+                String FechaFinalizacion = extensionPermisoTiempoEntitie.getFechaFinalizacion().trim().replace("T", " ");
 
                 campoCheckBoxGuardado.setChecked(true);
                 campoCheckBoxGuardado.setWidth(LargoCheckBox);
@@ -336,7 +335,7 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
                 campoCheckBoxGuardado.setTop(margenTop);
                 campoCheckBoxGuardado.setPaddingRelative(0, paddingTopContenido, 0, 0);
                 campoCheckBoxGuardado.setButtonTintList(ColorStateList.valueOf(Color.BLACK));
-                campoCheckBoxGuardado.setTag(extensionInicioSesionEntitie);
+                campoCheckBoxGuardado.setTag(extensionPermisoTiempoEntitie);
 
                 campoNombreGuardado.setText(Nombre);
                 campoNombreGuardado.setWidth(LargoContenido);
@@ -345,7 +344,7 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
                 campoNombreGuardado.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
                 campoNombreGuardado.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                 campoNombreGuardado.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
-                campoNombreGuardado.setBackground(ReporteUsuarioEditarActivity.this.getDrawable(R.drawable.border_table_row));
+                campoNombreGuardado.setBackground(ReportePermisoTiempoEditarActivity.this.getDrawable(R.drawable.border_table_row));
                 campoNombreGuardado.setTextColor(Color.BLACK);
                 campoNombreGuardado.setTextSize(TamañoLetraContenido);
 
@@ -356,7 +355,7 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
                 campoApellidosGuardado.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
                 campoApellidosGuardado.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                 campoApellidosGuardado.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
-                campoApellidosGuardado.setBackground(ReporteUsuarioEditarActivity.this.getDrawable(R.drawable.border_table_row));
+                campoApellidosGuardado.setBackground(ReportePermisoTiempoEditarActivity.this.getDrawable(R.drawable.border_table_row));
                 campoApellidosGuardado.setTextColor(Color.BLACK);
                 campoApellidosGuardado.setTextSize(TamañoLetraContenido);
 
@@ -367,20 +366,9 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
                 campoCedulaGuardado.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
                 campoCedulaGuardado.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                 campoCedulaGuardado.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
-                campoCedulaGuardado.setBackground(ReporteUsuarioEditarActivity.this.getDrawable(R.drawable.border_table_row));
+                campoCedulaGuardado.setBackground(ReportePermisoTiempoEditarActivity.this.getDrawable(R.drawable.border_table_row));
                 campoCedulaGuardado.setTextColor(Color.BLACK);
                 campoCedulaGuardado.setTextSize(TamañoLetraContenido);
-
-                campoCorreoGuardado.setText(Correo);
-                campoCorreoGuardado.setWidth(LargoContenido);
-                campoCorreoGuardado.setHeight(AnchoContenido);
-                campoCorreoGuardado.setLayoutParams(parametrosContenido);
-                campoCorreoGuardado.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
-                campoCorreoGuardado.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
-                campoCorreoGuardado.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
-                campoCorreoGuardado.setBackground(ReporteUsuarioEditarActivity.this.getDrawable(R.drawable.border_table_row));
-                campoCorreoGuardado.setTextColor(Color.BLACK);
-                campoCorreoGuardado.setTextSize(TamañoLetraContenido);
 
                 campoDepartamentoGuardado.setText(Departamento);
                 campoDepartamentoGuardado.setWidth(LargoContenido);
@@ -389,84 +377,83 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
                 campoDepartamentoGuardado.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
                 campoDepartamentoGuardado.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
                 campoDepartamentoGuardado.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
-                campoDepartamentoGuardado.setBackground(ReporteUsuarioEditarActivity.this.getDrawable(R.drawable.border_table_row));
+                campoDepartamentoGuardado.setBackground(ReportePermisoTiempoEditarActivity.this.getDrawable(R.drawable.border_table_row));
                 campoDepartamentoGuardado.setTextColor(Color.BLACK);
                 campoDepartamentoGuardado.setTextSize(TamañoLetraContenido);
 
-                campoRolGuardado.setText(NombreRol);
-                campoRolGuardado.setWidth(LargoContenido);
-                campoRolGuardado.setHeight(AnchoContenido);
-                campoRolGuardado.setLayoutParams(parametrosContenido);
-                campoRolGuardado.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
-                campoRolGuardado.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
-                campoRolGuardado.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
-                campoRolGuardado.setBackground(ReporteUsuarioEditarActivity.this.getDrawable(R.drawable.border_table_row));
-                campoRolGuardado.setTextColor(Color.BLACK);
-                campoRolGuardado.setTextSize(TamañoLetraContenido);
+                campoTipoPermisoGuardado.setText(TipoPermiso);
+                campoTipoPermisoGuardado.setWidth(LargoContenido);
+                campoTipoPermisoGuardado.setHeight(AnchoContenido);
+                campoTipoPermisoGuardado.setLayoutParams(parametrosContenido);
+                campoTipoPermisoGuardado.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
+                campoTipoPermisoGuardado.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
+                campoTipoPermisoGuardado.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
+                campoTipoPermisoGuardado.setBackground(ReportePermisoTiempoEditarActivity.this.getDrawable(R.drawable.border_table_row));
+                campoTipoPermisoGuardado.setTextColor(Color.BLACK);
+                campoTipoPermisoGuardado.setTextSize(TamañoLetraContenido);
 
-                campoFechaCreacionGuardado.setText(FechaCreacion);
-                campoFechaCreacionGuardado.setWidth(LargoContenido);
-                campoFechaCreacionGuardado.setHeight(AnchoContenido);
-                campoFechaCreacionGuardado.setLayoutParams(parametrosContenido);
-                campoFechaCreacionGuardado.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
-                campoFechaCreacionGuardado.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
-                campoFechaCreacionGuardado.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
-                campoFechaCreacionGuardado.setBackground(ReporteUsuarioEditarActivity.this.getDrawable(R.drawable.border_table_row));
-                campoFechaCreacionGuardado.setTextColor(Color.BLACK);
-                campoFechaCreacionGuardado.setTextSize(TamañoLetraContenido);
+                campoDescripcionGuardado.setText(Descripcion);
+                campoDescripcionGuardado.setWidth(LargoContenido);
+                campoDescripcionGuardado.setHeight(AnchoContenido);
+                campoDescripcionGuardado.setLayoutParams(parametrosContenido);
+                campoDescripcionGuardado.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
+                campoDescripcionGuardado.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
+                campoDescripcionGuardado.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
+                campoDescripcionGuardado.setBackground(ReportePermisoTiempoEditarActivity.this.getDrawable(R.drawable.border_table_row));
+                campoDescripcionGuardado.setTextColor(Color.BLACK);
+                campoDescripcionGuardado.setTextSize(TamañoLetraContenido);
 
-                campoFechaInicioSesionGuardado.setText(FechaInicioSesion);
-                campoFechaInicioSesionGuardado.setWidth(LargoContenido);
-                campoFechaInicioSesionGuardado.setHeight(AnchoContenido);
-                campoFechaInicioSesionGuardado.setLayoutParams(parametrosContenido);
-                campoFechaInicioSesionGuardado.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
-                campoFechaInicioSesionGuardado.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
-                campoFechaInicioSesionGuardado.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
-                campoFechaInicioSesionGuardado.setBackground(ReporteUsuarioEditarActivity.this.getDrawable(R.drawable.border_table_row));
-                campoFechaInicioSesionGuardado.setTextColor(Color.BLACK);
-                campoFechaInicioSesionGuardado.setTextSize(TamañoLetraContenido);
+                campoFechaAsignacionGuardado.setText(FechaAsignacion);
+                campoFechaAsignacionGuardado.setWidth(LargoContenido);
+                campoFechaAsignacionGuardado.setHeight(AnchoContenido);
+                campoFechaAsignacionGuardado.setLayoutParams(parametrosContenido);
+                campoFechaAsignacionGuardado.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
+                campoFechaAsignacionGuardado.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
+                campoFechaAsignacionGuardado.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
+                campoFechaAsignacionGuardado.setBackground(ReportePermisoTiempoEditarActivity.this.getDrawable(R.drawable.border_table_row));
+                campoFechaAsignacionGuardado.setTextColor(Color.BLACK);
+                campoFechaAsignacionGuardado.setTextSize(TamañoLetraContenido);
 
-                campoUltimaConexionGuardado.setText(UltimaConexion);
-                campoUltimaConexionGuardado.setWidth(LargoContenido);
-                campoUltimaConexionGuardado.setHeight(AnchoContenido);
-                campoUltimaConexionGuardado.setLayoutParams(parametrosContenido);
-                campoUltimaConexionGuardado.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
-                campoUltimaConexionGuardado.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
-                campoUltimaConexionGuardado.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
-                campoUltimaConexionGuardado.setBackground(ReporteUsuarioEditarActivity.this.getDrawable(R.drawable.border_table_row));
-                campoUltimaConexionGuardado.setTextColor(Color.BLACK);
-                campoUltimaConexionGuardado.setTextSize(TamañoLetraContenido);
+                campoFechaFinalizacionGuardado.setText(FechaFinalizacion);
+                campoFechaFinalizacionGuardado.setWidth(LargoContenido);
+                campoFechaFinalizacionGuardado.setHeight(AnchoContenido);
+                campoFechaFinalizacionGuardado.setLayoutParams(parametrosContenido);
+                campoFechaFinalizacionGuardado.setPaddingRelative(paddingStartContenido, paddingTopContenido, paddingEndContenido, 0);
+                campoFechaFinalizacionGuardado.setTextAlignment(TEXT_ALIGNMENT_VIEW_START);
+                campoFechaFinalizacionGuardado.setTypeface(Typeface.SANS_SERIF, Typeface.ITALIC);
+                campoFechaFinalizacionGuardado.setBackground(ReportePermisoTiempoEditarActivity.this.getDrawable(R.drawable.border_table_row));
+                campoFechaFinalizacionGuardado.setTextColor(Color.BLACK);
+                campoFechaFinalizacionGuardado.setTextSize(TamañoLetraContenido);
 
 
                 filaGuardada.addView(campoCheckBoxGuardado);
                 filaGuardada.addView(campoNombreGuardado);
                 filaGuardada.addView(campoApellidosGuardado);
                 filaGuardada.addView(campoCedulaGuardado);
-                filaGuardada.addView(campoCorreoGuardado);
                 filaGuardada.addView(campoDepartamentoGuardado);
-                filaGuardada.addView(campoRolGuardado);
-                filaGuardada.addView(campoFechaCreacionGuardado);
-                filaGuardada.addView(campoFechaInicioSesionGuardado);
-                filaGuardada.addView(campoUltimaConexionGuardado);
+                filaGuardada.addView(campoTipoPermisoGuardado);
+                filaGuardada.addView(campoDescripcionGuardado);
+                filaGuardada.addView(campoFechaAsignacionGuardado);
+                filaGuardada.addView(campoFechaFinalizacionGuardado);
 
-                reporteUsuariosEditarBinding.tblTablaEditarReporteUsuario.addView(filaGuardada);
+                reporteTiempoEditarBinding.tblTablaEditarReporteTiempo.addView(filaGuardada);
             }
 
         } catch (Exception error) {
-            reporteUsuariosEditarBinding.txtTituloEditarUsuarios.setVisibility(GONE);
-            reporteUsuariosEditarBinding.hsvScrollHorizontalEditarReporteUsuario.setVisibility(GONE);
-            reporteUsuariosEditarBinding.hsvScrollHorizontalBotonesEditarReporteUsuario.setVisibility(GONE);
+            reporteTiempoEditarBinding.txtTituloEditarTiempo.setVisibility(GONE);
+            reporteTiempoEditarBinding.hsvScrollHorizontalEditarReporteTiempo.setVisibility(GONE);
+            reporteTiempoEditarBinding.hsvScrollHorizontalBotonesEditarReporteTiempo.setVisibility(GONE);
 
-            reporteUsuariosEditarBinding.btnSeleccionarUsuarioEmpleadoEditarReportesUsuarios.setVisibility(GONE);
-            reporteUsuariosEditarBinding.btnEditarReporteUsuario.setVisibility(GONE);
+            reporteTiempoEditarBinding.btnSeleccionarPermisoTiempoExtraEditar.setVisibility(GONE);
+            reporteTiempoEditarBinding.btnEditarReporteTiempo.setVisibility(GONE);
 
-            reporteUsuariosEditarBinding.imgFotoEditarReportesUsuarios.setVisibility(VISIBLE);
-            reporteUsuariosEditarBinding.txtMensajeEditarReportesUsuarios.setVisibility(VISIBLE);
+            reporteTiempoEditarBinding.imgFotoEditarReportesTiempo.setVisibility(VISIBLE);
+            reporteTiempoEditarBinding.txtMensajeEditarReportesTiempo.setVisibility(VISIBLE);
 
-            reporteUsuariosEditarBinding.imgFotoEditarReportesUsuarios.setImageResource(R.drawable.icono_contenido_no_disponible);
-            reporteUsuariosEditarBinding.txtMensajeEditarReportesUsuarios.setText(getString(R.string.ErrorFragment));
+            reporteTiempoEditarBinding.imgFotoEditarReportesTiempo.setImageResource(R.drawable.icono_contenido_no_disponible);
+            reporteTiempoEditarBinding.txtMensajeEditarReportesTiempo.setText(getString(R.string.ErrorFragment));
 
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ReporteUsuarioEditarActivity.this);
+            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ReportePermisoTiempoEditarActivity.this);
             construirAlerta.setIcon(R.drawable.icono_error);
             construirAlerta.setMessage("Pero no fue posible finalizar el proceso en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
                     .setTitle("¡Lo sentimos!");
@@ -483,17 +470,17 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
 
     private void ActualizarReporte() {
         try {
-            ExtensionInicioSesionEntitie datoSeleccionado = null;
+            ExtensionPermisoTiempoEntitie datoSeleccionado = null;
 
             //En esta primera parte buscara y guardara los datos seleccionados dentro de una lista llamada: "Lista_Usuarios".
-            for(int i = 0; i < reporteUsuariosEditarBinding.tblTablaEditarReporteUsuario.getChildCount(); i++) {
-                TableRow registroDatos = (TableRow) reporteUsuariosEditarBinding.tblTablaEditarReporteUsuario.getChildAt(i);
+            for(int i = 0; i < reporteTiempoEditarBinding.tblTablaEditarReporteTiempo.getChildCount(); i++) {
+                TableRow registroDatos = (TableRow) reporteTiempoEditarBinding.tblTablaEditarReporteTiempo.getChildAt(i);
                 CheckBox seleccionDato = (CheckBox) registroDatos.getChildAt(0);
 
 
                 if(seleccionDato.isChecked()) {
-                    datoSeleccionado = (ExtensionInicioSesionEntitie) seleccionDato.getTag();
-                    Lista_Usuarios.add(datoSeleccionado);
+                    datoSeleccionado = (ExtensionPermisoTiempoEntitie) seleccionDato.getTag();
+                    Lista_PermisosTiempo.add(datoSeleccionado);
                 }
             }
 
@@ -507,12 +494,11 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
                 String Nombre = null;
                 String Apellidos = null;
                 String Cedula = null;
-                String Correo = null;
                 String Departamento = null;
-                String Rol = null;
-                String FechaCreacion = null;
-                String FechaInicioSesion = null;
-                String UltimaConexion = null;
+                String TipoPermiso = null;
+                String Descripcion = null;
+                String FechaAsignacion = null;
+                String FechaFinalizacion = null;
 
                 //Medidas que están relacionadas a las hojas (osea las páginas) del documento PDF.
                 int largoPagina = 1315;
@@ -522,8 +508,8 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
                 //Medidas que están relacionadas a las celdas de las tablas que están en el documento PDF.
                 int alturaCeldaFija = 100;
                 int alturaCeldaActual = 185;
-                int anchoCelda = 163;
-                int columnas = 8;
+                int anchoCelda = 186;
+                int columnas = 7;
 
                 /* Medidas que están relacionadas a las posiciones que estarian las tablas y la información -
                  * dentro del documento PDF. */
@@ -575,10 +561,10 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
 
                 //Esto es para indicarle el tipo de letra y si quiere agregarle un estilo como una negrita, cursiva, etc.
                 brochaTitulo.setTypeface(Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD));
-                constructorGraficoIntroductoria.drawText("Reporte de Usuario", 480, 200, brochaTitulo);
+                constructorGraficoIntroductoria.drawText("Reporte de Tiempo", 480, 200, brochaTitulo);
 
-                String descripcion = "Saludos estimados(as). \nEste documento corresponde a un reporte sobre los inicios de sesión que son pertene- cientes a " +
-                        "los usuarios(as) que utilizan la aplicación móvil de la municipalidad de Turrialba, los cuales están desglosados a partir de las siguientes tablas.";
+                String descripcion = "Saludos estimados(as). \nEste documento corresponde a un reporte sobre los permisos de tiempo que son pertene- cientes a " +
+                        "los empleados(as) que utilizan la aplicación móvil de la municipalidad de Turri- alba, los cuales están desglosados a partir de las siguientes tablas.";
 
                 StaticLayout plantillaIntroductoria = StaticLayout.Builder
                         .obtain(descripcion, 0, descripcion.length(), textoDescriptivo, largoPagina)
@@ -614,8 +600,8 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
                 brochaBorde.setStyle(Paint.Style.STROKE);
                 brochaBorde.setStrokeWidth(5);
 
-                String[] Titulos = { "Nombre Apellido:", "Cédula:", "Correo Electrónico:", "Departamento:", "Rol:",
-                        "Fecha Creación:", "Fecha Inicio Sesión:", "Ultima Conexión:" };
+                String[] Titulos = { "Nombre Apellido:", "Cédula:", "Departamento:", "Tipo Permiso:", "Descripción:",
+                        "Fecha Asignación:", "Fecha Finalización:" };
 
                 //Este for se encarga de colocar los encabezados dentro de la primera tabla.
                 for(int a = 0; a < columnas; a++) {
@@ -647,24 +633,23 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
                 /* Este for se encarga de obtener todos los datos que selecciono el usuario -
                  * que están dentro de una lista, para que así se puedan colocar dentro de -
                  * una tabla con otro for respectivamente. */
-                for(int b = 0; b < Lista_Usuarios.size(); b++) {
-                    ExtensionInicioSesionEntitie registro = Lista_Usuarios.get(b);
+                for(int b = 0; b < Lista_PermisosTiempo.size(); b++) {
+                    ExtensionPermisoTiempoEntitie registro = Lista_PermisosTiempo.get(b);
 
                     Nombre = registro.getNombre().trim();
                     Apellidos = registro.getApellido_1().trim() + " " + registro.getApellido_2().trim();
                     Cedula = registro.getCedula().trim();
 
-                    Correo = registro.getCorreo_Electronico().trim();
                     Departamento = registro.getDepartamento().trim();
-                    Rol = registro.getNombre_Rol().trim();
+                    TipoPermiso = registro.getTipoPermiso().trim();
+                    Descripcion = registro.getDescripcion().trim();
 
-                    FechaCreacion = registro.getFecha_Creacion().trim().replace("T", " ");
-                    FechaInicioSesion = registro.getFecha_Inicio_Sesion().trim().substring(0, 10);
-                    UltimaConexion = registro.getUltima_Conexion().trim().replace("T", " ");
+                    FechaAsignacion = registro.getFechaAsignacion().trim().replace("T", " ");
+                    FechaFinalizacion = registro.getFechaFinalizacion().trim().replace("T", " ");
 
                     String[] Datos = {
-                            Nombre + " " + Apellidos, Cedula, Correo, Departamento,
-                            Rol, FechaCreacion, FechaInicioSesion, UltimaConexion
+                            Nombre + " " + Apellidos, Cedula, Departamento, TipoPermiso, Descripcion, FechaAsignacion,
+                            FechaFinalizacion
                     };
 
                     /* Esta validación sirve para saber, si la posición actual de Y (que esta -
@@ -742,7 +727,7 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
                          * respectivamente. En este caso, se le esta colocando este comando para que los datos que -
                          * habia seleccionado el usuario(a) sepan donde tienen que dirigirse, los cuales, deberian -
                          * estar en las celdas que son de color blanco. */
-                        constructorGrafico.translate(izquierda + 10, arriba + 20);
+                        constructorGrafico.translate(izquierda + 10, arriba + 10);
                         configuracionTexto.draw(constructorGrafico);
                         constructorGrafico.restore();
                     }
@@ -763,7 +748,7 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
                 /* Aqui lo que se esta haciendo es crear un archivo en blanco para poder almacenar, los datos del -
                  * archivo PDF. Además, esto se esta colocando dentro del cache del proyecto (osea la aplicación), -
                  * para así tenerlo almacenado de forma temporal respectivamente. */
-                File archivoPDF = new File(getCacheDir(), "Temporal-Reporte-Usuarios-MuniTurrialba-Actualizado-" + numero + ".pdf");
+                File archivoPDF = new File(getCacheDir(), "Temporal-Reporte-PermisosTiempo-MuniTurrialba-Actualizado-" + numero + ".pdf");
 
 
                 /* Aqui lo que se esta haciendo es crear un lector para poder acceder a dicho archivo que se creo -
@@ -784,17 +769,17 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
                 Uri uriActualizado = FileProvider.getUriForFile(this, getPackageName() + ".provider", archivoPDF);
 
                 /* Luego de eso, simplemente se usa un intent para llevar ese URI hacia a: ReporteUsuarioFragment. */
-                Intent intentActualizarReporte = new Intent(ReporteUsuarioEditarActivity.this, ReporteriaActivity.class);
+                Intent intentActualizarReporte = new Intent(ReportePermisoTiempoEditarActivity.this, ReporteriaActivity.class);
 
                 intentActualizarReporte.putExtra("Documento_PDF", uriActualizado.toString());
-                intentActualizarReporte.putParcelableArrayListExtra("DocumentoPDF_Y_ListaDatos", Lista_Usuarios);
+                intentActualizarReporte.putParcelableArrayListExtra("DocumentoPDF_Y_ListaDatos", Lista_PermisosTiempo);
                 intentActualizarReporte.putExtra("idDocumento", idDocumentoRecorrido.trim());
-                intentActualizarReporte.putExtra("Seccion_A_Mostrar", "Usuarios");
+                intentActualizarReporte.putExtra("Seccion_A_Mostrar", "Permisos_Tiempo");
 
-                ReporteUsuarioEntitie listaEliminar = null;
-                ExtensionReporteUsuarioEntitie datoEliminar = null;
+                ReportePermisoTiempoEntitie listaEliminar = null;
+                ExtensionReportePermisoTiempoEntitie datoEliminar = null;
 
-                for(ExtensionReporteUsuarioEntitie listaReporte : respaldoReporteUsuario) {
+                for(ExtensionReportePermisoTiempoEntitie listaReporte : respaldoReporteTiempo) {
                     Uri documentoPDF_Recorrido = listaReporte.getDocumentoPDF();
 
                     if(documentoPDF_Recorrido.equals(Uri.parse(documentoRecorrido))) {
@@ -802,7 +787,7 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
                     }
                 }
 
-                for(ReporteUsuarioEntitie listaDocumentoPDF : documentosPDF) {
+                for(ReportePermisoTiempoEntitie listaDocumentoPDF : documentosPDFTiempo) {
                     String documentoPDF_Recorrido = listaDocumentoPDF.getDocumentoPDF();
 
                     if(documentoPDF_Recorrido.contains(documentoRecorrido)) {
@@ -810,8 +795,8 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
                     }
                 }
 
-                respaldoReporteUsuario.remove(datoEliminar);
-                documentosPDF.remove(listaEliminar);
+                respaldoReporteTiempo.remove(datoEliminar);
+                documentosPDFTiempo.remove(listaEliminar);
 
                 //Esto se hace para evitar problemas, además de ser una buena práctica.
                 if(ListaDatosRecorrido != null) {
@@ -822,14 +807,14 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
                 listaTemporal = null;
                 listaIdTemporal = null;
                 listaDocumentoTemporal = null;
-                Autorizacion = false;
+                AutorizacionTiempoEditar = false;
 
                 startActivity(intentActualizarReporte);
 
                 finish();
 
             } else {
-                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ReporteUsuarioEditarActivity.this);
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ReportePermisoTiempoEditarActivity.this);
                 construirAlerta.setIcon(R.drawable.icono_error);
                 construirAlerta.setMessage("Pero en este momento no es posible actualizar el reporte debido a que no se selecciono ningún dato respectivamente.")
                         .setTitle("¡Lo sentimos!");
@@ -843,20 +828,20 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
             }
 
         } catch (Exception error) {
-            reporteUsuariosEditarBinding.txtTituloEditarUsuarios.setVisibility(GONE);
-            reporteUsuariosEditarBinding.hsvScrollHorizontalEditarReporteUsuario.setVisibility(GONE);
-            reporteUsuariosEditarBinding.hsvScrollHorizontalBotonesEditarReporteUsuario.setVisibility(GONE);
+            reporteTiempoEditarBinding.txtTituloEditarTiempo.setVisibility(GONE);
+            reporteTiempoEditarBinding.hsvScrollHorizontalEditarReporteTiempo.setVisibility(GONE);
+            reporteTiempoEditarBinding.hsvScrollHorizontalBotonesEditarReporteTiempo.setVisibility(GONE);
 
-            reporteUsuariosEditarBinding.btnSeleccionarUsuarioEmpleadoEditarReportesUsuarios.setVisibility(GONE);
-            reporteUsuariosEditarBinding.btnEditarReporteUsuario.setVisibility(GONE);
+            reporteTiempoEditarBinding.btnSeleccionarPermisoTiempoExtraEditar.setVisibility(GONE);
+            reporteTiempoEditarBinding.btnEditarReporteTiempo.setVisibility(GONE);
 
-            reporteUsuariosEditarBinding.imgFotoEditarReportesUsuarios.setVisibility(VISIBLE);
-            reporteUsuariosEditarBinding.txtMensajeEditarReportesUsuarios.setVisibility(VISIBLE);
+            reporteTiempoEditarBinding.imgFotoEditarReportesTiempo.setVisibility(VISIBLE);
+            reporteTiempoEditarBinding.txtMensajeEditarReportesTiempo.setVisibility(VISIBLE);
 
-            reporteUsuariosEditarBinding.imgFotoEditarReportesUsuarios.setImageResource(R.drawable.icono_contenido_no_disponible);
-            reporteUsuariosEditarBinding.txtMensajeEditarReportesUsuarios.setText(getString(R.string.ErrorFragment));
+            reporteTiempoEditarBinding.imgFotoEditarReportesTiempo.setImageResource(R.drawable.icono_contenido_no_disponible);
+            reporteTiempoEditarBinding.txtMensajeEditarReportesTiempo.setText(getString(R.string.ErrorFragment));
 
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ReporteUsuarioEditarActivity.this);
+            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ReportePermisoTiempoEditarActivity.this);
             construirAlerta.setIcon(R.drawable.icono_error);
             construirAlerta.setMessage("Pero no es posible actualizar el reporte en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
                     .setTitle("¡Lo sentimos!");
@@ -874,17 +859,17 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
     private void EliminarReporte() {
         try {
             Integer cantidadChecks = 0;
-            ExtensionInicioSesionEntitie datoSeleccionado = null;
-            ArrayList<ExtensionInicioSesionEntitie> datosEliminar = new ArrayList<>();
+            ExtensionPermisoTiempoEntitie datoSeleccionado = null;
+            ArrayList<ExtensionPermisoTiempoEntitie> datosEliminar = new ArrayList<>();
 
-            for(int i = 0; i < reporteUsuariosEditarBinding.tblTablaEditarReporteUsuario.getChildCount(); i++) {
-                TableRow reportesDatos = (TableRow) reporteUsuariosEditarBinding.tblTablaEditarReporteUsuario.getChildAt(i);
+            for(int i = 0; i < reporteTiempoEditarBinding.tblTablaEditarReporteTiempo.getChildCount(); i++) {
+                TableRow reportesDatos = (TableRow) reporteTiempoEditarBinding.tblTablaEditarReporteTiempo.getChildAt(i);
                 CheckBox seleccionReportes = (CheckBox) reportesDatos.getChildAt(0);
 
 
                 if(seleccionReportes.isChecked()) {
                     cantidadChecks += 1;
-                    datoSeleccionado = (ExtensionInicioSesionEntitie) seleccionReportes.getTag();
+                    datoSeleccionado = (ExtensionPermisoTiempoEntitie) seleccionReportes.getTag();
                     datosEliminar.add(datoSeleccionado);
                 }
             }
@@ -898,7 +883,7 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
                 MostrarContenidoReporte();
 
             } else {
-                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ReporteUsuarioEditarActivity.this);
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ReportePermisoTiempoEditarActivity.this);
                 construirAlerta.setIcon(R.drawable.icono_error);
                 construirAlerta.setMessage("Pero en este momento no es posible eliminar el registro debido a que no se selecciono ninguno.")
                         .setTitle("¡Lo sentimos!");
@@ -911,20 +896,20 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
                 ejecutarMensaje.show();
             }
         } catch (Exception error) {
-            reporteUsuariosEditarBinding.txtTituloEditarUsuarios.setVisibility(GONE);
-            reporteUsuariosEditarBinding.hsvScrollHorizontalEditarReporteUsuario.setVisibility(GONE);
-            reporteUsuariosEditarBinding.hsvScrollHorizontalBotonesEditarReporteUsuario.setVisibility(GONE);
+            reporteTiempoEditarBinding.txtTituloEditarTiempo.setVisibility(GONE);
+            reporteTiempoEditarBinding.hsvScrollHorizontalEditarReporteTiempo.setVisibility(GONE);
+            reporteTiempoEditarBinding.hsvScrollHorizontalBotonesEditarReporteTiempo.setVisibility(GONE);
 
-            reporteUsuariosEditarBinding.btnSeleccionarUsuarioEmpleadoEditarReportesUsuarios.setVisibility(GONE);
-            reporteUsuariosEditarBinding.btnEditarReporteUsuario.setVisibility(GONE);
+            reporteTiempoEditarBinding.btnSeleccionarPermisoTiempoExtraEditar.setVisibility(GONE);
+            reporteTiempoEditarBinding.btnEditarReporteTiempo.setVisibility(GONE);
 
-            reporteUsuariosEditarBinding.imgFotoEditarReportesUsuarios.setVisibility(VISIBLE);
-            reporteUsuariosEditarBinding.txtMensajeEditarReportesUsuarios.setVisibility(VISIBLE);
+            reporteTiempoEditarBinding.imgFotoEditarReportesTiempo.setVisibility(VISIBLE);
+            reporteTiempoEditarBinding.txtMensajeEditarReportesTiempo.setVisibility(VISIBLE);
 
-            reporteUsuariosEditarBinding.imgFotoEditarReportesUsuarios.setImageResource(R.drawable.icono_contenido_no_disponible);
-            reporteUsuariosEditarBinding.txtMensajeEditarReportesUsuarios.setText(getString(R.string.ErrorFragment));
+            reporteTiempoEditarBinding.imgFotoEditarReportesTiempo.setImageResource(R.drawable.icono_contenido_no_disponible);
+            reporteTiempoEditarBinding.txtMensajeEditarReportesTiempo.setText(getString(R.string.ErrorFragment));
 
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ReporteUsuarioEditarActivity.this);
+            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ReportePermisoTiempoEditarActivity.this);
             construirAlerta.setIcon(R.drawable.icono_error);
             construirAlerta.setMessage("Pero no es posible eliminar otro registro en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
                     .setTitle("¡Lo sentimos!");
@@ -940,21 +925,22 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
 
 
     private void VistaOtroRegistro() {
+
         try {
-            ExtensionInicioSesionEntitie datoSeleccionado = null;
-            ArrayList<ExtensionInicioSesionEntitie> Lista_Usuarios_Temporal = new ArrayList<>();
+            ExtensionPermisoTiempoEntitie datoSeleccionado = null;
+            ArrayList<ExtensionPermisoTiempoEntitie> Lista_PermisosTiempo_Temporal = new ArrayList<>();
 
             /* En esta primera parte buscara y guardara los datos seleccionados dentro de una lista llamada: -
              * "Lista_Usuarios_Temporal", el cual contiene la lista original previo a los nuevos datos que el -
              * usuario podria añadir. */
-            for(int i = 0; i < reporteUsuariosEditarBinding.tblTablaEditarReporteUsuario.getChildCount(); i++) {
-                TableRow registroDatos = (TableRow) reporteUsuariosEditarBinding.tblTablaEditarReporteUsuario.getChildAt(i);
+            for(int i = 0; i < reporteTiempoEditarBinding.tblTablaEditarReporteTiempo.getChildCount(); i++) {
+                TableRow registroDatos = (TableRow) reporteTiempoEditarBinding.tblTablaEditarReporteTiempo.getChildAt(i);
                 CheckBox seleccionDato = (CheckBox) registroDatos.getChildAt(0);
 
 
                 if(seleccionDato.isChecked()) {
-                    datoSeleccionado = (ExtensionInicioSesionEntitie) seleccionDato.getTag();
-                    Lista_Usuarios_Temporal.add(datoSeleccionado);
+                    datoSeleccionado = (ExtensionPermisoTiempoEntitie) seleccionDato.getTag();
+                    Lista_PermisosTiempo_Temporal.add(datoSeleccionado);
                 }
             }
 
@@ -966,7 +952,7 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
                 listaIdTemporal = null;
                 listaDocumentoTemporal = null;
 
-                listaTemporal = gson.toJson(Lista_Usuarios_Temporal);
+                listaTemporal = gson.toJson(Lista_PermisosTiempo_Temporal);
                 listaIdTemporal = gson.toJson(idDocumentoRecorrido);
                 listaDocumentoTemporal = gson.toJson(documentoRecorrido);
 
@@ -976,21 +962,21 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
                 }
 
                 datosOrdenados.clear();
-                Lista_Usuarios.clear();
-                Autorizacion = false;
+                Lista_PermisosTiempo.clear();
+                AutorizacionTiempoEditar = false;
 
                 //Aqui debe llevarlo a otra vista.
-                Intent intentOtroRegistro = new Intent(ReporteUsuarioEditarActivity.this, ReporteUsuarioInfoActivity.class);
+                Intent intentOtroRegistro = new Intent(ReportePermisoTiempoEditarActivity.this, ReportePermisoTiempoInfoActivity.class);
 
-                intentOtroRegistro.putExtra("Tipo_De_Accion", "Editar_ReporteUsuario");
-                intentOtroRegistro.putExtra("Regresar", "ReporteUsuarioEditar");
+                intentOtroRegistro.putExtra("Tipo_De_Accion", "Editar_ReporteTiempo");
+                intentOtroRegistro.putExtra("Regresar", "ReporteTiempoEditar");
 
                 startActivity(intentOtroRegistro);
 
                 finish();
 
             } else {
-                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ReporteUsuarioEditarActivity.this);
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ReportePermisoTiempoEditarActivity.this);
                 construirAlerta.setIcon(R.drawable.icono_error);
                 construirAlerta.setMessage("Pero en este momento no es posible añadir otro registro debido a que no se selecciono ningún dato respectivamente.")
                         .setTitle("¡Lo sentimos!");
@@ -1004,20 +990,20 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
             }
 
         } catch (Exception error) {
-            reporteUsuariosEditarBinding.txtTituloEditarUsuarios.setVisibility(GONE);
-            reporteUsuariosEditarBinding.hsvScrollHorizontalEditarReporteUsuario.setVisibility(GONE);
-            reporteUsuariosEditarBinding.hsvScrollHorizontalBotonesEditarReporteUsuario.setVisibility(GONE);
+            reporteTiempoEditarBinding.txtTituloEditarTiempo.setVisibility(GONE);
+            reporteTiempoEditarBinding.hsvScrollHorizontalEditarReporteTiempo.setVisibility(GONE);
+            reporteTiempoEditarBinding.hsvScrollHorizontalBotonesEditarReporteTiempo.setVisibility(GONE);
 
-            reporteUsuariosEditarBinding.btnSeleccionarUsuarioEmpleadoEditarReportesUsuarios.setVisibility(GONE);
-            reporteUsuariosEditarBinding.btnEditarReporteUsuario.setVisibility(GONE);
+            reporteTiempoEditarBinding.btnSeleccionarPermisoTiempoExtraEditar.setVisibility(GONE);
+            reporteTiempoEditarBinding.btnEditarReporteTiempo.setVisibility(GONE);
 
-            reporteUsuariosEditarBinding.imgFotoEditarReportesUsuarios.setVisibility(VISIBLE);
-            reporteUsuariosEditarBinding.txtMensajeEditarReportesUsuarios.setVisibility(VISIBLE);
+            reporteTiempoEditarBinding.imgFotoEditarReportesTiempo.setVisibility(VISIBLE);
+            reporteTiempoEditarBinding.txtMensajeEditarReportesTiempo.setVisibility(VISIBLE);
 
-            reporteUsuariosEditarBinding.imgFotoEditarReportesUsuarios.setImageResource(R.drawable.icono_contenido_no_disponible);
-            reporteUsuariosEditarBinding.txtMensajeEditarReportesUsuarios.setText(getString(R.string.ErrorFragment));
+            reporteTiempoEditarBinding.imgFotoEditarReportesTiempo.setImageResource(R.drawable.icono_contenido_no_disponible);
+            reporteTiempoEditarBinding.txtMensajeEditarReportesTiempo.setText(getString(R.string.ErrorFragment));
 
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ReporteUsuarioEditarActivity.this);
+            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ReportePermisoTiempoEditarActivity.this);
             construirAlerta.setIcon(R.drawable.icono_error);
             construirAlerta.setMessage("Pero no es posible añadir otro registro en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
                     .setTitle("¡Lo sentimos!");

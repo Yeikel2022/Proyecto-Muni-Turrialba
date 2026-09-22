@@ -1,9 +1,14 @@
 package com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ExtensionPermisoTiempoEntitie {
+public class ExtensionPermisoTiempoEntitie implements Parcelable {
     @SerializedName("nombre")
     @Expose
     private String nombre;
@@ -47,6 +52,48 @@ public class ExtensionPermisoTiempoEntitie {
     @SerializedName("id_Empleado")
     @Expose
     private Integer id_Empleado;
+
+    protected ExtensionPermisoTiempoEntitie(Parcel tipo) {
+        nombre = tipo.readString();
+        apellido_1 = tipo.readString();
+        apellido_2 = tipo.readString();
+        cedula = tipo.readString();
+        tipo_Permiso = tipo.readString();
+        departamento = tipo.readString();
+        descripcion = tipo.readString();
+        fecha_Asignacion = tipo.readString();
+        fecha_Finalizacion = tipo.readString();
+    }
+
+    public static final Parcelable.Creator<ExtensionPermisoTiempoEntitie> CREATOR = new Parcelable.Creator<ExtensionPermisoTiempoEntitie>() {
+        @Override
+        public ExtensionPermisoTiempoEntitie createFromParcel(Parcel source) {
+            return new ExtensionPermisoTiempoEntitie(source);
+        }
+
+        @Override
+        public ExtensionPermisoTiempoEntitie[] newArray(int size) {
+            return new ExtensionPermisoTiempoEntitie[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(nombre);
+        dest.writeString(apellido_1);
+        dest.writeString(apellido_2);
+        dest.writeString(cedula);
+        dest.writeString(tipo_Permiso);
+        dest.writeString(departamento);
+        dest.writeString(descripcion);
+        dest.writeString(fecha_Asignacion);
+        dest.writeString(fecha_Finalizacion);
+    }
 
 
     public String getNombre() {

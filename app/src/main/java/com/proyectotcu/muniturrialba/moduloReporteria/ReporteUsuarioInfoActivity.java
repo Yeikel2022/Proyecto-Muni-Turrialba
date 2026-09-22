@@ -19,6 +19,7 @@ import android.widget.CheckBox;
 import android.widget.SearchView;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
@@ -54,8 +55,8 @@ public class ReporteUsuarioInfoActivity extends AppCompatActivity {
 
     TableRow.LayoutParams parametrosCheckBox, parametrosContenido;
 
+    String tipoAccionRecorrido, tipoRegresoRecorrido;
     TableRow nuevaFila;
-    SearchView buscadorReportesUsuarios;
     CheckBox campoCheckBox;
 
     List<ExtensionInicioSesionEntitie> datosOrdenados = new ArrayList<>();
@@ -83,6 +84,9 @@ public class ReporteUsuarioInfoActivity extends AppCompatActivity {
         try {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+            tipoAccionRecorrido = getIntent().getStringExtra("Tipo_De_Accion");
+            tipoRegresoRecorrido = getIntent().getStringExtra("Regresar");
+
             SharedPreferences archivoXML = this.getSharedPreferences(
                     "Archivo_Autenticacion", Context.MODE_PRIVATE);
 
@@ -97,7 +101,7 @@ public class ReporteUsuarioInfoActivity extends AppCompatActivity {
                     @Override
                     public boolean onQueryTextSubmit(String query) {
                         BuscarPrioridad(tokenGuardado, datosOrdenados, query);
-                        buscadorReportesUsuarios.clearFocus();
+                        listaUsuarioInfoBinding.svBuscarInfoUsuarioLista.clearFocus();
                         return true;
                     }
                 });
@@ -106,13 +110,63 @@ public class ReporteUsuarioInfoActivity extends AppCompatActivity {
                     @Override
                     public boolean onClose() {
                         BuscarPrioridad(tokenGuardado, datosOrdenados, "true");
-                        buscadorReportesUsuarios.clearFocus();
-                        buscadorReportesUsuarios.setIconifiedByDefault(true);
+                        listaUsuarioInfoBinding.svBuscarInfoUsuarioLista.clearFocus();
+                        listaUsuarioInfoBinding.svBuscarInfoUsuarioLista.setIconifiedByDefault(true);
                         return false;
                     }
                 });
 
-            listaUsuarioInfoBinding.btnConfirmarInfoUsuarioLista.setOnClickListener(v -> VistaConfirmarRegistro());
+            if("Generar_ReporteUsuario".equals(tipoAccionRecorrido)) {
+                listaUsuarioInfoBinding.btnConfirmarInfoUsuarioLista.setOnClickListener(v -> { AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ReporteUsuarioInfoActivity.this);
+                    construirAlerta.setIcon(R.drawable.icono_advertencia);
+                    construirAlerta.setMessage("¿Esta completamente seguro(a) de añadir estos registros extras?")
+                            .setTitle("Confirmar Registro Extra.");
+
+                    construirAlerta.setPositiveButton("Si.", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            VistaConfirmarRegistroGenerar();
+                        }
+                    });
+
+                    construirAlerta.setNegativeButton("No.", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(ReporteUsuarioInfoActivity.this, "¡Cancelado!", Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+
+                    AlertDialog ejecutarMensaje = construirAlerta.create();
+                    ejecutarMensaje.show();
+                });
+            }
+
+            if("Editar_ReporteUsuario".equals(tipoAccionRecorrido)) {
+                listaUsuarioInfoBinding.btnConfirmarInfoUsuarioLista.setOnClickListener(v -> { AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ReporteUsuarioInfoActivity.this);
+                    construirAlerta.setIcon(R.drawable.icono_advertencia);
+                    construirAlerta.setMessage("¿Esta completamente seguro(a) de añadir estos registros extras?")
+                            .setTitle("Confirmar Registro Extra.");
+
+                    construirAlerta.setPositiveButton("Si.", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            VistaConfirmarRegistroEditar();
+                        }
+                    });
+
+                    construirAlerta.setNegativeButton("No.", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(ReporteUsuarioInfoActivity.this, "¡Cancelado!", Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+
+                    AlertDialog ejecutarMensaje = construirAlerta.create();
+                    ejecutarMensaje.show();
+                });
+            }
 
             MostrarReportesUsuario(tokenGuardado, null, false);
 
@@ -145,16 +199,31 @@ public class ReporteUsuarioInfoActivity extends AppCompatActivity {
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                Intent intentRegreso = new Intent(ReporteUsuarioInfoActivity.this, ReporteUsuarioGenerarActivity.class);
+                if("ReporteUsuarioGenerar".equals(tipoRegresoRecorrido)) {
+                    Intent intentRegreso = new Intent(ReporteUsuarioInfoActivity.this, ReporteUsuarioGenerarActivity.class);
 
-                /* Si regresa a: ReporteUsuarioGenerarActivity, quiere decir que el usuario no quiso añadir otro -
-                 * dato, por lo que entonces se indica que la autorización estaria en falso para que muestre los -
-                 * datos que el usuario selecciono originalmente. */
-                ReporteUsuarioGenerarActivity.Autorizacion = false;
+                    /* Si regresa a: ReporteUsuarioGenerarActivity, quiere decir que el usuario no quiso añadir otro -
+                     * dato, por lo que entonces se indica que la autorización estaria en falso para que muestre los -
+                     * datos que el usuario selecciono originalmente. */
+                    ReporteUsuarioGenerarActivity.Autorizacion = false;
 
-                startActivity(intentRegreso);
+                    startActivity(intentRegreso);
 
-                finish();
+                    finish();
+                }
+
+                if("ReporteUsuarioEditar".equals(tipoRegresoRecorrido)) {
+                    Intent intentRegreso = new Intent(ReporteUsuarioInfoActivity.this, ReporteUsuarioEditarActivity.class);
+
+                    /* Si regresa a: ReporteUsuarioGenerarActivity, quiere decir que el usuario no quiso añadir otro -
+                     * dato, por lo que entonces se indica que la autorización estaria en falso para que muestre los -
+                     * datos que el usuario selecciono originalmente. */
+                    ReporteUsuarioEditarActivity.Autorizacion = false;
+
+                    startActivity(intentRegreso);
+
+                    finish();
+                }
             }
         });
     }
@@ -180,7 +249,7 @@ public class ReporteUsuarioInfoActivity extends AppCompatActivity {
                 if(datosFiltrados.isEmpty()) {
                     AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ReporteUsuarioInfoActivity.this);
                     construirAlerta.setIcon(R.drawable.icono_advertencia);
-                    construirAlerta.setMessage("Pero no se pudo encontrar el reporte de usuario debido a que existen datos incorrectos o porque el registro no existe como tal. \n\nPor favor corriga los errores e intentelo de nuevo.")
+                    construirAlerta.setMessage("Pero no se pudo encontrar el usuario(a) debido a que existen datos incorrectos o porque el registro no existe como tal. \n\nPor favor corriga los errores e intentelo de nuevo.")
                             .setTitle("¡Lo sentimos!");
 
                     construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -701,7 +770,7 @@ public class ReporteUsuarioInfoActivity extends AppCompatActivity {
     }
 
 
-    private void VistaConfirmarRegistro() {
+    private void VistaConfirmarRegistroGenerar() {
         try {
             Integer cantidadChecks = 0;
             ExtensionInicioSesionEntitie datoSeleccionado = null;
@@ -739,7 +808,7 @@ public class ReporteUsuarioInfoActivity extends AppCompatActivity {
             } else {
                 AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ReporteUsuarioInfoActivity.this);
                 construirAlerta.setIcon(R.drawable.icono_error);
-                construirAlerta.setMessage("Pero en este momento no es posible generar el reporte de usuario debido a que no se selecciono ningún dato.")
+                construirAlerta.setMessage("Pero en este momento no es posible añadir otro registro al reporte debido a que no se selecciono ningún dato.")
                         .setTitle("¡Lo sentimos!");
 
                 construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -767,7 +836,86 @@ public class ReporteUsuarioInfoActivity extends AppCompatActivity {
 
             AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ReporteUsuarioInfoActivity.this);
             construirAlerta.setIcon(R.drawable.icono_error);
-            construirAlerta.setMessage("Pero no es posible generar el reporte en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+            construirAlerta.setMessage("Pero no es posible añadir otro registro al reporte en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+                    .setTitle("¡Lo sentimos!");
+
+            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {}});
+
+            AlertDialog ejecutarMensaje = construirAlerta.create();
+            ejecutarMensaje.show();
+        }
+    }
+
+
+    private void VistaConfirmarRegistroEditar() {
+        try {
+            Integer cantidadChecks = 0;
+            ExtensionInicioSesionEntitie datoSeleccionado = null;
+
+            /* En esta primera parte buscara y guardara los datos seleccionados dentro de una lista llamada: -
+             * "Lista_Tabla", el cual contiene la lista con los nuevos datos que el usuario selecciono. */
+            for (int i = 0; i < listaUsuarioInfoBinding.tblTablaContenidoInfoUsuariosLista.getChildCount(); i++) {
+                TableRow registroDatos = (TableRow) listaUsuarioInfoBinding.tblTablaContenidoInfoUsuariosLista.getChildAt(i);
+                CheckBox seleccionDato = (CheckBox) registroDatos.getChildAt(0);
+
+                if (seleccionDato.isChecked()) {
+                    cantidadChecks += 1;
+                    datoSeleccionado = (ExtensionInicioSesionEntitie) seleccionDato.getTag();
+                    Lista_Tabla.add(datoSeleccionado);
+                }
+            }
+
+
+            if (cantidadChecks != 0 && datoSeleccionado != null) {
+                Intent intentReporteUsuarioEditar = new Intent(ReporteUsuarioInfoActivity.this, ReporteUsuarioEditarActivity.class);
+
+                /* Luego de eso, simplemente se llevaria la nueva lista a: ReporteUsuarioGenerarActivity, para que el usuario, -
+                 * pueda ver los nuevos datos.
+                 *
+                 * Además, también se manda un true en su autorización para que así en: ReporteUsuarioGenerarActivity, pueda -
+                 * realizar el procedimiento que corresponde para mostrar la nueva lista. */
+                intentReporteUsuarioEditar.putParcelableArrayListExtra("ListaDatos_DocumentoPDF_Seleccionado", Lista_Tabla);
+
+                ReporteUsuarioEditarActivity.Autorizacion = true;
+
+                startActivity(intentReporteUsuarioEditar);
+
+                finish();
+
+            } else {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ReporteUsuarioInfoActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_error);
+                construirAlerta.setMessage("Pero en este momento no es posible añadir otro registro al reporte debido a que no se selecciono ningún dato.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+            }
+
+        } catch(Exception error) {
+            listaUsuarioInfoBinding.svBuscarInfoUsuarioLista.setVisibility(GONE);
+            listaUsuarioInfoBinding.txtTituloInfoUsuarioLista.setVisibility(GONE);
+
+            listaUsuarioInfoBinding.hsvScrollHorizontalInfoUsuariosLista.setVisibility(GONE);
+            listaUsuarioInfoBinding.btnConfirmarInfoUsuarioLista.setVisibility(GONE);
+
+            listaUsuarioInfoBinding.imgFotoInfoUsuarioLista.setVisibility(VISIBLE);
+            listaUsuarioInfoBinding.txtMensajeInfoUsuarioLista.setVisibility(VISIBLE);
+
+            listaUsuarioInfoBinding.imgFotoInfoUsuarioLista.setImageResource(R.drawable.icono_contenido_no_disponible);
+            listaUsuarioInfoBinding.txtMensajeInfoUsuarioLista.setText(getString(R.string.ErrorFragment));
+
+            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ReporteUsuarioInfoActivity.this);
+            construirAlerta.setIcon(R.drawable.icono_error);
+            construirAlerta.setMessage("Pero no es posible añadir otro registro al reporte en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
                     .setTitle("¡Lo sentimos!");
 
             construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {

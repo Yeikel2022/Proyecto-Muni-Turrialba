@@ -1,6 +1,796 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".moduloReporteria.ReportePermisoTiempoFragment">
+
+
+    <View
+        android:id="@+id/id_SeccionReportes_TiempoInformativa"
+        android:layout_width="356dp"
+        android:layout_height="80dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/border_radius" />
+
+
+    <ImageView
+        android:id="@+id/img_ReportesTiempo"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignStart="@+id/id_SeccionReportes_TiempoInformativa"
+        android:layout_alignTop="@+id/id_SeccionReportes_TiempoInformativa"
+        android:layout_alignBottom="@+id/id_SeccionReportes_TiempoInformativa"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/icono_bienvenida" />
+
+    <TextView
+        android:id="@+id/txt_ReportesTiempo_Bienvenida"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:layout_alignTop="@+id/id_SeccionReportes_TiempoInformativa"
+        android:layout_alignEnd="@+id/id_SeccionReportes_TiempoInformativa"
+        android:layout_alignBottom="@+id/id_SeccionReportes_TiempoInformativa"
+        android:layout_toEndOf="@+id/img_ReportesTiempo"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:paddingTop="3dp"
+        android:paddingEnd="25dp"
+        android:text="¡Bienvenido(a) al apartado de reporteria de tiempo de MuniTurrialba!"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:typeface="normal" />
+
+    <SearchView
+        android:id="@+id/sv_buscarReportesTiempo"
+        android:layout_width="149dp"
+        android:layout_height="59dp"
+        android:layout_below="@+id/id_SeccionReportes_TiempoInformativa"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="67dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="70dp"
+        android:background="@drawable/border_radius"
+        android:closeIcon="@drawable/icono_busqueda_cerrar"
+        android:paddingStart="7dp"
+        android:searchHintIcon="@drawable/icono_busqueda"
+        android:searchIcon="@drawable/icono_busqueda" />
+
+    <View
+        android:id="@+id/id_seccionesReportesTiempo"
+        android:layout_width="match_parent"
+        android:layout_height="551dp"
+        android:layout_below="@+id/sv_buscarReportesTiempo"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="19dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="29dp"
+        android:background="@drawable/border_radius_new" />
+
+    <LinearLayout
+        android:id="@+id/lnl_ContenidoReportesTiempo"
+        android:layout_width="293dp"
+        android:layout_height="448dp"
+        android:layout_alignTop="@+id/id_seccionesReportesTiempo"
+        android:layout_alignBottom="@+id/id_seccionesReportesTiempo"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp"
+        android:orientation="vertical">
+
+        <HorizontalScrollView
+            android:id="@+id/hsv_ScrollHorizontalBotones_ReportesTiempo"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
+            android:overScrollMode="never">
+
+            <LinearLayout
+                android:id="@+id/lnl_ContenidoHorizontalBotones_ReportesTiempo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="-16dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_GenerarReportesTiempo"
+                    android:layout_width="170dp"
+                    android:layout_height="63dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="25dp"
+                    android:background="@drawable/custom_buttons"
+                    android:clickable="true"
+                    android:fontFamily="sans-serif"
+                    android:paddingStart="12dp"
+                    android:text="Añadir"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:typeface="normal"
+                    app:backgroundTint="@null"
+                    app:icon="@drawable/icono_agregar"
+                    app:iconPadding="8dp"
+                    app:iconSize="40dp"
+                    app:iconTint="@color/black" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_EditarReportesTiempo"
+                    android:layout_width="170dp"
+                    android:layout_height="63dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="25dp"
+                    android:background="@drawable/custom_buttons"
+                    android:clickable="true"
+                    android:fontFamily="sans-serif"
+                    android:paddingStart="12dp"
+                    android:text="Editar"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:typeface="normal"
+                    app:backgroundTint="@null"
+                    app:icon="@drawable/icono_actualizar"
+                    app:iconPadding="8dp"
+                    app:iconSize="40dp"
+                    app:iconTint="@color/black" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_EliminarReportesTiempo"
+                    android:layout_width="170dp"
+                    android:layout_height="63dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="25dp"
+                    android:background="@drawable/custom_buttons"
+                    android:clickable="true"
+                    android:fontFamily="sans-serif"
+                    android:paddingStart="12dp"
+                    android:text="Eliminar"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:typeface="normal"
+                    app:backgroundTint="@null"
+                    app:icon="@drawable/icono_eliminar"
+                    app:iconPadding="8dp"
+                    app:iconSize="40dp"
+                    app:iconTint="@color/black" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_DescargarReportesTiempo"
+                    android:layout_width="180dp"
+                    android:layout_height="63dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="25dp"
+                    android:background="@drawable/custom_buttons"
+                    android:clickable="true"
+                    android:fontFamily="sans-serif"
+                    android:paddingStart="12dp"
+                    android:text="Descargar"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:typeface="normal"
+                    app:backgroundTint="@null"
+                    app:icon="@drawable/icono_descargar"
+                    app:iconPadding="8dp"
+                    app:iconSize="40dp"
+                    app:iconTint="@color/black" />
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <HorizontalScrollView
+            android:id="@+id/hsv_ScrollHorizontalReportesTiempo"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="15dp"
+            android:overScrollMode="never">
+
+            <LinearLayout
+                android:id="@+id/lnl_ContenidoHorizontalReportesTiempo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ScrollView
+                    android:id="@+id/sv_ScrollVertical_ContenidoReportesTiempo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:overScrollMode="never">
+
+                    <LinearLayout
+                        android:id="@+id/lnl_ContenidoVerticalReportesTiempo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TableLayout
+                            android:id="@+id/tbl_TablaInfoReportesTiempo"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TableRow
+                                android:id="@+id/tbr_InfoFilaReportesTiempo"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/border_table">
+
+                                <TextView
+                                    android:id="@+id/txt_InfoSeleccionReportes_Tiempo"
+                                    android:layout_width="30dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_marginEnd="7dp"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingTop="5dp"
+                                    android:text="✓"
+                                    android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoNombreReportes_Tiempo"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Nombre:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoApellidosReportes_Tiempo"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Apellidos:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoCedulaReportes_Tiempo"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Cédula:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoDepartamentoReportes_Tiempo"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Departamento:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoTipoPermisoReportes_Tiempo"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Tipo de permiso:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoDescripcionReportes_Tiempo"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Descripción:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoFechaAsignacionReportes_Tiempo"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Fecha de asignación:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoFechaFinalizacionReportes_Tiempo"
+                                    android:layout_width="350dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Fecha de finalización:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+
+                            </TableRow>
+
+                        </TableLayout>
+
+                        <TableLayout
+                            android:id="@+id/tbl_TablaContenido_ReportesTiempo"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TableRow
+                                android:id="@+id/tbr_PrimeraFilaContenido_ReportesTiempo"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/border_table">
+
+                                <CheckBox
+                                    android:id="@+id/btn_SeleccionDatoReportes_Tiempo"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_marginEnd="7dp"
+                                    android:buttonTint="@color/black"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingTop="5dp"
+                                    android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_NombreReportes_Tiempo"
+                                    android:layout_width="350dp"
+                                    android:layout_height="180dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Nombre:"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Nombre:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_ApellidosReportes_Tiempo"
+                                    android:layout_width="350dp"
+                                    android:layout_height="180dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Apellidos:"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Apellidos:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_CedulaReportes_Tiempo"
+                                    android:layout_width="350dp"
+                                    android:layout_height="180dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Cédula:"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Cédula:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_DepartamentoReportes_Tiempo"
+                                    android:layout_width="350dp"
+                                    android:layout_height="180dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Departamento:"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Departamento:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_TipoPermisoReportes_Tiempo"
+                                    android:layout_width="350dp"
+                                    android:layout_height="180dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Tipo de permiso:"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Tipo de permiso:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_DescripcionReportes_Tiempo"
+                                    android:layout_width="350dp"
+                                    android:layout_height="180dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Descripción:"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Descripción:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_FechaAsignacionReportes_Tiempo"
+                                    android:layout_width="350dp"
+                                    android:layout_height="180dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Fecha de asignación:"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Fecha de asignación:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_FechaFinalizacionReportes_Tiempo"
+                                    android:layout_width="350dp"
+                                    android:layout_height="180dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Fecha de finalización:"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Fecha de finalización:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+
+                            </TableRow>
+
+                        </TableLayout>
+
+                    </LinearLayout>
+                </ScrollView>
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <HorizontalScrollView
+            android:id="@+id/hsv_ScrollHorizontalReportesPDF_Tiempo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never">
+
+            <LinearLayout
+                android:id="@+id/lnl_ContenidoHorizontalReportesPDF_Tiempo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ScrollView
+                    android:id="@+id/sv_ScrollVerticalReportesPDF_Tiempo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:overScrollMode="never">
+
+                    <LinearLayout
+                        android:id="@+id/lnl_ContenidoVerticalReportesPDF_Tiempo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TableLayout
+                            android:id="@+id/tbl_TablaInfoReportesPDF_Tiempo"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TableRow
+                                android:id="@+id/tbr_InfoFilaReportesPDF_Tiempo"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/border_table">
+
+                                <TextView
+                                    android:id="@+id/txt_InfoSeleccionReportes_TiempoGuardado"
+                                    android:layout_width="30dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_marginEnd="7dp"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingTop="5dp"
+                                    android:text="✓"
+                                    android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoNumeroReportesTiempo_Guardado"
+                                    android:layout_width="80dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingTop="5dp"
+                                    android:text="Rep. #"
+                                    android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_InfoReportesTiempo_Guardado"
+                                    android:layout_width="950dp"
+                                    android:layout_height="40dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Reporte:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:typeface="normal" />
+
+                            </TableRow>
+
+                        </TableLayout>
+
+                        <TableLayout
+                            android:id="@+id/tbl_TablaReportesPDF_Tiempo"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TableRow
+                                android:id="@+id/tbr_PrimeraFilaContenido_ReportesPDF_Tiempo"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/border_table">
+
+                                <CheckBox
+                                    android:id="@+id/btn_SeleccionReportes_Tiempo"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginStart="7dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_marginEnd="7dp"
+                                    android:buttonTint="@color/black"
+                                    android:fontFamily="sans-serif"
+                                    android:paddingTop="5dp"
+                                    android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_NumeroReportesTiempo_Guardado"
+                                    android:layout_width="80dp"
+                                    android:layout_height="75dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Rep. #"
+                                    android:paddingTop="5dp"
+                                    android:text="Rep. #"
+                                    android:textAlignment="center"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+
+                                <TextView
+                                    android:id="@+id/txt_ReportesTiempo"
+                                    android:layout_width="950dp"
+                                    android:layout_height="75dp"
+                                    android:layout_marginStart="-1dp"
+                                    android:background="@drawable/border_table_row"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Reporte:"
+                                    android:paddingStart="11dp"
+                                    android:paddingTop="5dp"
+                                    android:text="Reporte:"
+                                    android:textAlignment="textStart"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="italic"
+                                    android:typeface="normal" />
+
+                            </TableRow>
+                        </TableLayout>
+                    </LinearLayout>
+                </ScrollView>
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <ImageView
+            android:id="@+id/img_fotoReportesTiempo"
+            android:layout_width="match_parent"
+            android:layout_height="264dp"
+            android:layout_marginStart="67dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="70dp"
+            android:layout_marginBottom="-70dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icono_contenido_no_disponible"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/txt_MensajeReportesTiempo"
+            android:layout_width="392dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/id_seccionesReportesTiempo"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="117dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="sans-serif"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
 
 </RelativeLayout>
