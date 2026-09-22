@@ -36,6 +36,8 @@ import com.proyectotcu.muniturrialba.moduloEmpleados.ControlEmpleadosActivity;
 import com.proyectotcu.muniturrialba.moduloEmpleados.ControlSalarioFragment;
 import com.proyectotcu.muniturrialba.moduloEmpleados.EmpleadoFragment;
 import com.proyectotcu.muniturrialba.moduloEmpleados.PermisoTiempoFragment;
+import com.proyectotcu.muniturrialba.moduloReporteria.ReportePermisoTiempoFragment;
+import com.proyectotcu.muniturrialba.moduloReporteria.ReporteSalarioFragment;
 import com.proyectotcu.muniturrialba.moduloReporteria.ReporteUsuarioFragment;
 import com.proyectotcu.muniturrialba.moduloReporteria.ReporteriaActivity;
 
@@ -876,6 +878,20 @@ public class PerfilFragment extends Fragment {
             ReporteUsuarioFragment.mensajeReportesUsuarios = false;
             ReporteUsuarioFragment.autorizacionMantenerReporte = false;
             ReporteUsuarioFragment.documentosPDF.clear();
+            ReporteUsuarioFragment.respaldoReporteUsuario.clear();
+            ReporteUsuarioFragment.contadorNumeroReporte = 0;
+
+            ReportePermisoTiempoFragment.mensajeReportesTiempo = false;
+            ReportePermisoTiempoFragment.autorizacionMantenerReporteTiempo = false;
+            ReportePermisoTiempoFragment.documentosPDFTiempo.clear();
+            ReportePermisoTiempoFragment.respaldoReporteTiempo.clear();
+            ReportePermisoTiempoFragment.contadorNumeroReporteTiempo = 0;
+
+            ReporteSalarioFragment.mensajeReportesSalarios = false;
+            ReporteSalarioFragment.autorizacionMantenerReporteSalarios = false;
+            ReporteSalarioFragment.documentosPDFSalarios.clear();
+            ReporteSalarioFragment.respaldoReporteSalario.clear();
+            ReporteSalarioFragment.contadorNumeroReporteSalarios = 0;
 
             //Administración de Archivos: (Pendiente).
 

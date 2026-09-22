@@ -21,11 +21,15 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.proyectotcu.muniturrialba.R;
 import com.proyectotcu.muniturrialba.databinding.ActivityReporteriaBinding;
+import com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI.ExtensionInicioSesionEntitie;
+import com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI.ExtensionPermisoTiempoEntitie;
+import com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI.ExtensionSalarioEntitie;
 import com.proyectotcu.muniturrialba.moduloEmpleados.MensajeFragment;
 
 import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 public class ReporteriaActivity extends AppCompatActivity {
 
@@ -78,28 +82,66 @@ public class ReporteriaActivity extends AppCompatActivity {
                     String seccionMostrar = seccionRecorrida.getStringExtra("Seccion_A_Mostrar");
 
                     if ("Usuarios".equals(seccionMostrar)) {
-                        //ESTO NO SE BORRA
-                        /*ArrayList<Uri> documentosRecorridos =
-                                getIntent().getParcelableArrayListExtra("Documentos_PDF");*/
-                        String documentoPDF = seccionRecorrida.getStringExtra("Documento_PDF");
-
                         Bundle bundleReporte = new Bundle();
                         ReporteUsuarioFragment reporteUsuarioFragment = new ReporteUsuarioFragment();
 
-                        bundleReporte.putString("Documento-PDF", documentoPDF);
-                        reporteUsuarioFragment.setArguments(bundleReporte);
+                        String documentoPDF = seccionRecorrida.getStringExtra("Documento_PDF");
+                        String idDocumento = seccionRecorrida.getStringExtra("idDocumento");
+                        ArrayList<ExtensionInicioSesionEntitie> listaDocumentoPDF = seccionRecorrida.getParcelableArrayListExtra("DocumentoPDF_Y_ListaDatos");
 
+                        bundleReporte.putString("Documento-PDF", documentoPDF);
+                        bundleReporte.putString("idDocumento", idDocumento);
+                        bundleReporte.putParcelableArrayList("ListaDatos_DocumentoPDF_Generado", listaDocumentoPDF);
+
+                        reporteUsuarioFragment.setArguments(bundleReporte);
                         Fragmentos(reporteUsuarioFragment);
 
-                        //Fragmentos(new ReporteUsuarioFragment());
                         reporteriaBinding.btnVBarraNavegacionReporteria.setSelectedItemId(R.id.itm_Reportes_Usuarios);
 
-                    }  else if ("Salarios".equals(seccionMostrar)) {
-                        Fragmentos(new ReporteSalarioFragment());
+                    } else if ("Salarios".equals(seccionMostrar)) {
+                        ReporteSalarioFragment reporteSalarioFragment = new ReporteSalarioFragment();
+
+                        String documentoPDF = seccionRecorrida.getStringExtra("Documento_PDF");
+                        String idDocumento = seccionRecorrida.getStringExtra("idDocumento");
+                        ArrayList<ExtensionSalarioEntitie> listaDocumentoPDF =
+                                seccionRecorrida.getParcelableArrayListExtra("DocumentoPDF_Y_ListaDatos");
+
+                        if(documentoPDF == null && listaDocumentoPDF == null) {
+                            Fragmentos(reporteSalarioFragment);
+
+                        } else {
+                            Bundle bundleReporte = new Bundle();
+                            bundleReporte.putString("DocumentoPDF_Salario", documentoPDF);
+                            bundleReporte.putString("idDocumentoSalario", idDocumento);
+                            bundleReporte.putParcelableArrayList("ListaDatos_DocumentoPDF_SalarioGenerado", listaDocumentoPDF);
+
+                            reporteSalarioFragment.setArguments(bundleReporte);
+                            Fragmentos(reporteSalarioFragment);
+                        }
+
                         reporteriaBinding.btnVBarraNavegacionReporteria.setSelectedItemId(R.id.itm_Reportes_Salarios);
 
                     } else if ("Permisos_Tiempo".equals(seccionMostrar)) {
-                        Fragmentos(new ReportePermisoTiempoFragment());
+                        ReportePermisoTiempoFragment reportePermisoTiempoFragment = new ReportePermisoTiempoFragment();
+
+                        String documentoPDF = seccionRecorrida.getStringExtra("Documento_PDF");
+                        String idDocumento = seccionRecorrida.getStringExtra("idDocumento");
+                        ArrayList<ExtensionPermisoTiempoEntitie> listaDocumentoPDF =
+                                seccionRecorrida.getParcelableArrayListExtra("DocumentoPDF_Y_ListaDatos");
+
+                        if(documentoPDF == null && listaDocumentoPDF == null) {
+                            Fragmentos(reportePermisoTiempoFragment);
+
+                        } else {
+                            Bundle bundleReporte = new Bundle();
+                            bundleReporte.putString("DocumentoPDF_Tiempo", documentoPDF);
+                            bundleReporte.putString("idDocumentoTiempo", idDocumento);
+                            bundleReporte.putParcelableArrayList("ListaDatos_DocumentoPDF_TiempoGenerado", listaDocumentoPDF);
+
+                            reportePermisoTiempoFragment.setArguments(bundleReporte);
+                            Fragmentos(reportePermisoTiempoFragment);
+                        }
+
                         reporteriaBinding.btnVBarraNavegacionReporteria.setSelectedItemId(R.id.itm_Reportes_Permisos_Tiempo);
 
                     } else {

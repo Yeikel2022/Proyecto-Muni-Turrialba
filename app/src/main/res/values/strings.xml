@@ -14,6 +14,8 @@
     <string name="InformacionPermisos_UsuarioEmpleado">Aqui podra actualizar o asignar los permisos que estan asociados al - usuario(a) en cuestión. \n\nEso si, cabe aclarar que los emplea\ndos(as) son los usuarios de la apli-\ncación móvil respectivamente.</string>
     <string name="Informacion_UsuarioEmpleado">Lista de usuarios relacionados a los empleados de la aplicación móvil:</string>
     <string name="Informacion_InfoUsuarioLista">Lista de usuarios relacionados a los inicios de sesión de la aplicación móvil:</string>
+    <string name="Informacion_InfoPermisoTiempoLista">Lista de permisos de tiempo relacionados a los empleados(as) de la aplicación móvil:</string>
+    <string name="Informacion_InfoSalarioLista">Lista de salarios relacionados a los empleados(as) de la aplicación móvil:</string>
 
     <string name="InformacionFecha_PermisosTiempo">Formato de fecha: año/mes/dia hora:minutos:segundos.</string>
 

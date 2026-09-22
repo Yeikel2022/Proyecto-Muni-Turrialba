@@ -23,6 +23,48 @@
              hay que configurarlo para que acepte solo HTTPS y realice -
              transacciones bajo ese protocolo en producción. -->
 
+        <!-- Esto es para indicarle al manifest donde esta la vista: "ReporteSalarioEditarActivity".
+             Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
+             (vista), lo que daria un error en el mismo. -->
+        <activity
+            android:name=".moduloReporteria.ReporteSalarioEditarActivity"
+            android:exported="false" />
+
+        <!-- Esto es para indicarle al manifest donde esta la vista: "ReporteSalarioInfoActivity".
+             Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
+             (vista), lo que daria un error en el mismo. -->
+        <activity
+            android:name=".moduloReporteria.ReporteSalarioInfoActivity"
+            android:exported="false" />
+
+        <!-- Esto es para indicarle al manifest donde esta la vista: "ReporteSalarioGenerarActivity".
+             Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
+             (vista), lo que daria un error en el mismo. -->
+        <activity
+            android:name=".moduloReporteria.ReporteSalarioGenerarActivity"
+            android:exported="false" />
+
+        <!-- Esto es para indicarle al manifest donde esta la vista: "ReportePermisoTiempoEditarActivity".
+             Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
+             (vista), lo que daria un error en el mismo. -->
+        <activity
+            android:name=".moduloReporteria.ReportePermisoTiempoEditarActivity"
+            android:exported="false" />
+
+        <!-- Esto es para indicarle al manifest donde esta la vista: "ReportePermisoTiempoInfoActivity".
+             Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
+             (vista), lo que daria un error en el mismo. -->
+        <activity
+            android:name=".moduloReporteria.ReportePermisoTiempoInfoActivity"
+            android:exported="false" />
+
+        <!-- Esto es para indicarle al manifest donde esta la vista: "ReportePermisoTiempoGenerarActivity".
+             Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
+             (vista), lo que daria un error en el mismo. -->
+        <activity
+            android:name=".moduloReporteria.ReportePermisoTiempoGenerarActivity"
+            android:exported="false" />
+
         <!-- Esto es para indicarle al manifest donde esta la vista: "ReporteUsuarioEditarActivity".
              Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
              (vista), lo que daria un error en el mismo. -->
