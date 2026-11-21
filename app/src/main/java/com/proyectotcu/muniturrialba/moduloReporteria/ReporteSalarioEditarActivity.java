@@ -52,6 +52,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class ReporteSalarioEditarActivity extends AppCompatActivity {
+
     //Variable para usar el ViewBinding de esta clase.
     private ActivityReporteSalariosEditarBinding reporteSalariosEditarBinding;
 
@@ -152,7 +153,6 @@ public class ReporteSalarioEditarActivity extends AppCompatActivity {
                 construirAlerta.setMessage("¿Esta completamente seguro(a) de actualizar este reporte respectivamente?")
                         .setTitle("Actualizar Reporte Salarial.");
 
-
                 construirAlerta.setPositiveButton("Si.", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -174,7 +174,6 @@ public class ReporteSalarioEditarActivity extends AppCompatActivity {
                 construirAlerta.setIcon(R.drawable.icono_eliminar);
                 construirAlerta.setMessage("¿Esta completamente seguro(a) de eliminar estos datos del usuario(a) de forma permanente?")
                         .setTitle("Eliminar Datos Salario.");
-
 
                 construirAlerta.setPositiveButton("Si.", new DialogInterface.OnClickListener() {
                     @Override
@@ -296,7 +295,6 @@ public class ReporteSalarioEditarActivity extends AppCompatActivity {
                 campoFechaEntregaGuardado = new TextView(ReporteSalarioEditarActivity.this);
                 campoSalarioGuardado = new TextView(ReporteSalarioEditarActivity.this);
                 campoDescripcionGuardado = new TextView(ReporteSalarioEditarActivity.this);
-
 
                 LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 350);
                 AnchoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 205);

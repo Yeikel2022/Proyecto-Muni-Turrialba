@@ -107,7 +107,6 @@ public class AyudaActualizarActivity extends AppCompatActivity {
                 construirAlerta.setMessage("¿Esta completamente seguro(a) de actualizar esta pregunta?")
                         .setTitle("Actualizar FAQ.");
 
-
                 construirAlerta.setPositiveButton("Si.", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -156,7 +155,7 @@ public class AyudaActualizarActivity extends AppCompatActivity {
 
             AlertDialog.Builder construirAlerta = new AlertDialog.Builder(AyudaActualizarActivity.this);
             construirAlerta.setIcon(R.drawable.icono_error);
-            construirAlerta.setMessage("Pero no es posible actualizar la pregunta en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+            construirAlerta.setMessage("Pero no fue posible finalizar el proceso en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
                     .setTitle("¡Lo sentimos!");
 
             construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -184,21 +183,20 @@ public class AyudaActualizarActivity extends AppCompatActivity {
                 finish();
             }
         });
-
     }
 
 
     private void ActualizarFAQ(String tokenUsuario) {
-
         preguntaActualizada = ayudaActualizarBinding.edtxtPreguntaActualizar.getText().toString().trim();
         respuestaActualizada = ayudaActualizarBinding.edtxtRespuestaActualizar.getText().toString().trim();
 
         boolean respuestaValidacion = ValidarFAQs(preguntaActualizada, respuestaActualizada, tipoPrioridadActualizada);
-        if(respuestaValidacion != false) {
 
+        if(respuestaValidacion != false) {
             faqInterface = ConexionAPI.Conexion_API_FAQ(this);
 
             FAQEntitie faqEntitie = new FAQEntitie(preguntaActualizada, respuestaActualizada, tipoPrioridadActualizada);
+
             Call<Boolean> actualizarFAQ = faqInterface.actualizarFAQ(faqEntitie, preguntaRecorrido, tokenUsuario);
 
             actualizarFAQ.enqueue(new Callback<Boolean>() {
@@ -232,13 +230,13 @@ public class AyudaActualizarActivity extends AppCompatActivity {
                             int errorRaw = response.raw().code();
 
                             if(errorRaw == 401) {
-                                error = "Se finalizo la sesión de su cuenta.";
+                                error = " Se finalizo la sesión de su cuenta.";
                             }
 
                             /* Esto es para imprimir los mensajes de error. */
                             AlertDialog.Builder construirAlerta = new AlertDialog.Builder(AyudaActualizarActivity.this);
                             construirAlerta.setIcon(R.drawable.icono_error);
-                            construirAlerta.setMessage("Pero en este momento no es posible actualizar la pregunta debido a que: " + error + "\n\nPor favor, intentelo de nuevo.")
+                            construirAlerta.setMessage("Pero en este momento no es posible actualizar la pregunta debido a que:" + error.replace('"', ' ') + "\n\nPor favor, intentelo de nuevo.")
                                     .setTitle("¡Lo sentimos!");
 
                             construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -288,10 +286,10 @@ public class AyudaActualizarActivity extends AppCompatActivity {
                     construirAlerta.setMessage("Pero no es posible actualizar la pregunta en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
                             .setTitle("¡Lo sentimos!");
 
-
                     construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {}});
+
                     AlertDialog ejecutarMensaje = construirAlerta.create();
                     ejecutarMensaje.show();
                 }
@@ -301,89 +299,106 @@ public class AyudaActualizarActivity extends AppCompatActivity {
 
 
     private boolean ValidarFAQs(String pregunta, String respuesta, String tipoPrioridad) {
-        if (pregunta.equals(preguntaRecorrido) && respuesta.equals(respuestaRecorrido) && tipoPrioridad.equals(tipoPrioridadRecorrido)) {
+        try {
+            if (pregunta.equals(preguntaRecorrido) && respuesta.equals(respuestaRecorrido) && tipoPrioridad.equals(tipoPrioridadRecorrido)) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(AyudaActualizarActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo actualizar la pregunta debido a que están los mismos datos." + "\n\nPor favor, ingrese los nuevos cambios que desea para actualizar esta pregunta.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+            if (pregunta.isEmpty() && respuesta.isEmpty() && tipoPrioridad.equals("Seleccione el tipo de prioridad:")) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(AyudaActualizarActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo actualizar la pregunta debido a que todos los espacios están vacios." + "\n\nPor favor, ingrese todos los campos requeridos e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+            Pattern patronPreguntas = Pattern.compile("¿.*\\?");
+            Matcher compararPregunta = patronPreguntas.matcher(pregunta);
+            if (pregunta.isEmpty() || !compararPregunta.find()) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(AyudaActualizarActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo actualizar la pregunta debido a que esta se encuentra vacia o esta incorrecta." + "\n\nPor favor, digite otra vez su pregunta e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+            if (respuesta.isEmpty()) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(AyudaActualizarActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo actualizar la pregunta debido a que la respuesta se encuentra vacia." + "\n\nPor favor, digite otra vez su respuesta e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+            if (tipoPrioridad.isEmpty() || tipoPrioridad.equals("Seleccione el tipo de prioridad:")) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(AyudaActualizarActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo actualizar la pregunta debido a que el tipo de prioridad se encuentra vacia." + "\n\nPor favor, digite otra vez la prioridad que desea e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+            return true;
+
+        } catch (Exception error) {
             AlertDialog.Builder construirAlerta = new AlertDialog.Builder(AyudaActualizarActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no se pudo actualizar la pregunta debido a que están los mismos datos." + "\n\nPor favor, ingrese los nuevos cambios que desea para actualizar esta pregunta.")
+            construirAlerta.setIcon(R.drawable.icono_error);
+            construirAlerta.setMessage("Pero no es posible actualizar la pregunta en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
                     .setTitle("¡Lo sentimos!");
 
             construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {}});
 
-            AlertDialog ejecutarMensaje = construirAlerta.create();
-            ejecutarMensaje.show();
-
-            return false;
-        }
-
-        if (pregunta.isEmpty() && respuesta.isEmpty() && tipoPrioridad.equals("Seleccione el tipo de prioridad:")) {
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(AyudaActualizarActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no se pudo actualizar la pregunta debido a que todos los espacios están vacios." + "\n\nPor favor, ingrese todos los campos requeridos e intentelo de nuevo.")
-                    .setTitle("¡Lo sentimos!");
-
-            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}});
 
             AlertDialog ejecutarMensaje = construirAlerta.create();
             ejecutarMensaje.show();
-
             return false;
         }
-
-        Pattern patronPreguntas = Pattern.compile("¿.*\\?");
-        Matcher compararPregunta = patronPreguntas.matcher(pregunta);
-        if (pregunta.isEmpty() || pregunta.equals(null) || !compararPregunta.find()) {
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(AyudaActualizarActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no se pudo actualizar la pregunta debido a que esta se encuentra vacia o esta incorrecta." + "\n\nPor favor, digite otra vez su pregunta e intentelo de nuevo.")
-                    .setTitle("¡Lo sentimos!");
-
-            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}});
-
-            AlertDialog ejecutarMensaje = construirAlerta.create();
-            ejecutarMensaje.show();
-
-            return false;
-        }
-
-        if (respuesta.isEmpty() || respuesta.equals(null)) {
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(AyudaActualizarActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no se pudo actualizar la pregunta debido a que la respuesta se encuentra vacia." + "\n\nPor favor, digite otra vez su respuesta e intentelo de nuevo.")
-                    .setTitle("¡Lo sentimos!");
-
-            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}});
-
-            AlertDialog ejecutarMensaje = construirAlerta.create();
-            ejecutarMensaje.show();
-
-            return false;
-        }
-
-        if (tipoPrioridad.isEmpty() || tipoPrioridad.equals(null) || tipoPrioridad.equals("Seleccione el tipo de prioridad:")) {
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(AyudaActualizarActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no se pudo actualizar la pregunta debido a que el tipo de prioridad se encuentra vacia." + "\n\nPor favor, digite otra vez la prioridad que desea e intentelo de nuevo.")
-                    .setTitle("¡Lo sentimos!");
-
-            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}});
-
-            AlertDialog ejecutarMensaje = construirAlerta.create();
-            ejecutarMensaje.show();
-
-            return false;
-        }
-
-        return true;
     }
 
 
@@ -400,5 +415,4 @@ public class AyudaActualizarActivity extends AppCompatActivity {
          * Esto por temas de buenas prácticas. */
         finish();
     }
-
 }

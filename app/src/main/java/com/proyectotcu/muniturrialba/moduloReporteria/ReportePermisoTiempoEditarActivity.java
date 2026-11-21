@@ -51,6 +51,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class ReportePermisoTiempoEditarActivity extends AppCompatActivity {
+
     //Variable para usar el ViewBinding de esta clase.
     private ActivityReportePermisosTiempoEditarBinding reporteTiempoEditarBinding;
 
@@ -151,7 +152,6 @@ public class ReportePermisoTiempoEditarActivity extends AppCompatActivity {
                 construirAlerta.setMessage("¿Esta completamente seguro(a) de actualizar este reporte respectivamente?")
                         .setTitle("Actualizar Reporte Tiempo.");
 
-
                 construirAlerta.setPositiveButton("Si.", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -173,7 +173,6 @@ public class ReportePermisoTiempoEditarActivity extends AppCompatActivity {
                 construirAlerta.setIcon(R.drawable.icono_eliminar);
                 construirAlerta.setMessage("¿Esta completamente seguro(a) de eliminar estos datos del usuario(a) de forma permanente?")
                         .setTitle("Eliminar Datos Tiempo.");
-
 
                 construirAlerta.setPositiveButton("Si.", new DialogInterface.OnClickListener() {
                     @Override
@@ -296,7 +295,6 @@ public class ReportePermisoTiempoEditarActivity extends AppCompatActivity {
                 campoDescripcionGuardado = new TextView(ReportePermisoTiempoEditarActivity.this);
                 campoFechaAsignacionGuardado = new TextView(ReportePermisoTiempoEditarActivity.this);
                 campoFechaFinalizacionGuardado = new TextView(ReportePermisoTiempoEditarActivity.this);
-
 
                 LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 350);
                 AnchoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 205);
@@ -925,7 +923,6 @@ public class ReportePermisoTiempoEditarActivity extends AppCompatActivity {
 
 
     private void VistaOtroRegistro() {
-
         try {
             ExtensionPermisoTiempoEntitie datoSeleccionado = null;
             ArrayList<ExtensionPermisoTiempoEntitie> Lista_PermisosTiempo_Temporal = new ArrayList<>();

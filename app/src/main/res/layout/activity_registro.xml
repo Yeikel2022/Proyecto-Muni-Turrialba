@@ -172,7 +172,7 @@
                 android:background="@drawable/border_text"
                 android:ems="10"
                 android:fontFamily="sans-serif"
-                android:hint="Teléfono:"
+                android:hint="Teléfono (opcional):"
                 android:inputType="phone"
                 android:paddingStart="5dp"
                 android:textAlignment="textStart"

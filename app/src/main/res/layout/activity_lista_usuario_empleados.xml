@@ -71,6 +71,7 @@
             android:id="@+id/txt_Titulo_ListaUsuarioEmpleado"
             android:layout_width="400dp"
             android:layout_height="53dp"
+            android:layout_marginTop="10dp"
             android:fontFamily="sans-serif"
             android:paddingTop="2dp"
             android:text="@string/Informacion_UsuarioEmpleado"

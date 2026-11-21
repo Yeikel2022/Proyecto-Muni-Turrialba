@@ -1,5 +1,7 @@
 package com.proyectotcu.muniturrialba.index;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -7,11 +9,13 @@ import android.util.Patterns;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.proyectotcu.muniturrialba.MainActivity;
 import com.proyectotcu.muniturrialba.R;
 import com.proyectotcu.muniturrialba.databinding.ActivityRecuperarPasswordBinding;
 import com.proyectotcu.muniturrialba.manejoAPI.ConexionAPI;
@@ -54,6 +58,22 @@ public class RecuperarPasswordActivity extends AppCompatActivity {
         /* Sirve para llamar el metodo de enviar un correo electrónico, siempre -
          * y cuando el usuario presione el boton respectivo. */
         recuperarPasswordBinding.btnRecuperarCuenta.setOnClickListener(v -> EnviarCorreo());
+
+        //METODO PARA DETECTAR SI EL USUARIO POR X O Y RAZÓN, DESEA REGRESARSE.
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                //Aqui le dice a que vista tiene que ir, como un hipervinculo basicamente.
+                Intent intentInicio = new Intent(RecuperarPasswordActivity.this, MainActivity.class);
+
+                //Le indica que ejecute el hipervinculo.
+                startActivity(intentInicio);
+
+                /* Sirve para evitar que el usuario se regrese después.
+                 * Esto por temas de buenas prácticas. */
+                finish();
+            }
+        });
     }
 
     /* Metodo que sirve para enviar el correo electrónico que coloca el usuario -
@@ -107,11 +127,24 @@ public class RecuperarPasswordActivity extends AppCompatActivity {
                             /* Esto permite leer el error del Body, de modo -
                              * que sirva en el debug. */
                             String error = response.errorBody().string();
+                            int errorRaw = response.raw().code();
+
+                            if(errorRaw == 404) {
+                                error = " El correo electrónico es necesario.";
+                            }
 
                             //Imprime el error capturado.
-                            Toast.makeText(RecuperarPasswordActivity.this, "¡Lo sentimos, pero en este momento no se pudo enviar el correo!", Toast.LENGTH_LONG).show();
-                            Toast.makeText(RecuperarPasswordActivity.this, error, Toast.LENGTH_LONG).show();
-                            Toast.makeText(RecuperarPasswordActivity.this, "Por favor, corriga los datos e intentelo de nuevo.", Toast.LENGTH_LONG).show();
+                            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(RecuperarPasswordActivity.this);
+                            construirAlerta.setIcon(R.drawable.icono_error);
+                            construirAlerta.setMessage("Pero en este momento no se pudo enviar el correo electrónico debido a que:" + error.replace('"', ' ') + "\n\nPor favor, corriga los datos e intentelo de nuevo.")
+                                    .setTitle("¡Lo sentimos!");
+
+                            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {}});
+
+                            AlertDialog ejecutarMensaje = construirAlerta.create();
+                            ejecutarMensaje.show();
 
                             /* Este sirve solo para el logcat:
                              * System.out.println(error); */
@@ -122,10 +155,17 @@ public class RecuperarPasswordActivity extends AppCompatActivity {
                              * las excepciones respectivamente.
                              *
                              * error.printStackTrace(); */
-                            Toast.makeText(RecuperarPasswordActivity.this, "¡Lo sentimos, " +
-                                    "pero parece que hubo un problema!", Toast.LENGTH_LONG).show();
-                            Toast.makeText(RecuperarPasswordActivity.this,
-                                    "Por favor, intentelo más tarde.", Toast.LENGTH_LONG).show();
+                            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(RecuperarPasswordActivity.this);
+                            construirAlerta.setIcon(R.drawable.icono_error);
+                            construirAlerta.setMessage("Pero no es posible enviar el correo electrónico en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+                                    .setTitle("¡Lo sentimos!");
+
+                            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {}});
+
+                            AlertDialog ejecutarMensaje = construirAlerta.create();
+                            ejecutarMensaje.show();
                         }
                     }
                 }
@@ -142,42 +182,72 @@ public class RecuperarPasswordActivity extends AppCompatActivity {
                      * debe ver:
                      * Toast.makeText(RecuperarPasswordActivity.this, t.getLocalizedMessage(),
                      * Toast.LENGTH_SHORT).show(); */
-                    Toast.makeText(RecuperarPasswordActivity.this, "¡Lo sentimos, " +
-                            "pero en este momento no se pudo enviar el correo!", Toast.LENGTH_LONG).show();
+                    AlertDialog.Builder construirAlerta = new AlertDialog.Builder(RecuperarPasswordActivity.this);
+                    construirAlerta.setIcon(R.drawable.icono_error);
+                    construirAlerta.setMessage("Pero no es posible enviar el correo electrónico en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+                            .setTitle("¡Lo sentimos!");
 
-                    Toast.makeText(RecuperarPasswordActivity.this,
-                            "Por favor, intentelo de nuevo.", Toast.LENGTH_LONG).show();
+                    construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {}});
+
+                    AlertDialog ejecutarMensaje = construirAlerta.create();
+                    ejecutarMensaje.show();
                 }
-
             });
-
         }
-
     }
 
     /* Este metodo sirve para validar el correo electronico -
      * que esta colocando el usuario respectivamente. */
     private boolean ValidarCorreo(String correo) {
-        /* Aqui valida si el correo esta vacio o si tiene errores en el formato.
-         * Y si entra, entonces mandaria un mensaje de advertencia al usuario -
-         * y un false al metodo: EnviarCorreo.
-         *
-         * NOTA: El comando: !Patterns.EMAIL_ADDRESS.matcher(correo).matches(), -
-         * lo que ayuda es para saber si el correo esta bien o no, esto por medio de -
-         * lo siguiente: "Patterns.EMAIL_ADDRESS", el cual es un comando que brinda -
-         * Android Studio para poder manejar diferentes patrones como si fuera una -
-         * expresión regular, en este caso, un correo electronico.
-         *
-         * Ahora con: "matcher(correo)", esto sirve para poder comparar el correo -
-         * ingresado con ese patron que nosotros habiamos solicitado, osea el Patterns, -
-         * luego de eso el: "matches()" nos ayudara a dar el resultado de esa comparación. */
-        if (correo.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(correo).matches()) {
-            Toast.makeText(RecuperarPasswordActivity.this, "¡El correo esta vacio o esta incorrecto! \n" +
-                    "Por favor, digite otra vez su correo.", Toast.LENGTH_LONG).show();
+        try {
+            /* Aqui valida si el correo esta vacio o si tiene errores en el formato.
+             * Y si entra, entonces mandaria un mensaje de advertencia al usuario -
+             * y un false al metodo: EnviarCorreo.
+             *
+             * NOTA: El comando: !Patterns.EMAIL_ADDRESS.matcher(correo).matches(), -
+             * lo que ayuda es para saber si el correo esta bien o no, esto por medio de -
+             * lo siguiente: "Patterns.EMAIL_ADDRESS", el cual es un comando que brinda -
+             * Android Studio para poder manejar diferentes patrones como si fuera una -
+             * expresión regular, en este caso, un correo electronico.
+             *
+             * Ahora con: "matcher(correo)", esto sirve para poder comparar el correo -
+             * ingresado con ese patron que nosotros habiamos solicitado, osea el Patterns, -
+             * luego de eso el: "matches()" nos ayudara a dar el resultado de esa comparación. */
+            if (correo.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(correo).matches()) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(RecuperarPasswordActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo enviar el correo electrónico debido a que el mismo correo se encuentra vacio o esta incorrecto." + "\n\nPor favor, digite otra vez su correo electrónico e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+            return true;
+
+        } catch (Exception error) {
+            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(RecuperarPasswordActivity.this);
+            construirAlerta.setIcon(R.drawable.icono_error);
+            construirAlerta.setMessage("Pero no es posible enviar el correo electrónico en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+                    .setTitle("¡Lo sentimos!");
+
+            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {}});
+
+
+            AlertDialog ejecutarMensaje = construirAlerta.create();
+            ejecutarMensaje.show();
             return false;
         }
-
-        return true;
     }
 
     /* Este metodo sirve para poder enviar el usuario hacia la -
@@ -194,8 +264,9 @@ public class RecuperarPasswordActivity extends AppCompatActivity {
 
         //Le indica que ejecute el hipervinculo.
         startActivity(intentCodigo);
+
+        /* Sirve para evitar que el usuario se regrese después.
+         * Esto por temas de buenas prácticas. */
+        finish();
     }
-
-
-
 }

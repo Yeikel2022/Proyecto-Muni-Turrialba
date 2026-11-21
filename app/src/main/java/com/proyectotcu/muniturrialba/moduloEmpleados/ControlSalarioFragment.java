@@ -169,7 +169,6 @@ public class ControlSalarioFragment extends Fragment {
                         construirAlerta.setMessage("¿Esta completamente seguro(a) de eliminar este salario de forma permanentemente?")
                                 .setTitle("Eliminar Salario.");
 
-
                         construirAlerta.setPositiveButton("Si.", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -314,7 +313,7 @@ public class ControlSalarioFragment extends Fragment {
 
                 if(Eliminar == false) {
                     botonEliminar.setVisibility(GONE);
-                    listaMensaje.add("- Eliminar un registro de salario respectivamente.");
+                    listaMensaje.add("- Eliminar un registro de salario respectivamente.\n\n");
                 }
 
 
@@ -330,8 +329,7 @@ public class ControlSalarioFragment extends Fragment {
 
                         AlertDialog.Builder construirAlertaCrear = new AlertDialog.Builder(getActivity());
                         construirAlertaCrear.setIcon(R.drawable.icono_error);
-
-                        construirAlertaCrear.setMessage("Pero no tienes la autorización necesaria para: \n\n" + mensajeProveniente)
+                        construirAlertaCrear.setMessage("Pero no tienes la autorización necesaria para: \n\n" + mensajeProveniente + "Por favor, intentelo más tarde.")
                                 .setTitle("¡Lo sentimos!");
 
                         construirAlertaCrear.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -406,7 +404,7 @@ public class ControlSalarioFragment extends Fragment {
 
                 if(Crear == false) {
                     botonCrear.setVisibility(GONE);
-                    listaMensaje.add("- Crear un nuevo registro de salario dentro de este apartado.");
+                    listaMensaje.add("- Crear un nuevo registro de salario dentro de este apartado.\n\n");
                 }
 
 
@@ -420,8 +418,7 @@ public class ControlSalarioFragment extends Fragment {
 
                         AlertDialog.Builder construirAlertaCrear = new AlertDialog.Builder(getActivity());
                         construirAlertaCrear.setIcon(R.drawable.icono_error);
-
-                        construirAlertaCrear.setMessage("Pero no tienes la autorización necesaria para: \n\n" + mensajeProveniente)
+                        construirAlertaCrear.setMessage("Pero no tienes la autorización necesaria para: \n\n" + mensajeProveniente + "Por favor, intentelo más tarde.")
                                 .setTitle("¡Lo sentimos!");
 
                         construirAlertaCrear.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -518,40 +515,11 @@ public class ControlSalarioFragment extends Fragment {
 
         Call<List<ExtensionSalarioEntitie>> mostrarSalarios = salarioInterface.obtenerSalarios(tokenUsuario);
 
-
         mostrarSalarios.enqueue(new Callback<List<ExtensionSalarioEntitie>>() {
             @Override
             public void onResponse(Call<List<ExtensionSalarioEntitie>> call, Response<List<ExtensionSalarioEntitie>> response) {
                 if (response.isSuccessful()) {
-
-                    if(response.body().size() == 1) {
-                        tblTablaSalarios.removeAllViews();
-
-                        for (int i = 0; i < response.body().size(); i++) {
-                            ExtensionSalarioEntitie salarios = response.body().get(i);
-                            String Nombre  = salarios.getNombre().trim();
-                            String Apellidos = salarios.getApellido_1().trim() + " " + salarios.getApellido_2().trim();
-                            String Edad = salarios.getEdad().toString().trim();
-                            String Cedula = salarios.getCedula().trim();
-                            String Departamento = salarios.getDepartamento().trim();
-                            String FechaEntrega = salarios.getFechaEntrega().trim();
-                            String Salario = salarios.getSalario().toString().trim();
-                            String Descripcion = salarios.getDescripcion().trim();
-
-
-                            txtNombre.setText(Nombre);
-                            txtApellidos.setText(Apellidos);
-                            txtEdad.setText(Edad);
-                            txtCedula.setText(Cedula);
-                            txtDepartamento.setText(Departamento);
-                            txtFechaEntrega.setText(FechaEntrega);
-                            txtSalario.setText(Salario);
-                            txtDescripcion.setText(Descripcion);
-
-                            botonSeleccion.setTag(salarios);
-                            botonSeleccion.setVisibility(VISIBLE);
-                        }
-                    }
+                    Boolean mostrarInfoDefecto = false;
 
                     tblTablaSalarios.removeAllViews();
                     tbrPrimeraFila.setVisibility(GONE);
@@ -581,14 +549,13 @@ public class ControlSalarioFragment extends Fragment {
                             campoFechaEntrega = new TextView(getActivity());
                             campoSalario = new TextView(getActivity());
                             campoDescripcion = new TextView(getActivity());
-
+                            mostrarInfoDefecto = true;
 
                             LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 350);
                             AnchoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 205);
                             LargoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
                             AnchoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
                             TamañoLetraContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_SP, 10);
-
 
                             parametrosContenido = new TableRow.LayoutParams(LargoContenido, AnchoContenido);
                             parametrosCheckBox = new TableRow.LayoutParams(LargoCheckBox, AnchoCheckBox);
@@ -726,6 +693,12 @@ public class ControlSalarioFragment extends Fragment {
                             tblTablaSalarios.addView(nuevaFila);
                         }
 
+                        if (mostrarInfoDefecto != true) {
+                            tbrPrimeraFila.setVisibility(VISIBLE);
+                            tblTablaSalarios.addView(tbrPrimeraFila);
+                            botonSeleccion.setVisibility(VISIBLE);
+                        }
+
                     } else {
                         tblTablaSalarios.removeAllViews();
 
@@ -741,14 +714,13 @@ public class ControlSalarioFragment extends Fragment {
                             campoFechaEntrega = new TextView(getActivity());
                             campoSalario = new TextView(getActivity());
                             campoDescripcion = new TextView(getActivity());
-
+                            mostrarInfoDefecto = true;
 
                             LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 350);
                             AnchoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 205);
                             LargoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
                             AnchoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
                             TamañoLetraContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_SP, 10);
-
 
                             parametrosContenido = new TableRow.LayoutParams(LargoContenido, AnchoContenido);
                             parametrosCheckBox = new TableRow.LayoutParams(LargoCheckBox, AnchoCheckBox);
@@ -885,6 +857,12 @@ public class ControlSalarioFragment extends Fragment {
                             nuevaFila.addView(campoDescripcion);
                             tblTablaSalarios.addView(nuevaFila);
                         }
+
+                        if (mostrarInfoDefecto != true) {
+                            tbrPrimeraFila.setVisibility(VISIBLE);
+                            tblTablaSalarios.addView(tbrPrimeraFila);
+                            botonSeleccion.setVisibility(VISIBLE);
+                        }
                     }
 
                 } else {
@@ -893,7 +871,7 @@ public class ControlSalarioFragment extends Fragment {
                         int errorRaw = response.raw().code();
 
                         if(errorRaw == 401) {
-                            error = "Se finalizo la sesión de su cuenta.";
+                            error = " Se finalizo la sesión de su cuenta.";
                         }
 
                         buscadorSalarios.setVisibility(View.GONE);
@@ -912,7 +890,7 @@ public class ControlSalarioFragment extends Fragment {
 
                         AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
                         construirAlerta.setIcon(R.drawable.icono_error);
-                        construirAlerta.setMessage("Pero en este momento no es posible ver la información de los salarios debido a que: " + error + "\n\nPor favor, intentelo de nuevo.")
+                        construirAlerta.setMessage("Pero en este momento no es posible ver la información de los salarios debido a que:" + error.replace('"', ' ') + "\n\nPor favor, intentelo de nuevo.")
                                 .setTitle("¡Lo sentimos!");
 
                         construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -1134,12 +1112,12 @@ public class ControlSalarioFragment extends Fragment {
                                 int errorRaw = response.raw().code();
 
                                 if(errorRaw == 401) {
-                                    error = "Se finalizo la sesión de su cuenta.";
+                                    error = " Se finalizo la sesión de su cuenta.";
                                 }
 
                                 AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
                                 construirAlerta.setIcon(R.drawable.icono_error);
-                                construirAlerta.setMessage("Pero en este momento no es posible eliminar el salario del empleado(a) debido a que: " + error + "\n\nPor favor, intentelo de nuevo.")
+                                construirAlerta.setMessage("Pero en este momento no es posible eliminar el salario del empleado(a) debido a que:" + error.replace('"', ' ') + "\n\nPor favor, intentelo de nuevo.")
                                         .setTitle("¡Lo sentimos!");
 
                                 construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {

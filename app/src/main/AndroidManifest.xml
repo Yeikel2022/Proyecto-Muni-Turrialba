@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <!-- <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />-->
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="true"
@@ -13,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MuniTurrialba"
-        android:usesCleartextTraffic="false">
+        android:usesCleartextTraffic="true">
         <!-- Esto es para que la aplicación permita el uso a:
              HTTP, pero por el momento no esta permitido usarlo.
              Pero como tal, despues de eso el que si se deberia -
@@ -22,6 +23,20 @@
              Por lo que solo se usaria ese para el desarrollo, después -
              hay que configurarlo para que acepte solo HTTPS y realice -
              transacciones bajo ese protocolo en producción. -->
+
+        <!-- Esto es para indicarle al manifest donde esta la vista: "ArchivoRecienteActualizarActivity".
+             Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
+             (vista), lo que daria un error en el mismo. -->
+        <activity
+            android:name=".moduloAdministracionArchivos.ArchivoRecienteActualizarActivity"
+            android:exported="false" />
+
+        <!-- Esto es para indicarle al manifest donde esta la vista: "ArchivoRecienteCrearActivity".
+             Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla
+             (vista), lo que daria un error en el mismo. -->
+        <activity
+            android:name=".moduloAdministracionArchivos.ArchivoRecienteCrearActivity"
+            android:exported="false" />
 
         <!-- Esto es para indicarle al manifest donde esta la vista: "ReporteSalarioEditarActivity".
              Esto si o si es necesario porque si no la app no sabra donde esta esa pantalla

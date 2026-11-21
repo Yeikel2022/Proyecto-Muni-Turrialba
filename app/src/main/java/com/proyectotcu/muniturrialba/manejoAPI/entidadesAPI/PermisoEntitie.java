@@ -17,6 +17,12 @@ public class PermisoEntitie {
     @SerializedName("eliminar")
     @Expose
     private Boolean eliminar;
+    @SerializedName("descargar")
+    @Expose
+    private Boolean descargar;
+    @SerializedName("compartir")
+    @Expose
+    private Boolean compartir;
 
 
     /* Este constructor parametrizado, nos ayudara -
@@ -24,11 +30,14 @@ public class PermisoEntitie {
      * enviar, actualizar o eliminar información de los -
      * usuarios. Además de indicarle al sistema, donde -
      * debe guardar la información respectivamente. */
-    public PermisoEntitie(boolean Leer, boolean Crear, boolean Actualizar, boolean Eliminar) {
+    public PermisoEntitie(boolean Leer, boolean Crear, boolean Actualizar,
+                          boolean Eliminar, boolean Descargar, boolean Compartir) {
         this.leer = Leer;
         this.crear = Crear;
         this.actualizar = Actualizar;
         this.eliminar = Eliminar;
+        this.descargar = Descargar;
+        this.compartir = Compartir;
     }
 
 
@@ -65,4 +74,19 @@ public class PermisoEntitie {
         this.eliminar = eliminar;
     }
 
+    public Boolean getDescargar() {
+        return descargar;
+    }
+
+    public void setDescargar(Boolean descargar) {
+        this.descargar = descargar;
+    }
+
+    public Boolean getCompartir() {
+        return compartir;
+    }
+
+    public void setCompartir(Boolean compartir) {
+        this.compartir = compartir;
+    }
 }

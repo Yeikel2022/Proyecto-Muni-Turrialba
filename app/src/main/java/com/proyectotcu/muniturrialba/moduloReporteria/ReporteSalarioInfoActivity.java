@@ -298,12 +298,15 @@ public class ReporteSalarioInfoActivity extends AppCompatActivity {
     private void MostrarReportesSalario(String tokenUsuario, List<ExtensionSalarioEntitie> listaActualizada, Boolean autorizacion) {
 
         salarioInterface = ConexionAPI.Conexion_API_Salario(this);
+
         Call<List<ExtensionSalarioEntitie>> mostrarSalarios = salarioInterface.obtenerSalarios(tokenUsuario);
 
         mostrarSalarios.enqueue(new Callback<List<ExtensionSalarioEntitie>>() {
             @Override
             public void onResponse(Call<List<ExtensionSalarioEntitie>> call, Response<List<ExtensionSalarioEntitie>> response) {
                 if (response.isSuccessful()) {
+                    Boolean mostrarInfoDefecto = false;
+
                     listaSalarioInfoBinding.tblTablaContenidoInfoSalariosLista.removeAllViews();
                     listaSalarioInfoBinding.tbrPrimeraFilaContenidoInfoSalariosLista.setVisibility(GONE);
                     listaSalarioInfoBinding.btnSeleccionDatoInfoSalariosLista.setVisibility(GONE);
@@ -332,7 +335,7 @@ public class ReporteSalarioInfoActivity extends AppCompatActivity {
                             campoFechaEntrega = new TextView(ReporteSalarioInfoActivity.this);
                             campoSalario = new TextView(ReporteSalarioInfoActivity.this);
                             campoDescripcion = new TextView(ReporteSalarioInfoActivity.this);
-
+                            mostrarInfoDefecto = true;
 
                             LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 350);
                             AnchoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 180);
@@ -474,6 +477,12 @@ public class ReporteSalarioInfoActivity extends AppCompatActivity {
                             listaSalarioInfoBinding.tblTablaContenidoInfoSalariosLista.addView(nuevaFila);
                         }
 
+                        if (mostrarInfoDefecto != true) {
+                            listaSalarioInfoBinding.tbrPrimeraFilaContenidoInfoSalariosLista.setVisibility(VISIBLE);
+                            listaSalarioInfoBinding.tblTablaContenidoInfoSalariosLista.addView(listaSalarioInfoBinding.tbrPrimeraFilaContenidoInfoSalariosLista);
+                            listaSalarioInfoBinding.btnSeleccionDatoInfoSalariosLista.setVisibility(VISIBLE);
+                        }
+
                     } else {
                         listaSalarioInfoBinding.tblTablaContenidoInfoSalariosLista.removeAllViews();
 
@@ -489,7 +498,7 @@ public class ReporteSalarioInfoActivity extends AppCompatActivity {
                             campoFechaEntrega = new TextView(ReporteSalarioInfoActivity.this);
                             campoSalario = new TextView(ReporteSalarioInfoActivity.this);
                             campoDescripcion = new TextView(ReporteSalarioInfoActivity.this);
-
+                            mostrarInfoDefecto = true;
 
                             LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 350);
                             AnchoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 180);
@@ -630,6 +639,12 @@ public class ReporteSalarioInfoActivity extends AppCompatActivity {
                             nuevaFila.addView(campoDescripcion);
                             listaSalarioInfoBinding.tblTablaContenidoInfoSalariosLista.addView(nuevaFila);
                         }
+
+                        if (mostrarInfoDefecto != true) {
+                            listaSalarioInfoBinding.tbrPrimeraFilaContenidoInfoSalariosLista.setVisibility(VISIBLE);
+                            listaSalarioInfoBinding.tblTablaContenidoInfoSalariosLista.addView(listaSalarioInfoBinding.tbrPrimeraFilaContenidoInfoSalariosLista);
+                            listaSalarioInfoBinding.btnSeleccionDatoInfoSalariosLista.setVisibility(VISIBLE);
+                        }
                     }
 
                 } else {
@@ -638,7 +653,7 @@ public class ReporteSalarioInfoActivity extends AppCompatActivity {
                         int errorRaw = response.raw().code();
 
                         if(errorRaw == 401) {
-                            error = "Se finalizo la sesión de su cuenta.";
+                            error = " Se finalizo la sesión de su cuenta.";
                         }
 
                         listaSalarioInfoBinding.svBuscarInfoSalarioLista.setVisibility(GONE);
@@ -655,7 +670,7 @@ public class ReporteSalarioInfoActivity extends AppCompatActivity {
 
                         AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ReporteSalarioInfoActivity.this);
                         construirAlerta.setIcon(R.drawable.icono_error);
-                        construirAlerta.setMessage("Pero en este momento no es posible ver la información debido a que: " + error + "\n\nPor favor, intentelo de nuevo.")
+                        construirAlerta.setMessage("Pero en este momento no es posible ver la información debido a que:" + error.replace('"', ' ') + "\n\nPor favor, intentelo de nuevo.")
                                 .setTitle("¡Lo sentimos!");
 
                         construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {

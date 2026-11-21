@@ -11,6 +11,7 @@ import android.util.Base64;
 import android.view.Menu;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -21,6 +22,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.proyectotcu.muniturrialba.R;
 import com.proyectotcu.muniturrialba.databinding.ActivityReporteriaBinding;
+import com.proyectotcu.muniturrialba.index.MenuPrincipalActivity;
 import com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI.ExtensionInicioSesionEntitie;
 import com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI.ExtensionPermisoTiempoEntitie;
 import com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI.ExtensionSalarioEntitie;
@@ -195,6 +197,22 @@ public class ReporteriaActivity extends AppCompatActivity {
             AlertDialog ejecutarMensaje = construirAlerta.create();
             ejecutarMensaje.show();
         }
+
+        //METODO PARA DETECTAR SI EL USUARIO POR X O Y RAZÓN, DESEA REGRESARSE.
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                //Aqui le dice a que vista tiene que ir, como un hipervinculo basicamente.
+                Intent intentMenuPrincipal = new Intent(ReporteriaActivity.this, MenuPrincipalActivity.class);
+
+                //Le indica que ejecute el hipervinculo.
+                startActivity(intentMenuPrincipal);
+
+                /* Sirve para evitar que el usuario se regrese después.
+                 * Esto por temas de buenas prácticas. */
+                finish();
+            }
+        });
     }
 
 

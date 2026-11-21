@@ -96,7 +96,6 @@ public class EmpleadoFragment extends Fragment {
         botonPermisos = view.findViewById(R.id.btn_PermisosUsuarioEmpleado);
         botonSeleccion = view.findViewById(R.id.btn_SeleccionDatoEmpleados);
 
-
         txtNombre = view.findViewById(R.id.txt_NombreEmpleados);
         txtApellidos = view.findViewById(R.id.txt_ApellidosEmpleados);
         txtEdad = view.findViewById(R.id.txt_EdadEmpleados);
@@ -112,6 +111,7 @@ public class EmpleadoFragment extends Fragment {
 
         scrollHorizontal = view.findViewById(R.id.hsv_ScrollHorizontalEmpleados);
         scrollHorizontalBotones = view.findViewById(R.id.hsv_ScrollHorizontal_BotonesEmpleados);
+
         tblTablaEmpleados = view.findViewById(R.id.tbl_TablaEmpleados);
         tbrInfoFila = view.findViewById(R.id.tbr_InfoFilaEmpleados);
         tbrPrimeraFila = view.findViewById(R.id.tbr_PrimeraFilaEmpleados);
@@ -204,7 +204,6 @@ public class EmpleadoFragment extends Fragment {
                         construirAlerta.setMessage("¿Esta completamente seguro(a) de eliminar este empleado de forma permanentemente?")
                                 .setTitle("Eliminar Empleado(a).");
 
-
                         construirAlerta.setPositiveButton("Si.", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -240,7 +239,6 @@ public class EmpleadoFragment extends Fragment {
                         construirAlerta.setIcon(R.drawable.icono_eliminar);
                         construirAlerta.setMessage("¿Esta completamente seguro(a) de eliminar este empleado de forma permanentemente?")
                                 .setTitle("Eliminar Empleado(a).");
-
 
                         construirAlerta.setPositiveButton("Si.", new DialogInterface.OnClickListener() {
                             @Override
@@ -299,7 +297,6 @@ public class EmpleadoFragment extends Fragment {
 
         return view;
     }
-
 
 
     private Integer ValidarPermisosAdmin(Boolean Leer, Boolean Crear, Boolean Actualizar, Boolean Eliminar, Integer Rol) {
@@ -386,7 +383,7 @@ public class EmpleadoFragment extends Fragment {
 
                 if(Eliminar == false) {
                     botonEliminar.setVisibility(GONE);
-                    listaMensaje.add("- Eliminar un empleado(a) respectivamente.");
+                    listaMensaje.add("- Eliminar un empleado(a) respectivamente.\n\n");
                 }
 
 
@@ -402,8 +399,7 @@ public class EmpleadoFragment extends Fragment {
 
                         AlertDialog.Builder construirAlertaCrear = new AlertDialog.Builder(getActivity());
                         construirAlertaCrear.setIcon(R.drawable.icono_error);
-
-                        construirAlertaCrear.setMessage("Pero no tienes la autorización necesaria para: \n\n" + mensajeProveniente)
+                        construirAlertaCrear.setMessage("Pero no tienes la autorización necesaria para: \n\n" + mensajeProveniente + "Por favor, intentelo más tarde.")
                                 .setTitle("¡Lo sentimos!");
 
                         construirAlertaCrear.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -496,7 +492,7 @@ public class EmpleadoFragment extends Fragment {
 
                 if(Eliminar == false) {
                     botonEliminar.setVisibility(GONE);
-                    listaMensaje.add("- Eliminar un empleado(a) respectivamente.");
+                    listaMensaje.add("- Eliminar un empleado(a) respectivamente.\n\n");
                 }
 
 
@@ -512,8 +508,7 @@ public class EmpleadoFragment extends Fragment {
 
                         AlertDialog.Builder construirAlertaCrear = new AlertDialog.Builder(getActivity());
                         construirAlertaCrear.setIcon(R.drawable.icono_error);
-
-                        construirAlertaCrear.setMessage("Pero no tienes la autorización necesaria para: \n\n" + mensajeProveniente)
+                        construirAlertaCrear.setMessage("Pero no tienes la autorización necesaria para: \n\n" + mensajeProveniente + "Por favor, intentelo más tarde.")
                                 .setTitle("¡Lo sentimos!");
 
                         construirAlertaCrear.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -635,40 +630,7 @@ public class EmpleadoFragment extends Fragment {
             @Override
             public void onResponse(Call<List<ExtensionEmpleadoUsuarioEntitie>> call, Response<List<ExtensionEmpleadoUsuarioEntitie>> response) {
                 if (response.isSuccessful()) {
-
-                    if(response.body().size() == 1) {
-                        tblTablaEmpleados.removeAllViews();
-
-                        for (int i = 0; i < response.body().size(); i++) {
-                            ExtensionEmpleadoUsuarioEntitie empleados = response.body().get(i);
-                            String Nombre  = empleados.getNombre_Empleado().trim();
-                            String Apellidos = empleados.getApellido1_Empleado().trim() + " " + empleados.getApellido2_Empleado().trim();
-                            Integer Edad = empleados.getEdad_Empleado();
-                            String Cedula = empleados.getCedula_Empleado().trim();
-                            String Telefono = empleados.getTelefono_Empleado().trim();
-                            String Correo_Electronico = empleados.getCorreo_Electronico_Empleado().trim();
-                            String Contraseña = empleados.getContraseña_Empleado().trim();
-                            String Nombre_Rol = empleados.getNombre_Rol().trim();
-                            String Fecha_Creacion = empleados.getFecha_Creacion_Empleado().trim();
-                            String Departamento = empleados.getDepartamento().trim();
-                            Boolean Activo = empleados.getActivo();
-
-
-                            txtNombre.setText(Nombre);
-                            txtApellidos.setText(Apellidos);
-                            txtEdad.setText(Edad.toString());
-                            txtCedula.setText(Cedula);
-                            txtTelefono.setText(Telefono);
-                            txtCorreo_Electronico.setText(Correo_Electronico);
-                            txtContraseña.setText(Contraseña);
-                            txtNombreRol.setText(Nombre_Rol);
-                            txtFechaCreacion.setText(Fecha_Creacion);
-                            txtDepartamento.setText(Departamento);
-                            txtActivo.setText(Activo.toString());
-                            botonSeleccion.setTag(empleados);
-                            botonSeleccion.setVisibility(VISIBLE);
-                        }
-                    }
+                    Boolean mostrarInfoDefecto = false;
 
                     tblTablaEmpleados.removeAllViews();
                     tbrPrimeraFila.setVisibility(GONE);
@@ -701,14 +663,13 @@ public class EmpleadoFragment extends Fragment {
                             campoFechaCreacion = new TextView(getActivity());
                             campoDepartamento = new TextView(getActivity());
                             campoActivo = new TextView(getActivity());
-
+                            mostrarInfoDefecto = true;
 
                             LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 350);
                             AnchoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 205);
                             LargoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
                             AnchoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
                             TamañoLetraContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_SP, 10);
-
 
                             parametrosContenido = new TableRow.LayoutParams(LargoContenido, AnchoContenido);
                             parametrosCheckBox = new TableRow.LayoutParams(LargoCheckBox, AnchoCheckBox);
@@ -738,7 +699,6 @@ public class EmpleadoFragment extends Fragment {
                             String Departamento = empleados.getDepartamento().trim();
                             Boolean Activo = empleados.getActivo();
 
-
                             campoCheckBox.setWidth(LargoCheckBox);
                             campoCheckBox.setHeight(AnchoCheckBox);
                             campoCheckBox.setLayoutParams(parametrosCheckBox);
@@ -883,6 +843,12 @@ public class EmpleadoFragment extends Fragment {
                             tblTablaEmpleados.addView(nuevaFila);
                         }
 
+                        if (mostrarInfoDefecto != true) {
+                            tbrPrimeraFila.setVisibility(VISIBLE);
+                            tblTablaEmpleados.addView(tbrPrimeraFila);
+                            botonSeleccion.setVisibility(VISIBLE);
+                        }
+
                     } else {
                         tblTablaEmpleados.removeAllViews();
 
@@ -901,14 +867,13 @@ public class EmpleadoFragment extends Fragment {
                             campoFechaCreacion = new TextView(getActivity());
                             campoDepartamento = new TextView(getActivity());
                             campoActivo = new TextView(getActivity());
-
+                            mostrarInfoDefecto = true;
 
                             LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 350);
                             AnchoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 205);
                             LargoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
                             AnchoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
                             TamañoLetraContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_SP, 10);
-
 
                             parametrosContenido = new TableRow.LayoutParams(LargoContenido, AnchoContenido);
                             parametrosCheckBox = new TableRow.LayoutParams(LargoCheckBox, AnchoCheckBox);
@@ -938,7 +903,6 @@ public class EmpleadoFragment extends Fragment {
                             String Departamento = empleados.getDepartamento().trim();
                             Boolean Activo = empleados.getActivo();
 
-
                             campoCheckBox.setWidth(LargoCheckBox);
                             campoCheckBox.setHeight(AnchoCheckBox);
                             campoCheckBox.setLayoutParams(parametrosCheckBox);
@@ -1082,6 +1046,12 @@ public class EmpleadoFragment extends Fragment {
                             nuevaFila.addView(campoActivo);
                             tblTablaEmpleados.addView(nuevaFila);
                         }
+
+                        if (mostrarInfoDefecto != true) {
+                            tbrPrimeraFila.setVisibility(VISIBLE);
+                            tblTablaEmpleados.addView(tbrPrimeraFila);
+                            botonSeleccion.setVisibility(VISIBLE);
+                        }
                     }
 
                 } else {
@@ -1092,7 +1062,7 @@ public class EmpleadoFragment extends Fragment {
                         int errorRaw = response.raw().code();
 
                         if(errorRaw == 401) {
-                            error = "Se finalizo la sesión de su cuenta.";
+                            error = " Se finalizo la sesión de su cuenta.";
                         }
 
                         /* Aqui lo que se hace es ocultar los botones de crear, actualizar, -
@@ -1116,7 +1086,7 @@ public class EmpleadoFragment extends Fragment {
                         /* Esto es para imprimir los mensajes de error. */
                         AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
                         construirAlerta.setIcon(R.drawable.icono_error);
-                        construirAlerta.setMessage("Pero en este momento no es posible ver la información de los empleados(as) debido a que: " + error + "\n\nPor favor, intentelo de nuevo.")
+                        construirAlerta.setMessage("Pero en este momento no es posible ver la información de los empleados(as) debido a que:" + error.replace('"', ' ') + "\n\nPor favor, intentelo de nuevo.")
                                 .setTitle("¡Lo sentimos!");
 
                         construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -1365,11 +1335,12 @@ public class EmpleadoFragment extends Fragment {
                 String correoGuardado = datoSeleccionado.getCorreo_Electronico_Empleado().trim();
 
                 Activity nombreActividad = getActivity();
+
                 empleadoInterface = ConexionAPI.Conexion_API_Empleado(nombreActividad);
 
-                Call<Boolean> eliminarFAQ = empleadoInterface.eliminarEmpleado(correoGuardado, tokenUsuario);
+                Call<Boolean> eliminarEmpleado = empleadoInterface.eliminarEmpleado(correoGuardado, tokenUsuario);
 
-                eliminarFAQ.enqueue(new Callback<Boolean>() {
+                eliminarEmpleado.enqueue(new Callback<Boolean>() {
 
                     /* Aqui es para saber si hubo una respuesta por parte del API. */
                     @Override
@@ -1388,13 +1359,13 @@ public class EmpleadoFragment extends Fragment {
                                 int errorRaw = response.raw().code();
 
                                 if(errorRaw == 401) {
-                                    error = "Se finalizo la sesión de su cuenta.";
+                                    error = " Se finalizo la sesión de su cuenta.";
                                 }
 
                                 /* Esto es para imprimir los mensajes de error. */
                                 AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
                                 construirAlerta.setIcon(R.drawable.icono_error);
-                                construirAlerta.setMessage("Pero en este momento no es posible eliminar el registro de este empleado(a) debido a que: " + error + "\n\nPor favor, intentelo de nuevo.")
+                                construirAlerta.setMessage("Pero en este momento no es posible eliminar el registro de este empleado(a) debido a que:" + error.replace('"', ' ') + "\n\nPor favor, intentelo de nuevo.")
                                         .setTitle("¡Lo sentimos!");
 
                                 construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {

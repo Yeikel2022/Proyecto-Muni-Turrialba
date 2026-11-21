@@ -26,16 +26,13 @@ public interface UsuarioInterface {
     Call<UsuarioEntitie> obtenerUsuario (@Path("correo") String correo,
                                          @Query("tokenAcceso") String jwtToken);
 
-    /* Metodo que sirve para enviar el codigo recibido -
-     * respectivamente. */
-    @GET("api/validarcodigo/{codigo}")
-    Call<Boolean> enviarCodigo(@Path("codigo") String codigo);
 
     /* Metodo que sirve para obtener el codigo QR -
      * para el carnet virtual respectivamente. */
     @GET("api/obtenerQR")
     Call<String> obtenerCodigoQR(@Query("nombre") String nombre, @Query("apellidos") String apellidos,
                                  @Query("correo")String correo, @Query("tokenAcceso") String jwtToken);
+
 
 
     // |===========| Metodos de tipo: POST |===========|
@@ -46,19 +43,20 @@ public interface UsuarioInterface {
     @POST("api/iniciarsesion")
     Call<JWTEntitie> iniciarSesion(@Body UsuarioEntitie usuarioEntitie);
 
+
     /* Metodo que sirve para registrar a un nuevo usuario -
      * respectivamente. */
     @Headers("Content-Type: application/json")
-    @POST("api/crearusuarios")
-    Call<UsuarioEntitie> registrarUsuario(@Body UsuarioEntitie usuarioEntitie,
-                                          @Query("tipo") boolean tipo);
+    @POST("api/registrarUsuarios")
+    Call<UsuarioEntitie> registrarUsuario(@Body UsuarioEntitie usuarioEntitie);
+
 
     /* Metodo que sirve para crear a un nuevo usuario respectivamente. */
     @Headers("Content-Type: application/json")
-    @POST("api/crearusuario")
+    @POST("api/crearUsuarios")
     Call<UsuarioEntitie> crearUsuario(@Body UsuarioEntitie usuarioEntitie,
-                                          @Query("tipo") boolean tipo,
-                                          @Query("tokenAcceso") String jwtToken);
+                                      @Query("tokenAcceso") String jwtToken);
+
 
     /* Metodo que sirve para enviar el correo electronico -
      * del usuario que esta intentando recuperar la contra-
@@ -66,6 +64,14 @@ public interface UsuarioInterface {
     @Headers("Content-Type: application/json")
     @POST("api/enviarcorreo/{correo}")
     Call<Boolean> enviarCorreo(@Path("correo") String correo);
+
+
+    /* Metodo que sirve para enviar el codigo recibido -
+     * respectivamente. */
+    @Headers("Content-Type: application/json")
+    @POST("api/validarcodigo/{codigo}")
+    Call<Boolean> enviarCodigo(@Path("codigo") String codigo);
+
 
 
     // |===========| Metodos de tipo: PUT |===========|
@@ -76,12 +82,14 @@ public interface UsuarioInterface {
     @PUT("api/actualizarcontraseña")
     Call<Boolean> actualizarContraseña(@Body ExtensionUsuarioEntitie extensionUsuarioEntitie);
 
+
     /* Metodo que sirve para que el usuario pueda cambiar -
      * la imagen de perfil respectivamente. */
     @Multipart
     @PUT("api/cambiarFoto")
     Call<Boolean> cambiarFotoPerfil(@Part MultipartBody.Part foto,
                                     @Query("tokenAcceso") String jwtToken);
+
 
     /* Metodo que sirve para que el usuario pueda actualizar -
      * la contraseña de su cuenta respectivamente. */
@@ -90,6 +98,4 @@ public interface UsuarioInterface {
     Call<Boolean> actualizarUsuario(@Body UsuarioEntitie usuarioEntitie,
                                     @Query("cedula") String cedula,
                                     @Query("tokenAcceso") String jwtToken);
-
-
 }

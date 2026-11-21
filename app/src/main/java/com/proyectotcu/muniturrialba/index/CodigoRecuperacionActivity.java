@@ -1,11 +1,14 @@
 package com.proyectotcu.muniturrialba.index;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -50,6 +53,22 @@ public class CodigoRecuperacionActivity extends AppCompatActivity {
         /* Sirve para llamar el metodo de enviar un codigo de recuperación, siempre -
          * y cuando el usuario presione el boton respectivo. */
         codigoRecuperacionBinding.btnCodigoRecuperacion.setOnClickListener(v -> EnviarCodigo());
+
+        //METODO PARA DETECTAR SI EL USUARIO POR X O Y RAZÓN, DESEA REGRESARSE.
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                //Aqui le dice a que vista tiene que ir, como un hipervinculo basicamente.
+                Intent intentRecuperarContra = new Intent(CodigoRecuperacionActivity.this, RecuperarPasswordActivity.class);
+
+                //Le indica que ejecute el hipervinculo.
+                startActivity(intentRecuperarContra);
+
+                /* Sirve para evitar que el usuario se regrese después.
+                 * Esto por temas de buenas prácticas. */
+                finish();
+            }
+        });
     }
 
     /* Metodo que sirve para enviar el codigo de recuperación que coloca el -
@@ -121,11 +140,24 @@ public class CodigoRecuperacionActivity extends AppCompatActivity {
                             /* Esto permite leer el error del Body, de modo -
                              * que sirva en el debug. */
                             String error = response.errorBody().string();
+                            int errorRaw = response.raw().code();
+
+                            if(errorRaw == 404) {
+                                error = " El código es necesario.";
+                            }
 
                             //Imprime el error capturado.
-                            Toast.makeText(CodigoRecuperacionActivity.this, "¡Lo sentimos, pero en este momento no se pudo validar el código!", Toast.LENGTH_LONG).show();
-                            Toast.makeText(CodigoRecuperacionActivity.this, error, Toast.LENGTH_LONG).show();
-                            Toast.makeText(CodigoRecuperacionActivity.this, "Por favor, corriga los datos e intentelo de nuevo.", Toast.LENGTH_LONG).show();
+                            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(CodigoRecuperacionActivity.this);
+                            construirAlerta.setIcon(R.drawable.icono_error);
+                            construirAlerta.setMessage("Pero en este momento no se pudo validar el código debido a que:" + error.replace('"', ' ') + "\n\nPor favor, corriga los datos e intentelo de nuevo.")
+                                    .setTitle("¡Lo sentimos!");
+
+                            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {}});
+
+                            AlertDialog ejecutarMensaje = construirAlerta.create();
+                            ejecutarMensaje.show();
 
                             /* Este sirve solo para el logcat:
                              * System.out.println(error); */
@@ -136,10 +168,17 @@ public class CodigoRecuperacionActivity extends AppCompatActivity {
                              * las excepciones respectivamente.
                              *
                              * error.printStackTrace(); */
-                            Toast.makeText(CodigoRecuperacionActivity.this, "¡Lo sentimos, " +
-                                    "pero parece que hubo un problema!", Toast.LENGTH_LONG).show();
-                            Toast.makeText(CodigoRecuperacionActivity.this,
-                                    "Por favor, intentelo más tarde.", Toast.LENGTH_LONG).show();
+                            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(CodigoRecuperacionActivity.this);
+                            construirAlerta.setIcon(R.drawable.icono_error);
+                            construirAlerta.setMessage("Pero no es posible validar el código en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+                                    .setTitle("¡Lo sentimos!");
+
+                            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {}});
+
+                            AlertDialog ejecutarMensaje = construirAlerta.create();
+                            ejecutarMensaje.show();
                         }
                     }
                 }
@@ -156,13 +195,18 @@ public class CodigoRecuperacionActivity extends AppCompatActivity {
                      * debe ver:
                      * Toast.makeText(CodigoRecuperacionActivity.this, t.getLocalizedMessage(),
                      * Toast.LENGTH_SHORT).show(); */
-                    Toast.makeText(CodigoRecuperacionActivity.this, "¡Lo sentimos, " +
-                            "pero en este momento no se pudo validar el código!", Toast.LENGTH_LONG).show();
+                    AlertDialog.Builder construirAlerta = new AlertDialog.Builder(CodigoRecuperacionActivity.this);
+                    construirAlerta.setIcon(R.drawable.icono_error);
+                    construirAlerta.setMessage("Pero no es posible validar el código en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+                            .setTitle("¡Lo sentimos!");
 
-                    Toast.makeText(CodigoRecuperacionActivity.this,
-                            "Por favor, intentelo de nuevo.", Toast.LENGTH_LONG).show();
+                    construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {}});
+
+                    AlertDialog ejecutarMensaje = construirAlerta.create();
+                    ejecutarMensaje.show();
                 }
-
             });
         }
     }
@@ -170,16 +214,43 @@ public class CodigoRecuperacionActivity extends AppCompatActivity {
     /* Este metodo sirve para validar el codigo de recuperación -
      * que esta colocando el usuario respectivamente. */
     private boolean ValidarCodigo(String codigo) {
-        /* Aqui valida si el código esta vacio o si es nulo. Y si entra, -
-         * entonces mandaria un mensaje de advertencia al usuario y un -
-         * false al metodo: EnviarCodigo. */
-        if (codigo == null || codigo.isEmpty()) {
-            Toast.makeText(CodigoRecuperacionActivity.this, "¡El código se encuentra vacio! \n" +
-                    "Por favor, digite otra vez su código.", Toast.LENGTH_LONG).show();
+        try {
+            /* Aqui valida si el código esta vacio o si es nulo. Y si entra, -
+             * entonces mandaria un mensaje de advertencia al usuario y un -
+             * false al metodo: EnviarCodigo. */
+            if (codigo.isEmpty()) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(CodigoRecuperacionActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo validar el código debido a que este mismo se encuentra vacio." + "\n\nPor favor, digite otra vez el código e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+            return true;
+
+        } catch (Exception error) {
+            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(CodigoRecuperacionActivity.this);
+            construirAlerta.setIcon(R.drawable.icono_error);
+            construirAlerta.setMessage("Pero no es posible validar el código en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+                    .setTitle("¡Lo sentimos!");
+
+            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {}});
+
+
+            AlertDialog ejecutarMensaje = construirAlerta.create();
+            ejecutarMensaje.show();
             return false;
         }
-
-        return true;
     }
 
     /* Este metodo sirve para poder enviar el usuario hacia la -
@@ -201,5 +272,4 @@ public class CodigoRecuperacionActivity extends AppCompatActivity {
          * Esto por temas de buenas prácticas. */
         finish();
     }
-
 }

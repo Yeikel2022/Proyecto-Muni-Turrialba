@@ -170,7 +170,6 @@ public class PermisoTiempoFragment extends Fragment {
                         construirAlerta.setMessage("¿Esta completamente seguro(a) de eliminar este permiso de tiempo de forma permanentemente?")
                                 .setTitle("Eliminar Permiso de Tiempo.");
 
-
                         construirAlerta.setPositiveButton("Si.", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -323,7 +322,7 @@ public class PermisoTiempoFragment extends Fragment {
 
                 if(Eliminar == false) {
                     botonEliminar.setVisibility(GONE);
-                    listaMensaje.add("- Eliminar un permiso de tiempo respectivamente.");
+                    listaMensaje.add("- Eliminar un permiso de tiempo respectivamente.\n\n");
                 }
 
 
@@ -339,8 +338,7 @@ public class PermisoTiempoFragment extends Fragment {
 
                         AlertDialog.Builder construirAlertaCrear = new AlertDialog.Builder(getActivity());
                         construirAlertaCrear.setIcon(R.drawable.icono_error);
-
-                        construirAlertaCrear.setMessage("Pero no tienes la autorización necesaria para: \n\n" + mensajeProveniente)
+                        construirAlertaCrear.setMessage("Pero no tienes la autorización necesaria para: \n\n" + mensajeProveniente + "Por favor, intentelo más tarde.")
                                 .setTitle("¡Lo sentimos!");
 
                         construirAlertaCrear.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -414,7 +412,7 @@ public class PermisoTiempoFragment extends Fragment {
 
                 if(Crear == false) {
                     botonCrear.setVisibility(GONE);
-                    listaMensaje.add("- Crear un nuevo permiso de tiempo dentro de este apartado.");
+                    listaMensaje.add("- Crear un nuevo permiso de tiempo dentro de este apartado.\n\n");
                 }
 
 
@@ -428,8 +426,7 @@ public class PermisoTiempoFragment extends Fragment {
 
                         AlertDialog.Builder construirAlertaCrear = new AlertDialog.Builder(getActivity());
                         construirAlertaCrear.setIcon(R.drawable.icono_error);
-
-                        construirAlertaCrear.setMessage("Pero no tienes la autorización necesaria para: \n\n" + mensajeProveniente)
+                        construirAlertaCrear.setMessage("Pero no tienes la autorización necesaria para: \n\n" + mensajeProveniente + "Por favor, intentelo más tarde.")
                                 .setTitle("¡Lo sentimos!");
 
                         construirAlertaCrear.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -466,7 +463,6 @@ public class PermisoTiempoFragment extends Fragment {
                     if (mensajePermisosTiempo != true) {
                         AlertDialog.Builder construirAlertaCrear = new AlertDialog.Builder(getActivity());
                         construirAlertaCrear.setIcon(R.drawable.icono_error);
-
                         construirAlertaCrear.setMessage("Pero no tienes la autorización necesaria para visualizar esta información.")
                                 .setTitle("¡Lo sentimos!");
 
@@ -491,6 +487,7 @@ public class PermisoTiempoFragment extends Fragment {
         //El 5 se refiere a que el usuario que inicio sesión si esta autorizado.
         return 5;
     }
+
 
     private void BuscarPrioridad(String tokenUsuario, List<ExtensionPermisoTiempoEntitie> listaDatos, String textoIngresado) {
         try {
@@ -558,6 +555,7 @@ public class PermisoTiempoFragment extends Fragment {
         }
     }
 
+
     private void MostrarPermisosTiempo(String tokenUsuario, List<ExtensionPermisoTiempoEntitie> listaActualizada, Boolean autorizacion) {
         Activity nombreActividad = getActivity();
 
@@ -569,35 +567,7 @@ public class PermisoTiempoFragment extends Fragment {
             @Override
             public void onResponse(Call<List<ExtensionPermisoTiempoEntitie>> call, Response<List<ExtensionPermisoTiempoEntitie>> response) {
                 if (response.isSuccessful()) {
-
-                    if(response.body().size() == 1) {
-                        tblTablaPermisosTiempo.removeAllViews();
-
-                        for (int i = 0; i < response.body().size(); i++) {
-                            ExtensionPermisoTiempoEntitie permisosTiempo = response.body().get(i);
-                            String Nombre  = permisosTiempo.getNombre().trim();
-                            String Apellidos = permisosTiempo.getApellido_1().trim() + " " + permisosTiempo.getApellido_2().trim();
-                            String Cedula = permisosTiempo.getCedula().trim();
-                            String Departamento = permisosTiempo.getDepartamento().trim();
-                            String Tipo_Permiso = permisosTiempo.getTipoPermiso().trim();
-                            String Descripcion = permisosTiempo.getDescripcion().trim();
-                            String Fecha_Asignacion = permisosTiempo.getFechaAsignacion().trim();
-                            String Fecha_Finalizacion = permisosTiempo.getFechaFinalizacion().trim();
-
-
-                            txtNombre.setText(Nombre);
-                            txtApellidos.setText(Apellidos);
-                            txtCedula.setText(Cedula);
-                            txtDepartamento.setText(Departamento);
-                            txtTipoPermiso.setText(Tipo_Permiso);
-                            txtDescripcion.setText(Descripcion);
-                            txtFechaAsignacion.setText(Fecha_Asignacion);
-                            txtFechaFinalizacion.setText(Fecha_Finalizacion);
-
-                            botonSeleccion.setTag(permisosTiempo);
-                            botonSeleccion.setVisibility(VISIBLE);
-                        }
-                    }
+                    Boolean mostrarInfoDefecto = false;
 
                     tblTablaPermisosTiempo.removeAllViews();
                     tbrPrimeraFila.setVisibility(GONE);
@@ -627,14 +597,13 @@ public class PermisoTiempoFragment extends Fragment {
                             campoDescripcion = new TextView(getActivity());
                             campoFechaAsignacion = new TextView(getActivity());
                             campoFechaFinalizacion = new TextView(getActivity());
-
+                            mostrarInfoDefecto = true;
 
                             LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 350);
                             AnchoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 205);
                             LargoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
                             AnchoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
                             TamañoLetraContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_SP, 10);
-
 
                             parametrosContenido = new TableRow.LayoutParams(LargoContenido, AnchoContenido);
                             parametrosCheckBox = new TableRow.LayoutParams(LargoCheckBox, AnchoCheckBox);
@@ -661,7 +630,6 @@ public class PermisoTiempoFragment extends Fragment {
                             String Fecha_Asignacion = permisosTiempo.getFechaAsignacion().trim().replace("T", " ");
                             String Fecha_Finalizacion = permisosTiempo.getFechaFinalizacion().trim().replace("T", " ");
 
-
                             campoCheckBox.setWidth(LargoCheckBox);
                             campoCheckBox.setHeight(AnchoCheckBox);
                             campoCheckBox.setLayoutParams(parametrosCheckBox);
@@ -770,6 +738,12 @@ public class PermisoTiempoFragment extends Fragment {
                             tblTablaPermisosTiempo.addView(nuevaFila);
                         }
 
+                        if (mostrarInfoDefecto != true) {
+                            tbrPrimeraFila.setVisibility(VISIBLE);
+                            tblTablaPermisosTiempo.addView(tbrPrimeraFila);
+                            botonSeleccion.setVisibility(VISIBLE);
+                        }
+
                     } else {
                         tblTablaPermisosTiempo.removeAllViews();
 
@@ -785,14 +759,13 @@ public class PermisoTiempoFragment extends Fragment {
                             campoDescripcion = new TextView(getActivity());
                             campoFechaAsignacion = new TextView(getActivity());
                             campoFechaFinalizacion = new TextView(getActivity());
-
+                            mostrarInfoDefecto = true;
 
                             LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 350);
                             AnchoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 205);
                             LargoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
                             AnchoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
                             TamañoLetraContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_SP, 10);
-
 
                             parametrosContenido = new TableRow.LayoutParams(LargoContenido, AnchoContenido);
                             parametrosCheckBox = new TableRow.LayoutParams(LargoCheckBox, AnchoCheckBox);
@@ -819,7 +792,6 @@ public class PermisoTiempoFragment extends Fragment {
                             String Fecha_Asignacion = permisosTiempo.getFechaAsignacion().trim().replace("T", " ");
                             String Fecha_Finalizacion = permisosTiempo.getFechaFinalizacion().trim().replace("T", " ");
 
-
                             campoCheckBox.setWidth(LargoCheckBox);
                             campoCheckBox.setHeight(AnchoCheckBox);
                             campoCheckBox.setLayoutParams(parametrosCheckBox);
@@ -927,6 +899,12 @@ public class PermisoTiempoFragment extends Fragment {
                             nuevaFila.addView(campoFechaFinalizacion);
                             tblTablaPermisosTiempo.addView(nuevaFila);
                         }
+
+                        if (mostrarInfoDefecto != true) {
+                            tbrPrimeraFila.setVisibility(VISIBLE);
+                            tblTablaPermisosTiempo.addView(tbrPrimeraFila);
+                            botonSeleccion.setVisibility(VISIBLE);
+                        }
                     }
 
                 } else {
@@ -935,7 +913,7 @@ public class PermisoTiempoFragment extends Fragment {
                         int errorRaw = response.raw().code();
 
                         if(errorRaw == 401) {
-                            error = "Se finalizo la sesión de su cuenta.";
+                            error = " Se finalizo la sesión de su cuenta.";
                         }
 
                         buscadorPermisos.setVisibility(View.GONE);
@@ -954,7 +932,7 @@ public class PermisoTiempoFragment extends Fragment {
 
                         AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
                         construirAlerta.setIcon(R.drawable.icono_error);
-                        construirAlerta.setMessage("Pero en este momento no es posible ver la información de los permisos de tiempo debido a que: " + error + "\n\nPor favor, intentelo de nuevo.")
+                        construirAlerta.setMessage("Pero en este momento no es posible ver la información de los permisos de tiempo debido a que:" + error.replace('"', ' ') + "\n\nPor favor, intentelo de nuevo.")
                                 .setTitle("¡Lo sentimos!");
 
                         construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -1026,6 +1004,7 @@ public class PermisoTiempoFragment extends Fragment {
         });
     }
 
+
     private Integer ConvertirPropiedades(int tipoPropiedad, int tamañoPropiedad) {
         int resultado = 0;
 
@@ -1042,6 +1021,7 @@ public class PermisoTiempoFragment extends Fragment {
         return resultado;
     }
 
+
     private void VistaCrearPermisosTiempo() {
         Intent intentCrearPermisosTiempo = new Intent(getActivity(), PermisoTiempoCrearActivity.class);
 
@@ -1049,6 +1029,7 @@ public class PermisoTiempoFragment extends Fragment {
 
         getActivity().finish();
     }
+
 
     private void VistaActualizarPermisosTiempo() {
         try {
@@ -1139,6 +1120,7 @@ public class PermisoTiempoFragment extends Fragment {
         }
     }
 
+
     private void EliminarPermisosTiempo(String tokenUsuario) {
         try {
             Integer cantidadChecks = 0;
@@ -1179,12 +1161,12 @@ public class PermisoTiempoFragment extends Fragment {
                                 int errorRaw = response.raw().code();
 
                                 if(errorRaw == 401) {
-                                    error = "Se finalizo la sesión de su cuenta.";
+                                    error = " Se finalizo la sesión de su cuenta.";
                                 }
 
                                 AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
                                 construirAlerta.setIcon(R.drawable.icono_error);
-                                construirAlerta.setMessage("Pero en este momento no es posible eliminar el permiso de tiempo debido a que: " + error + "\n\nPor favor, intentelo de nuevo.")
+                                construirAlerta.setMessage("Pero en este momento no es posible eliminar el permiso de tiempo debido a que:" + error.replace('"', ' ') + "\n\nPor favor, intentelo de nuevo.")
                                         .setTitle("¡Lo sentimos!");
 
                                 construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {

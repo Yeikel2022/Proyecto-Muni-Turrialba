@@ -297,12 +297,15 @@ public class ReportePermisoTiempoInfoActivity extends AppCompatActivity {
     private void MostrarReportesTiempo(String tokenUsuario, List<ExtensionPermisoTiempoEntitie> listaActualizada, Boolean autorizacion) {
 
         permisoTiempoInterface = ConexionAPI.Conexion_API_Permiso_Tiempo(this);
+
         Call<List<ExtensionPermisoTiempoEntitie>> mostrarPermisosTiempo = permisoTiempoInterface.obtenerPermisosTiempo(tokenUsuario);
 
         mostrarPermisosTiempo.enqueue(new Callback<List<ExtensionPermisoTiempoEntitie>>() {
             @Override
             public void onResponse(Call<List<ExtensionPermisoTiempoEntitie>> call, Response<List<ExtensionPermisoTiempoEntitie>> response) {
                 if (response.isSuccessful()) {
+                    Boolean mostrarInfoDefecto = false;
+
                     listaPermisoTiempoInfoBinding.tblTablaContenidoInfoPermisosTiempoLista.removeAllViews();
                     listaPermisoTiempoInfoBinding.tbrPrimeraFilaContenidoInfoPermisosTiempoLista.setVisibility(GONE);
                     listaPermisoTiempoInfoBinding.btnSeleccionDatoInfoPermisosTiempoLista.setVisibility(GONE);
@@ -331,7 +334,7 @@ public class ReportePermisoTiempoInfoActivity extends AppCompatActivity {
                             campoDescripcion = new TextView(ReportePermisoTiempoInfoActivity.this);
                             campoFechaAsignacion = new TextView(ReportePermisoTiempoInfoActivity.this);
                             campoFechaFinalizacion = new TextView(ReportePermisoTiempoInfoActivity.this);
-
+                            mostrarInfoDefecto = true;
 
                             LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 350);
                             AnchoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 180);
@@ -473,6 +476,12 @@ public class ReportePermisoTiempoInfoActivity extends AppCompatActivity {
                             listaPermisoTiempoInfoBinding.tblTablaContenidoInfoPermisosTiempoLista.addView(nuevaFila);
                         }
 
+                        if (mostrarInfoDefecto != true) {
+                            listaPermisoTiempoInfoBinding.tbrPrimeraFilaContenidoInfoPermisosTiempoLista.setVisibility(VISIBLE);
+                            listaPermisoTiempoInfoBinding.tblTablaContenidoInfoPermisosTiempoLista.addView(listaPermisoTiempoInfoBinding.tbrPrimeraFilaContenidoInfoPermisosTiempoLista);
+                            listaPermisoTiempoInfoBinding.btnSeleccionDatoInfoPermisosTiempoLista.setVisibility(VISIBLE);
+                        }
+
                     } else {
                         listaPermisoTiempoInfoBinding.tblTablaContenidoInfoPermisosTiempoLista.removeAllViews();
 
@@ -488,7 +497,7 @@ public class ReportePermisoTiempoInfoActivity extends AppCompatActivity {
                             campoDescripcion = new TextView(ReportePermisoTiempoInfoActivity.this);
                             campoFechaAsignacion = new TextView(ReportePermisoTiempoInfoActivity.this);
                             campoFechaFinalizacion = new TextView(ReportePermisoTiempoInfoActivity.this);
-
+                            mostrarInfoDefecto = true;
 
                             LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 350);
                             AnchoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 180);
@@ -629,6 +638,12 @@ public class ReportePermisoTiempoInfoActivity extends AppCompatActivity {
                             nuevaFila.addView(campoFechaFinalizacion);
                             listaPermisoTiempoInfoBinding.tblTablaContenidoInfoPermisosTiempoLista.addView(nuevaFila);
                         }
+
+                        if (mostrarInfoDefecto != true) {
+                            listaPermisoTiempoInfoBinding.tbrPrimeraFilaContenidoInfoPermisosTiempoLista.setVisibility(VISIBLE);
+                            listaPermisoTiempoInfoBinding.tblTablaContenidoInfoPermisosTiempoLista.addView(listaPermisoTiempoInfoBinding.tbrPrimeraFilaContenidoInfoPermisosTiempoLista);
+                            listaPermisoTiempoInfoBinding.btnSeleccionDatoInfoPermisosTiempoLista.setVisibility(VISIBLE);
+                        }
                     }
 
                 } else {
@@ -637,7 +652,7 @@ public class ReportePermisoTiempoInfoActivity extends AppCompatActivity {
                         int errorRaw = response.raw().code();
 
                         if(errorRaw == 401) {
-                            error = "Se finalizo la sesión de su cuenta.";
+                            error = " Se finalizo la sesión de su cuenta.";
                         }
 
                         listaPermisoTiempoInfoBinding.svBuscarInfoPermisoTiempoLista.setVisibility(GONE);
@@ -654,7 +669,7 @@ public class ReportePermisoTiempoInfoActivity extends AppCompatActivity {
 
                         AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ReportePermisoTiempoInfoActivity.this);
                         construirAlerta.setIcon(R.drawable.icono_error);
-                        construirAlerta.setMessage("Pero en este momento no es posible ver la información debido a que: " + error + "\n\nPor favor, intentelo de nuevo.")
+                        construirAlerta.setMessage("Pero en este momento no es posible ver la información debido a que:" + error.replace('"', ' ') + "\n\nPor favor, intentelo de nuevo.")
                                 .setTitle("¡Lo sentimos!");
 
                         construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -783,9 +798,7 @@ public class ReportePermisoTiempoInfoActivity extends AppCompatActivity {
 
                 construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
+                    public void onClick(DialogInterface dialog, int which) {}});
 
                 AlertDialog ejecutarMensaje = construirAlerta.create();
                 ejecutarMensaje.show();
@@ -862,9 +875,7 @@ public class ReportePermisoTiempoInfoActivity extends AppCompatActivity {
 
                 construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
+                    public void onClick(DialogInterface dialog, int which) {}});
 
                 AlertDialog ejecutarMensaje = construirAlerta.create();
                 ejecutarMensaje.show();

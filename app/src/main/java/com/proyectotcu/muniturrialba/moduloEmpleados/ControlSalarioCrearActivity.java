@@ -152,7 +152,6 @@ public class ControlSalarioCrearActivity extends AppCompatActivity {
 
             Call<SalarioEntitie> crearNuevopermisoTiempo = salarioInterface.crearSalarios(salarioEntitie, cedulaRecorrido, tokenUsuario);
 
-
             crearNuevopermisoTiempo.enqueue(new Callback<SalarioEntitie>() {
                 @Override
                 public void onResponse(Call<SalarioEntitie> call, Response<SalarioEntitie> response) {
@@ -177,12 +176,12 @@ public class ControlSalarioCrearActivity extends AppCompatActivity {
                             int errorRaw = response.raw().code();
 
                             if(errorRaw == 401) {
-                                error = "Se finalizo la sesión de su cuenta.";
+                                error = " Se finalizo la sesión de su cuenta.";
                             }
 
                             AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ControlSalarioCrearActivity.this);
                             construirAlerta.setIcon(R.drawable.icono_error);
-                            construirAlerta.setMessage("Pero en este momento no es posible crear el registro del salario debido a que: " + error + "\n\nPor favor, intentelo de nuevo.")
+                            construirAlerta.setMessage("Pero en este momento no es posible crear el registro del salario debido a que:" + error.replace('"', ' ') + "\n\nPor favor, intentelo de nuevo.")
                                     .setTitle("¡Lo sentimos!");
 
                             construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -230,13 +229,101 @@ public class ControlSalarioCrearActivity extends AppCompatActivity {
 
     private boolean ValidarSalario(String nombreUsuario, String apellidosUsuario, String edadUsuario, String cedulaUsuario,
                                    String departamentoUsuario, String fechaEntrega, String salario, String descripcion) {
+        try {
+            if (nombreUsuario == null && apellidosUsuario == null && edadUsuario == null && cedulaUsuario == null && departamentoUsuario == null &&
+                    fechaEntrega.isEmpty() && salario.isEmpty() && descripcion.isEmpty()) {
 
-        if (nombreUsuario == null && apellidosUsuario == null && edadUsuario == null && cedulaUsuario == null && departamentoUsuario == null &&
-                fechaEntrega.isEmpty() && salario.isEmpty() && descripcion.isEmpty()) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ControlSalarioCrearActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo crear el registro del salario debido a que todos los espacios están vacios." + "\n\nPor favor, ingrese todos los campos requeridos e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
 
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+
+            if (nombreUsuario == null && apellidosUsuario == null && edadUsuario == null && cedulaUsuario == null && departamentoUsuario == null) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ControlSalarioCrearActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo crear el registro del salario debido a que no se selecciono a ningún usuario(a)." + "\n\nPor favor, seleccione un usuario(a) e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+
+            if (fechaEntrega.isEmpty()) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ControlSalarioCrearActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo crear el registro del salario debido a que la fecha de entrega se encuentra vacia." + "\n\nPor favor, digite otra vez su fecha de entrega e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+
+            Pattern patronSalario = Pattern.compile("^\\d+(\\.\\d{2})?$");
+            Matcher compararSalario = patronSalario.matcher(salario);
+            if (salario.isEmpty() || !compararSalario.matches()) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ControlSalarioCrearActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo crear el registro del salario debido a que esta se encuentra vacia o supera los dos digitos permitidos." + "\n\nPor favor, digite otra vez su salario e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+
+            if (descripcion.isEmpty()) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ControlSalarioCrearActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo crear el registro del salario debido a que la descripción se encuentra vacia." + "\n\nPor favor, digite otra vez su descripción e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+            return true;
+
+        } catch (Exception error) {
             AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ControlSalarioCrearActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no se pudo crear el registro del salario debido a que todos los espacios están vacios." + "\n\nPor favor, ingrese todos los campos requeridos e intentelo de nuevo.")
+            construirAlerta.setIcon(R.drawable.icono_error);
+            construirAlerta.setMessage("Pero no es posible crear el registro del salario en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
                     .setTitle("¡Lo sentimos!");
 
             construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -248,79 +335,6 @@ public class ControlSalarioCrearActivity extends AppCompatActivity {
             ejecutarMensaje.show();
             return false;
         }
-
-
-        if (nombreUsuario == null && apellidosUsuario == null && edadUsuario == null && cedulaUsuario == null && departamentoUsuario == null) {
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ControlSalarioCrearActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no se pudo crear el registro del salario debido a que no se selecciono a ningún usuario(a)." + "\n\nPor favor, seleccione un usuario(a) e intentelo de nuevo.")
-                    .setTitle("¡Lo sentimos!");
-
-            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}});
-
-
-            AlertDialog ejecutarMensaje = construirAlerta.create();
-            ejecutarMensaje.show();
-            return false;
-        }
-
-
-        if (fechaEntrega.isEmpty()) {
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ControlSalarioCrearActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no se pudo crear el registro del salario debido a que la fecha de entrega se encuentra vacia." + "\n\nPor favor, digite otra vez su fecha de entrega e intentelo de nuevo.")
-                    .setTitle("¡Lo sentimos!");
-
-            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}});
-
-
-            AlertDialog ejecutarMensaje = construirAlerta.create();
-            ejecutarMensaje.show();
-            return false;
-        }
-
-
-        Pattern patronSalario = Pattern.compile("^\\d+(\\.\\d{2})?$");
-        Matcher compararSalario = patronSalario.matcher(salario);
-        if (salario.isEmpty() || !compararSalario.matches()) {
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ControlSalarioCrearActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no se pudo crear el registro del salario debido a que esta se encuentra vacia o supera los dos digitos permitidos." + "\n\nPor favor, digite otra vez su salario e intentelo de nuevo.")
-                    .setTitle("¡Lo sentimos!");
-
-            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}});
-
-
-            AlertDialog ejecutarMensaje = construirAlerta.create();
-            ejecutarMensaje.show();
-            return false;
-        }
-
-
-        if (descripcion.isEmpty()) {
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ControlSalarioCrearActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no se pudo crear el registro del salario debido a que la descripción se encuentra vacia." + "\n\nPor favor, digite otra vez su descripción e intentelo de nuevo.")
-                    .setTitle("¡Lo sentimos!");
-
-            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}});
-
-
-            AlertDialog ejecutarMensaje = construirAlerta.create();
-            ejecutarMensaje.show();
-            return false;
-        }
-
-
-        return true;
     }
 
 

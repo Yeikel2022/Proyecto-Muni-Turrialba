@@ -26,8 +26,6 @@ import com.proyectotcu.muniturrialba.databinding.ActivityAyudaCrearBinding;
 import com.proyectotcu.muniturrialba.manejoAPI.ConexionAPI;
 import com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI.FAQEntitie;
 import com.proyectotcu.muniturrialba.manejoAPI.interfacesAPI.FAQInterface;
-import com.proyectotcu.muniturrialba.moduloEmpleados.ControlEmpleadosActivity;
-import com.proyectotcu.muniturrialba.moduloEmpleados.PermisoTiempoCrearActivity;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -115,10 +113,9 @@ public class AyudaCrearActivity extends AppCompatActivity {
              * "txtMensaje" pueda colocarlo en la pantalla del fragmento (osea en el -
              * fragment_perfil.xml), esto porque es una forma dinamica de hacerlo. */
 
-
             AlertDialog.Builder construirAlerta = new AlertDialog.Builder(AyudaCrearActivity.this);
             construirAlerta.setIcon(R.drawable.icono_error);
-            construirAlerta.setMessage("Pero no es posible crear la pregunta en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+            construirAlerta.setMessage("Pero no fue posible finalizar el proceso en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
                     .setTitle("¡Lo sentimos!");
 
             construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -146,20 +143,20 @@ public class AyudaCrearActivity extends AppCompatActivity {
                 finish();
             }
         });
-}
+    }
 
 
     private void CrearNuevoFAQ(String tokenUsuario) {
-
         preguntaIngresada = ayudaCrearBinding.edtxtPregunta.getText().toString().trim();
         respuestaIngresada = ayudaCrearBinding.edtxtRespuesta.getText().toString().trim();
 
         boolean respuestaValidacion = ValidarFAQs(preguntaIngresada, respuestaIngresada, tipoPrioridadIngresada);
-        if(respuestaValidacion != false) {
 
+        if(respuestaValidacion != false) {
             faqInterface = ConexionAPI.Conexion_API_FAQ(this);
 
             FAQEntitie faqEntitie = new FAQEntitie(preguntaIngresada, respuestaIngresada, tipoPrioridadIngresada);
+
             Call<FAQEntitie> crearNuevoFAQ = faqInterface.crearFAQ(faqEntitie, tokenUsuario);
 
             crearNuevoFAQ.enqueue(new Callback<FAQEntitie>() {
@@ -189,13 +186,13 @@ public class AyudaCrearActivity extends AppCompatActivity {
                             int errorRaw = response.raw().code();
 
                             if(errorRaw == 401) {
-                                error = "Se finalizo la sesión de su cuenta.";
+                                error = " Se finalizo la sesión de su cuenta.";
                             }
 
                             /* Esto es para imprimir los mensajes de error. */
                             AlertDialog.Builder construirAlerta = new AlertDialog.Builder(AyudaCrearActivity.this);
                             construirAlerta.setIcon(R.drawable.icono_error);
-                            construirAlerta.setMessage("Pero en este momento no es posible crear la pregunta debido a que: " + error + "\n\nPor favor, intentelo de nuevo.")
+                            construirAlerta.setMessage("Pero en este momento no es posible crear la pregunta debido a que:" + error.replace('"', ' ') + "\n\nPor favor, intentelo de nuevo.")
                                     .setTitle("¡Lo sentimos!");
 
                             construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -259,73 +256,90 @@ public class AyudaCrearActivity extends AppCompatActivity {
 
 
     private boolean ValidarFAQs(String pregunta, String respuesta, String tipoPrioridad) {
-        if (pregunta.isEmpty() && respuesta.isEmpty() && tipoPrioridad.equals("Seleccione el tipo de prioridad:")) {
+        try {
+            if (pregunta.isEmpty() && respuesta.isEmpty() && tipoPrioridad.equals("Seleccione el tipo de prioridad:")) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(AyudaCrearActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo crear la pregunta debido a que todos los espacios están vacios." + "\n\nPor favor, ingrese todos los campos requeridos e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+            Pattern patronPreguntas = Pattern.compile("¿.*\\?");
+            Matcher compararPregunta = patronPreguntas.matcher(pregunta);
+            if (pregunta.isEmpty() || !compararPregunta.find()) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(AyudaCrearActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo crear la pregunta debido a que esta se encuentra vacia o esta incorrecta." + "\n\nPor favor, digite otra vez su pregunta e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+            if (respuesta.isEmpty()) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(AyudaCrearActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo crear la pregunta debido a que la respuesta se encuentra vacia." + "\n\nPor favor, digite otra vez su respuesta e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+            if (tipoPrioridad.isEmpty() || tipoPrioridad.equals("Seleccione el tipo de prioridad:")) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(AyudaCrearActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo crear la pregunta debido a que el tipo de prioridad se encuentra vacia." + "\n\nPor favor, digite otra vez la prioridad que desea e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+            return true;
+
+        } catch (Exception error) {
             AlertDialog.Builder construirAlerta = new AlertDialog.Builder(AyudaCrearActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no se pudo crear la pregunta debido a que todos los espacios están vacios." + "\n\nPor favor, ingrese todos los campos requeridos e intentelo de nuevo.")
+            construirAlerta.setIcon(R.drawable.icono_error);
+            construirAlerta.setMessage("Pero no es posible crear la pregunta en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
                     .setTitle("¡Lo sentimos!");
 
             construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {}});
 
-            AlertDialog ejecutarMensaje = construirAlerta.create();
-            ejecutarMensaje.show();
-
-            return false;
-        }
-
-        Pattern patronPreguntas = Pattern.compile("¿.*\\?");
-        Matcher compararPregunta = patronPreguntas.matcher(pregunta);
-        if (pregunta.isEmpty() || pregunta.equals(null) || !compararPregunta.find()) {
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(AyudaCrearActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no se pudo crear la pregunta debido a que esta se encuentra vacia o esta incorrecta." + "\n\nPor favor, digite otra vez su pregunta e intentelo de nuevo.")
-                    .setTitle("¡Lo sentimos!");
-
-            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}});
 
             AlertDialog ejecutarMensaje = construirAlerta.create();
             ejecutarMensaje.show();
-
             return false;
         }
-
-        if (respuesta.isEmpty() || respuesta.equals(null)) {
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(AyudaCrearActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no se pudo crear la pregunta debido a que la respuesta se encuentra vacia." + "\n\nPor favor, digite otra vez su respuesta e intentelo de nuevo.")
-                    .setTitle("¡Lo sentimos!");
-
-            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}});
-
-            AlertDialog ejecutarMensaje = construirAlerta.create();
-            ejecutarMensaje.show();
-
-            return false;
-        }
-
-        if (tipoPrioridad.isEmpty() || tipoPrioridad.equals(null) || tipoPrioridad.equals("Seleccione el tipo de prioridad:")) {
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(AyudaCrearActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no se pudo crear la pregunta debido a que el tipo de prioridad se encuentra vacia." + "\n\nPor favor, digite otra vez la prioridad que desea e intentelo de nuevo.")
-                    .setTitle("¡Lo sentimos!");
-
-            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}});
-
-            AlertDialog ejecutarMensaje = construirAlerta.create();
-            ejecutarMensaje.show();
-
-            return false;
-        }
-
-        return true;
     }
 
 

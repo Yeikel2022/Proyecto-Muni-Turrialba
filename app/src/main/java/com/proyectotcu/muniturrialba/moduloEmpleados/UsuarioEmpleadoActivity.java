@@ -34,6 +34,8 @@ import com.proyectotcu.muniturrialba.databinding.ActivityListaUsuarioEmpleadosBi
 import com.proyectotcu.muniturrialba.manejoAPI.ConexionAPI;
 import com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI.ExtensionEmpleadoUsuarioEntitie;
 import com.proyectotcu.muniturrialba.manejoAPI.interfacesAPI.EmpleadoInterface;
+import com.proyectotcu.muniturrialba.moduloAdministracionArchivos.ArchivoRecienteActualizarActivity;
+import com.proyectotcu.muniturrialba.moduloAdministracionArchivos.ArchivoRecienteCrearActivity;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -166,6 +168,59 @@ public class UsuarioEmpleadoActivity extends AppCompatActivity {
                 });
             }
 
+            if("Crear_ArchivoReciente".equals(tipoAccionRecorrido)) {
+                listaUsuarioEmpleadosBinding.btnConfirmarUsuarioEmpleado.setOnClickListener(v -> { AlertDialog.Builder construirAlerta = new AlertDialog.Builder(UsuarioEmpleadoActivity.this);
+                    construirAlerta.setIcon(R.drawable.icono_advertencia);
+                    construirAlerta.setMessage("¿Esta completamente seguro(a) de seleccionar este empleado(a)?")
+                            .setTitle("Confirmar Usuario.");
+
+                    construirAlerta.setPositiveButton("Si.", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            VistaArchivoRecienteCrear();
+                        }
+                    });
+
+                    construirAlerta.setNegativeButton("No.", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(UsuarioEmpleadoActivity.this, "¡Cancelado!", Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+
+                    AlertDialog ejecutarMensaje = construirAlerta.create();
+                    ejecutarMensaje.show();
+                });
+            }
+
+
+            if("Actualizar_ArchivoReciente".equals(tipoAccionRecorrido)) {
+                listaUsuarioEmpleadosBinding.btnConfirmarUsuarioEmpleado.setOnClickListener(v -> { AlertDialog.Builder construirAlerta = new AlertDialog.Builder(UsuarioEmpleadoActivity.this);
+                    construirAlerta.setIcon(R.drawable.icono_advertencia);
+                    construirAlerta.setMessage("¿Esta completamente seguro(a) de seleccionar este empleado(a)?")
+                            .setTitle("Confirmar Usuario.");
+
+                    construirAlerta.setPositiveButton("Si.", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            VistaArchivoRecienteActualizar();
+                        }
+                    });
+
+                    construirAlerta.setNegativeButton("No.", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(UsuarioEmpleadoActivity.this, "¡Cancelado!", Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+
+                    AlertDialog ejecutarMensaje = construirAlerta.create();
+                    ejecutarMensaje.show();
+                });
+            }
+
             MostrarUsuarioEmpleados(tokenGuardado,  null, false);
 
         } catch (Exception error) {
@@ -213,9 +268,31 @@ public class UsuarioEmpleadoActivity extends AppCompatActivity {
 
                     finish();
                 }
+
+                if("ArchivoRecienteCrear".equals(tipoRegresoRecorrido)) {
+                    Intent intentArchivoReciente = new Intent(UsuarioEmpleadoActivity.this, ArchivoRecienteCrearActivity.class);
+
+                    ArchivoRecienteCrearActivity.autorizacionArchivoCrear = true;
+
+                    startActivity(intentArchivoReciente);
+
+                    finish();
+                }
+
+                if("ArchivoRecienteActualizar".equals(tipoRegresoRecorrido)) {
+                    Intent intentArchivoReciente = new Intent(UsuarioEmpleadoActivity.this, ArchivoRecienteActualizarActivity.class);
+
+                    ArchivoRecienteActualizarActivity.autorizacionArchivoActualizar = true;
+                    ArchivoRecienteActualizarActivity.segundaAutorizacion_ArchivoActualizar = true;
+
+                    startActivity(intentArchivoReciente);
+
+                    finish();
+                }
             }
         });
     }
+
 
     private void BuscarPrioridad(String tokenUsuario, List<ExtensionEmpleadoUsuarioEntitie> listaDatos, String textoIngresado) {
         try {
@@ -281,42 +358,18 @@ public class UsuarioEmpleadoActivity extends AppCompatActivity {
         }
     }
 
+
     private void MostrarUsuarioEmpleados(String tokenUsuario, List<ExtensionEmpleadoUsuarioEntitie> listaActualizada, Boolean autorizacion) {
 
         empleadoInterface = ConexionAPI.Conexion_API_Empleado(this);
 
         Call<List<ExtensionEmpleadoUsuarioEntitie>> mostrarEmpleados = empleadoInterface.obtenerEmpleados(tokenUsuario);
 
-
         mostrarEmpleados.enqueue(new Callback<List<ExtensionEmpleadoUsuarioEntitie>>() {
             @Override
             public void onResponse(Call<List<ExtensionEmpleadoUsuarioEntitie>> call, Response<List<ExtensionEmpleadoUsuarioEntitie>> response) {
                 if (response.isSuccessful()) {
-
-                    if(response.body().size() == 1) {
-                        listaUsuarioEmpleadosBinding.tblTablaUsuarioEmpleado.removeAllViews();
-
-                        for (int i = 0; i < response.body().size(); i++) {
-                            ExtensionEmpleadoUsuarioEntitie empleados = response.body().get(i);
-                            String Nombre  = empleados.getNombre_Empleado().trim();
-                            String Apellidos = empleados.getApellido1_Empleado().trim() + " " + empleados.getApellido2_Empleado().trim();
-                            String Cedula = empleados.getCedula_Empleado().trim();
-                            String Departamento = empleados.getDepartamento().trim();
-                            String Correo_Electronico = empleados.getCorreo_Electronico_Empleado().trim();
-                            String Nombre_Rol = empleados.getNombre_Rol().trim();
-
-
-                            listaUsuarioEmpleadosBinding.txtNombreUsuarioEmpleado.setText(Nombre);
-                            listaUsuarioEmpleadosBinding.txtApellidosUsuarioEmpleado.setText(Apellidos);
-                            listaUsuarioEmpleadosBinding.txtCedulaUsuarioEmpleado.setText(Cedula);
-                            listaUsuarioEmpleadosBinding.txtDepartamentoUsuarioEmpleado.setText(Departamento);
-                            listaUsuarioEmpleadosBinding.txtCorreoUsuarioEmpleado.setText(Correo_Electronico);
-                            listaUsuarioEmpleadosBinding.txtRolUsuarioEmpleado.setText(Nombre_Rol);
-
-                            listaUsuarioEmpleadosBinding.btnSeleccionDatoUsuarioEmpleado.setTag(empleados);
-                            listaUsuarioEmpleadosBinding.btnSeleccionDatoUsuarioEmpleado.setVisibility(VISIBLE);
-                        }
-                    }
+                    Boolean mostrarInfoDefecto = false;
 
                     listaUsuarioEmpleadosBinding.tblTablaUsuarioEmpleado.removeAllViews();
                     listaUsuarioEmpleadosBinding.tbrPrimeraFilaUsuarioEmpleado.setVisibility(GONE);
@@ -344,14 +397,13 @@ public class UsuarioEmpleadoActivity extends AppCompatActivity {
                             campoDepartamento = new TextView(UsuarioEmpleadoActivity.this);
                             campoCorreoElectronico = new TextView(UsuarioEmpleadoActivity.this);
                             campoNombreRol = new TextView(UsuarioEmpleadoActivity.this);
-
+                            mostrarInfoDefecto = true;
 
                             LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 350);
                             AnchoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 205);
                             LargoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
                             AnchoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
                             TamañoLetraContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_SP, 10);
-
 
                             parametrosContenido = new TableRow.LayoutParams(LargoContenido, AnchoContenido);
                             parametrosCheckBox = new TableRow.LayoutParams(LargoCheckBox, AnchoCheckBox);
@@ -376,7 +428,6 @@ public class UsuarioEmpleadoActivity extends AppCompatActivity {
                             String Correo_Electronico = empleados.getCorreo_Electronico_Empleado().trim();
                             String Nombre_Rol = empleados.getNombre_Rol().trim();
 
-
                             campoCheckBox.setWidth(LargoCheckBox);
                             campoCheckBox.setHeight(AnchoCheckBox);
                             campoCheckBox.setLayoutParams(parametrosCheckBox);
@@ -461,6 +512,12 @@ public class UsuarioEmpleadoActivity extends AppCompatActivity {
                             listaUsuarioEmpleadosBinding.tblTablaUsuarioEmpleado.addView(nuevaFila);
                         }
 
+                        if (mostrarInfoDefecto != true) {
+                            listaUsuarioEmpleadosBinding.tbrPrimeraFilaUsuarioEmpleado.setVisibility(VISIBLE);
+                            listaUsuarioEmpleadosBinding.tblTablaUsuarioEmpleado.addView(listaUsuarioEmpleadosBinding.tbrPrimeraFilaUsuarioEmpleado);
+                            listaUsuarioEmpleadosBinding.btnSeleccionDatoUsuarioEmpleado.setVisibility(VISIBLE);
+                        }
+
                     } else {
                         listaUsuarioEmpleadosBinding.tblTablaUsuarioEmpleado.removeAllViews();
 
@@ -474,14 +531,13 @@ public class UsuarioEmpleadoActivity extends AppCompatActivity {
                             campoDepartamento = new TextView(UsuarioEmpleadoActivity.this);
                             campoCorreoElectronico = new TextView(UsuarioEmpleadoActivity.this);
                             campoNombreRol = new TextView(UsuarioEmpleadoActivity.this);
-
+                            mostrarInfoDefecto = true;
 
                             LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 350);
                             AnchoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 205);
                             LargoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
                             AnchoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
                             TamañoLetraContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_SP, 10);
-
 
                             parametrosContenido = new TableRow.LayoutParams(LargoContenido, AnchoContenido);
                             parametrosCheckBox = new TableRow.LayoutParams(LargoCheckBox, AnchoCheckBox);
@@ -506,7 +562,6 @@ public class UsuarioEmpleadoActivity extends AppCompatActivity {
                             String Correo_Electronico = empleados.getCorreo_Electronico_Empleado().trim();
                             String Nombre_Rol = empleados.getNombre_Rol().trim();
 
-
                             campoCheckBox.setWidth(LargoCheckBox);
                             campoCheckBox.setHeight(AnchoCheckBox);
                             campoCheckBox.setLayoutParams(parametrosCheckBox);
@@ -590,6 +645,12 @@ public class UsuarioEmpleadoActivity extends AppCompatActivity {
                             nuevaFila.addView(campoNombreRol);
                             listaUsuarioEmpleadosBinding.tblTablaUsuarioEmpleado.addView(nuevaFila);
                         }
+
+                        if (mostrarInfoDefecto != true) {
+                            listaUsuarioEmpleadosBinding.tbrPrimeraFilaUsuarioEmpleado.setVisibility(VISIBLE);
+                            listaUsuarioEmpleadosBinding.tblTablaUsuarioEmpleado.addView(listaUsuarioEmpleadosBinding.tbrPrimeraFilaUsuarioEmpleado);
+                            listaUsuarioEmpleadosBinding.btnSeleccionDatoUsuarioEmpleado.setVisibility(VISIBLE);
+                        }
                     }
 
                 } else {
@@ -598,7 +659,7 @@ public class UsuarioEmpleadoActivity extends AppCompatActivity {
                         int errorRaw = response.raw().code();
 
                         if(errorRaw == 401) {
-                            error = "Se finalizo la sesión de su cuenta.";
+                            error = " Se finalizo la sesión de su cuenta.";
                         }
 
                         listaUsuarioEmpleadosBinding.svBuscarUsuarioEmpleado.setVisibility(GONE);
@@ -615,7 +676,7 @@ public class UsuarioEmpleadoActivity extends AppCompatActivity {
 
                         AlertDialog.Builder construirAlerta = new AlertDialog.Builder(UsuarioEmpleadoActivity.this);
                         construirAlerta.setIcon(R.drawable.icono_error);
-                        construirAlerta.setMessage("Pero en este momento no es posible ver la información de los empleados(as) debido a que: " + error + "\n\nPor favor, intentelo de nuevo.")
+                        construirAlerta.setMessage("Pero en este momento no es posible ver la información de los empleados(as) debido a que:" + error.replace('"', ' ') + "\n\nPor favor, intentelo de nuevo.")
                                 .setTitle("¡Lo sentimos!");
 
                         construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -683,6 +744,7 @@ public class UsuarioEmpleadoActivity extends AppCompatActivity {
         });
     }
 
+
     private Integer ConvertirPropiedades(int tipoPropiedad, int tamañoPropiedad) {
         int resultado = 0;
 
@@ -698,6 +760,7 @@ public class UsuarioEmpleadoActivity extends AppCompatActivity {
 
         return resultado;
     }
+
 
     private void VistaPermisoTiempoCrear() {
         try {
@@ -775,6 +838,7 @@ public class UsuarioEmpleadoActivity extends AppCompatActivity {
         }
     }
 
+
     private void VistaSalarioCrear() {
         try {
             Integer cantidadChecks = 0;
@@ -810,6 +874,164 @@ public class UsuarioEmpleadoActivity extends AppCompatActivity {
                 intentSalarioCrear.putExtra("Departamento", Departamento);
 
                 startActivity(intentSalarioCrear);
+
+                finish();
+            } else {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(UsuarioEmpleadoActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_error);
+                construirAlerta.setMessage("Pero en este momento no es posible seleccionar el empleado(a) debido a que se selecciono más de un dato o que incluso no se selecciono ninguno.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+            }
+
+        } catch (Exception error) {
+            listaUsuarioEmpleadosBinding.svBuscarUsuarioEmpleado.setVisibility(GONE);
+            listaUsuarioEmpleadosBinding.txtTituloListaUsuarioEmpleado.setVisibility(View.GONE);
+
+            listaUsuarioEmpleadosBinding.hsvScrollHorizontalUsuarioEmpleado.setVisibility(View.GONE);
+            listaUsuarioEmpleadosBinding.btnConfirmarUsuarioEmpleado.setVisibility(GONE);
+
+            listaUsuarioEmpleadosBinding.imgFotoUsuarioEmpleado.setVisibility(VISIBLE);
+            listaUsuarioEmpleadosBinding.txtMensajeUsuarioEmpleado.setVisibility(VISIBLE);
+
+            listaUsuarioEmpleadosBinding.imgFotoUsuarioEmpleado.setImageResource(R.drawable.icono_contenido_no_disponible);
+            listaUsuarioEmpleadosBinding.txtMensajeUsuarioEmpleado.setText(getString(R.string.ErrorFragment));
+
+            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(UsuarioEmpleadoActivity.this);
+            construirAlerta.setIcon(R.drawable.icono_error);
+            construirAlerta.setMessage("Pero no es posible seleccionar el empleado(a) en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+                    .setTitle("¡Lo sentimos!");
+
+            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {}});
+
+            AlertDialog ejecutarMensaje = construirAlerta.create();
+            ejecutarMensaje.show();
+        }
+    }
+
+
+    private void VistaArchivoRecienteCrear() {
+        try {
+            Integer cantidadChecks = 0;
+            ExtensionEmpleadoUsuarioEntitie datoSeleccionado = null;
+
+            for(int i = 0; i < listaUsuarioEmpleadosBinding.tblTablaUsuarioEmpleado.getChildCount(); i++) {
+                TableRow registroDatos = (TableRow) listaUsuarioEmpleadosBinding.tblTablaUsuarioEmpleado.getChildAt(i);
+                CheckBox seleccionDato = (CheckBox) registroDatos.getChildAt(0);
+
+
+                if(seleccionDato.isChecked()) {
+                    cantidadChecks++;
+                    datoSeleccionado = (ExtensionEmpleadoUsuarioEntitie) seleccionDato.getTag();
+                }
+            }
+
+
+            if(cantidadChecks == 1 && datoSeleccionado != null) {
+                String Nombre = datoSeleccionado.getNombre_Empleado().trim();
+                String PrimerApellido = datoSeleccionado.getApellido1_Empleado().trim();
+                String SegundoApellido = datoSeleccionado.getApellido2_Empleado().trim();
+
+                String Correo = datoSeleccionado.getCorreo_Electronico_Empleado().trim();
+                String Departamento = datoSeleccionado.getDepartamento().trim();
+
+                Intent intentArchivoCrear = new Intent(UsuarioEmpleadoActivity.this, ArchivoRecienteCrearActivity.class);
+
+                intentArchivoCrear.putExtra("nombre_UsuarioRecorrido", Nombre);
+                intentArchivoCrear.putExtra("primerApellido_UsuarioRecorrido", PrimerApellido);
+                intentArchivoCrear.putExtra("segundoApellido_UsuarioRecorrido", SegundoApellido);
+                intentArchivoCrear.putExtra("correoElectronico_UsuarioRecorrido", Correo);
+                intentArchivoCrear.putExtra("departamento_UsuarioRecorrido", Departamento);
+
+                startActivity(intentArchivoCrear);
+
+                finish();
+            } else {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(UsuarioEmpleadoActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_error);
+                construirAlerta.setMessage("Pero en este momento no es posible seleccionar el empleado(a) debido a que se selecciono más de un dato o que incluso no se selecciono ninguno.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+            }
+
+        } catch (Exception error) {
+            listaUsuarioEmpleadosBinding.svBuscarUsuarioEmpleado.setVisibility(GONE);
+            listaUsuarioEmpleadosBinding.txtTituloListaUsuarioEmpleado.setVisibility(View.GONE);
+
+            listaUsuarioEmpleadosBinding.hsvScrollHorizontalUsuarioEmpleado.setVisibility(View.GONE);
+            listaUsuarioEmpleadosBinding.btnConfirmarUsuarioEmpleado.setVisibility(GONE);
+
+            listaUsuarioEmpleadosBinding.imgFotoUsuarioEmpleado.setVisibility(VISIBLE);
+            listaUsuarioEmpleadosBinding.txtMensajeUsuarioEmpleado.setVisibility(VISIBLE);
+
+            listaUsuarioEmpleadosBinding.imgFotoUsuarioEmpleado.setImageResource(R.drawable.icono_contenido_no_disponible);
+            listaUsuarioEmpleadosBinding.txtMensajeUsuarioEmpleado.setText(getString(R.string.ErrorFragment));
+
+            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(UsuarioEmpleadoActivity.this);
+            construirAlerta.setIcon(R.drawable.icono_error);
+            construirAlerta.setMessage("Pero no es posible seleccionar el empleado(a) en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+                    .setTitle("¡Lo sentimos!");
+
+            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {}});
+
+            AlertDialog ejecutarMensaje = construirAlerta.create();
+            ejecutarMensaje.show();
+        }
+    }
+
+
+    private void VistaArchivoRecienteActualizar() {
+        try {
+            Integer cantidadChecks = 0;
+            ExtensionEmpleadoUsuarioEntitie datoSeleccionado = null;
+
+            for(int i = 0; i < listaUsuarioEmpleadosBinding.tblTablaUsuarioEmpleado.getChildCount(); i++) {
+                TableRow registroDatos = (TableRow) listaUsuarioEmpleadosBinding.tblTablaUsuarioEmpleado.getChildAt(i);
+                CheckBox seleccionDato = (CheckBox) registroDatos.getChildAt(0);
+
+
+                if(seleccionDato.isChecked()) {
+                    cantidadChecks++;
+                    datoSeleccionado = (ExtensionEmpleadoUsuarioEntitie) seleccionDato.getTag();
+                }
+            }
+
+
+            if(cantidadChecks == 1 && datoSeleccionado != null) {
+                String Nombre = datoSeleccionado.getNombre_Empleado().trim();
+                String PrimerApellido = datoSeleccionado.getApellido1_Empleado().trim();
+                String SegundoApellido = datoSeleccionado.getApellido2_Empleado().trim();
+
+                String Correo = datoSeleccionado.getCorreo_Electronico_Empleado().trim();
+                String Departamento = datoSeleccionado.getDepartamento().trim();
+
+                ArchivoRecienteActualizarActivity.segundaAutorizacion_ArchivoActualizar = true;
+
+                Intent intentArchivoActualizar = new Intent(UsuarioEmpleadoActivity.this, ArchivoRecienteActualizarActivity.class);
+
+                intentArchivoActualizar.putExtra("nombre_Destinatario", Nombre);
+                intentArchivoActualizar.putExtra("primerApellido_Destinatario", PrimerApellido);
+                intentArchivoActualizar.putExtra("segundoApellido_Destinatario", SegundoApellido);
+                intentArchivoActualizar.putExtra("correoElectronico_Destinatario", Correo);
+                intentArchivoActualizar.putExtra("departamento_Destinatario", Departamento);
+
+                startActivity(intentArchivoActualizar);
 
                 finish();
             } else {

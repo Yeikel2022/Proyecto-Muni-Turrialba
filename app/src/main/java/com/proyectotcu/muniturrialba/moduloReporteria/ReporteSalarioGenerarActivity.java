@@ -145,7 +145,6 @@ public class ReporteSalarioGenerarActivity extends AppCompatActivity {
                 campoSalarioGuardado = new TextView(ReporteSalarioGenerarActivity.this);
                 campoDescripcionGuardado = new TextView(ReporteSalarioGenerarActivity.this);
 
-
                 LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 350);
                 AnchoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 205);
                 LargoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
@@ -338,6 +337,7 @@ public class ReporteSalarioGenerarActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private Integer ConvertirPropiedades(int tipoPropiedad, int tamañoPropiedad) {
         int resultado = 0;

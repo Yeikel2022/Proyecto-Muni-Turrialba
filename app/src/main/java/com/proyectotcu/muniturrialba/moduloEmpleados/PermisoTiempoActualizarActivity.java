@@ -95,7 +95,6 @@ public class PermisoTiempoActualizarActivity extends AppCompatActivity {
                 construirAlerta.setMessage("¿Esta completamente seguro(a) de actualizar este permiso de tiempo?")
                         .setTitle("Actualizar Permiso Tiempo.");
 
-
                 construirAlerta.setPositiveButton("Si.", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -180,7 +179,6 @@ public class PermisoTiempoActualizarActivity extends AppCompatActivity {
 
             Call<Boolean> actualizarPermisosTiempo = permisoTiempoInterface.actualizarPermisosTiempo(permisoTiempoEntitie, cedulaRecorrido, tokenUsuario);
 
-
             actualizarPermisosTiempo.enqueue(new Callback<Boolean>() {
                 @Override
                 public void onResponse(Call<Boolean> call, Response<Boolean> response) {
@@ -204,12 +202,12 @@ public class PermisoTiempoActualizarActivity extends AppCompatActivity {
                             int errorRaw = response.raw().code();
 
                             if(errorRaw == 401) {
-                                error = "Se finalizo la sesión de su cuenta.";
+                                error = " Se finalizo la sesión de su cuenta.";
                             }
 
                             AlertDialog.Builder construirAlerta = new AlertDialog.Builder(PermisoTiempoActualizarActivity.this);
                             construirAlerta.setIcon(R.drawable.icono_error);
-                            construirAlerta.setMessage("Pero en este momento no es posible actualizar el permiso de tiempo debido a que: " + error + "\n\nPor favor, intentelo de nuevo.")
+                            construirAlerta.setMessage("Pero en este momento no es posible actualizar el permiso de tiempo debido a que:" + error.replace('"', ' ') + "\n\nPor favor, intentelo de nuevo.")
                                     .setTitle("¡Lo sentimos!");
 
                             construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -257,14 +255,119 @@ public class PermisoTiempoActualizarActivity extends AppCompatActivity {
 
     private boolean ValidarPermisoTiempo(String nombreUsuario, String apellidosUsuario, String cedulaUsuario,
                                          String tipoPermiso, String descripcion, String fechaAsignacion, String fechaFinalizacion) {
+        try {
+            if (nombreUsuario.equals(nombreRecorrido) && apellidosUsuario.equals(apellidosRecorrido) && cedulaUsuario.equals(cedulaRecorrido) &&
+                    tipoPermiso.equals(tipoPermisoRecorrido) && descripcion.equals(descripcionRecorrido) && fechaAsignacion.equals(fechaAsignacionRecorrido) &&
+                    fechaFinalizacion.equals(fechaFinalizacionRecorrido)) {
 
-        if (nombreUsuario.equals(nombreRecorrido) && apellidosUsuario.equals(apellidosRecorrido) && cedulaUsuario.equals(cedulaRecorrido) &&
-                tipoPermiso.equals(tipoPermisoRecorrido) && descripcion.equals(descripcionRecorrido) && fechaAsignacion.equals(fechaAsignacionRecorrido) &&
-                fechaFinalizacion.equals(fechaFinalizacionRecorrido)) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(PermisoTiempoActualizarActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo actualizar el permiso de tiempo debido a que están los mismos datos." + "\n\nPor favor, ingrese los nuevos cambios que desea e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
 
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+
+            if (nombreUsuario == null && apellidosUsuario == null && cedulaUsuario == null && tipoPermiso.isEmpty() &&
+                    descripcion.isEmpty() && fechaAsignacion.isEmpty() && fechaFinalizacion.isEmpty()) {
+
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(PermisoTiempoActualizarActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo actualizar el permiso de tiempo debido a que todos los espacios están vacios." + "\n\nPor favor, ingrese todos los campos requeridos e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+
+            if (tipoPermiso.isEmpty()) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(PermisoTiempoActualizarActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo actualizar el permiso de tiempo debido a que el tipo de permiso que se necesita se encuentra vacio." + "\n\nPor favor, digite otra vez su tipo de permiso e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+
+            if (descripcion.isEmpty()) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(PermisoTiempoActualizarActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo actualizar el permiso de tiempo debido a que la descripción se encuentra vacia." + "\n\nPor favor, digite otra vez su descripción e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+
+            if (fechaAsignacion.isEmpty()) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(PermisoTiempoActualizarActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo actualizar el permiso de tiempo debido a que la fecha de asignación se encuentra vacia." + "\n\nPor favor, digite otra vez su fecha de asignación e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+
+            if (fechaFinalizacion.isEmpty()) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(PermisoTiempoActualizarActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo actualizar el permiso de tiempo debido a que la fecha de finalización se encuentra vacia." + "\n\nPor favor, digite otra vez su fecha de finalización e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+            return true;
+
+        } catch (Exception error) {
             AlertDialog.Builder construirAlerta = new AlertDialog.Builder(PermisoTiempoActualizarActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no se pudo actualizar el permiso de tiempo debido a que están los mismos datos." + "\n\nPor favor, ingrese los nuevos cambios que desea e intentelo de nuevo.")
+            construirAlerta.setIcon(R.drawable.icono_error);
+            construirAlerta.setMessage("Pero no es posible actualizar el permiso de tiempo en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
                     .setTitle("¡Lo sentimos!");
 
             construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -276,96 +379,6 @@ public class PermisoTiempoActualizarActivity extends AppCompatActivity {
             ejecutarMensaje.show();
             return false;
         }
-
-
-        if (nombreUsuario == null && apellidosUsuario == null && cedulaUsuario == null && tipoPermiso.isEmpty() &&
-                descripcion.isEmpty() && fechaAsignacion.isEmpty() && fechaFinalizacion.isEmpty()) {
-
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(PermisoTiempoActualizarActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no se pudo actualizar el permiso de tiempo debido a que todos los espacios están vacios." + "\n\nPor favor, ingrese todos los campos requeridos e intentelo de nuevo.")
-                    .setTitle("¡Lo sentimos!");
-
-            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}});
-
-
-            AlertDialog ejecutarMensaje = construirAlerta.create();
-            ejecutarMensaje.show();
-            return false;
-        }
-
-
-        if (tipoPermiso.isEmpty()) {
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(PermisoTiempoActualizarActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no se pudo actualizar el permiso de tiempo debido a que el tipo de permiso que se necesita se encuentra vacio." + "\n\nPor favor, digite otra vez su tipo de permiso e intentelo de nuevo.")
-                    .setTitle("¡Lo sentimos!");
-
-            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}});
-
-
-            AlertDialog ejecutarMensaje = construirAlerta.create();
-            ejecutarMensaje.show();
-            return false;
-        }
-
-
-        if (descripcion.isEmpty()) {
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(PermisoTiempoActualizarActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no se pudo actualizar el permiso de tiempo debido a que la descripción se encuentra vacia." + "\n\nPor favor, digite otra vez su descripción e intentelo de nuevo.")
-                    .setTitle("¡Lo sentimos!");
-
-            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}});
-
-
-            AlertDialog ejecutarMensaje = construirAlerta.create();
-            ejecutarMensaje.show();
-            return false;
-        }
-
-
-        if (fechaAsignacion.isEmpty()) {
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(PermisoTiempoActualizarActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no se pudo actualizar el permiso de tiempo debido a que la fecha de asignación se encuentra vacia." + "\n\nPor favor, digite otra vez su fecha de asignación e intentelo de nuevo.")
-                    .setTitle("¡Lo sentimos!");
-
-            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}});
-
-
-            AlertDialog ejecutarMensaje = construirAlerta.create();
-            ejecutarMensaje.show();
-            return false;
-        }
-
-
-        if (fechaFinalizacion.isEmpty()) {
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(PermisoTiempoActualizarActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no se pudo actualizar el permiso de tiempo debido a que la fecha de finalización se encuentra vacia." + "\n\nPor favor, digite otra vez su fecha de finalización e intentelo de nuevo.")
-                    .setTitle("¡Lo sentimos!");
-
-            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}});
-
-
-            AlertDialog ejecutarMensaje = construirAlerta.create();
-            ejecutarMensaje.show();
-            return false;
-        }
-
-
-        return true;
     }
 
 
