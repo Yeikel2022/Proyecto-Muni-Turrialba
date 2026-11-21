@@ -35,7 +35,8 @@ public class PermisosUsuarioEmpleadoActivity extends AppCompatActivity {
     private ActivityPermisosUsuarioEmpleadoBinding permisosUsuario_EmpleadosCrearBinding;
 
     //Variables globales:
-    Boolean leerActualizado, crearActualizado, actualizarActualizado, eliminarActualizado;
+    Boolean leerActualizado, crearActualizado, actualizarActualizado, eliminarActualizado,
+            descargarActualizado, compartirActualizado;
 
     String correoRecorrido;
 
@@ -91,7 +92,6 @@ public class PermisosUsuarioEmpleadoActivity extends AppCompatActivity {
 
             permisoInterface = ConexionAPI.Conexion_API_Permiso_UsuarioEmpleado(this);
 
-
             Call<PermisoEntitie> obtenerPermisos = permisoInterface.obtenerPermisos(correoRecorrido, tokenGuardado);
 
             obtenerPermisos.enqueue(new Callback<PermisoEntitie>() {
@@ -103,18 +103,26 @@ public class PermisosUsuarioEmpleadoActivity extends AppCompatActivity {
                         Boolean permisoCrear = response.body().getCrear().booleanValue();
                         Boolean permisoActualizar = response.body().getActualizar().booleanValue();
                         Boolean permisoEliminar = response.body().getEliminar().booleanValue();
-
+                        Boolean permisoDescargar = response.body().getDescargar().booleanValue();
+                        Boolean permisoCompartir = response.body().getCompartir().booleanValue();
 
                         permisosUsuario_EmpleadosCrearBinding.btnPermisoLeer.setChecked(permisoLeer);
                         permisosUsuario_EmpleadosCrearBinding.btnPermisoCrear.setChecked(permisoCrear);
                         permisosUsuario_EmpleadosCrearBinding.btnPermisoActualizar.setChecked(permisoActualizar);
                         permisosUsuario_EmpleadosCrearBinding.btnPermisoEliminar.setChecked(permisoEliminar);
+                        permisosUsuario_EmpleadosCrearBinding.btnPermisoDescargar.setChecked(permisoDescargar);
+                        permisosUsuario_EmpleadosCrearBinding.btnPermisoCompartir.setChecked(permisoCompartir);
 
                     } else {
                         try {
                             /* Esto permite leer el error del Body, de modo -
                              * que sirva en el debug. */
                             String error = response.errorBody().string();
+                            int errorRaw = response.raw().code();
+
+                            if(errorRaw == 401) {
+                                error = " Se finalizo la sesión de su cuenta.";
+                            }
 
                             /* Aqui lo que se hace es ocultar los botones de crear, actualizar, -
                              * eliminar y seleccionar un registro de FAQ. Y luego se coloca el -
@@ -125,6 +133,8 @@ public class PermisosUsuarioEmpleadoActivity extends AppCompatActivity {
                             permisosUsuario_EmpleadosCrearBinding.btnPermisoCrear.setVisibility(GONE);
                             permisosUsuario_EmpleadosCrearBinding.btnPermisoActualizar.setVisibility(GONE);
                             permisosUsuario_EmpleadosCrearBinding.btnPermisoEliminar.setVisibility(GONE);
+                            permisosUsuario_EmpleadosCrearBinding.btnPermisoDescargar.setVisibility(GONE);
+                            permisosUsuario_EmpleadosCrearBinding.btnPermisoCompartir.setVisibility(GONE);
                             permisosUsuario_EmpleadosCrearBinding.btnConfirmarPermisos.setVisibility(GONE);
 
                             permisosUsuario_EmpleadosCrearBinding.imgFotoPermisosUsuarioEmpleado.setVisibility(VISIBLE);
@@ -135,7 +145,7 @@ public class PermisosUsuarioEmpleadoActivity extends AppCompatActivity {
                             /* Esto es para imprimir los mensajes de error. */
                             AlertDialog.Builder construirAlerta = new AlertDialog.Builder(PermisosUsuarioEmpleadoActivity.this);
                             construirAlerta.setIcon(R.drawable.icono_error);
-                            construirAlerta.setMessage("Pero en este momento no fue posible asignar los permisos hacia al usuario que fue seleccionado debido a que: " + error + "\n\nPor favor, intentelo de nuevo.")
+                            construirAlerta.setMessage("Pero en este momento no fue posible asignar los permisos hacia al usuario que fue seleccionado debido a que:" + error.replace('"', ' ') + "\n\nPor favor, intentelo de nuevo.")
                                     .setTitle("¡Lo sentimos!");
 
                             construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -164,6 +174,8 @@ public class PermisosUsuarioEmpleadoActivity extends AppCompatActivity {
                             permisosUsuario_EmpleadosCrearBinding.btnPermisoCrear.setVisibility(GONE);
                             permisosUsuario_EmpleadosCrearBinding.btnPermisoActualizar.setVisibility(GONE);
                             permisosUsuario_EmpleadosCrearBinding.btnPermisoEliminar.setVisibility(GONE);
+                            permisosUsuario_EmpleadosCrearBinding.btnPermisoDescargar.setVisibility(GONE);
+                            permisosUsuario_EmpleadosCrearBinding.btnPermisoCompartir.setVisibility(GONE);
                             permisosUsuario_EmpleadosCrearBinding.btnConfirmarPermisos.setVisibility(GONE);
 
                             permisosUsuario_EmpleadosCrearBinding.imgFotoPermisosUsuarioEmpleado.setVisibility(VISIBLE);
@@ -194,6 +206,8 @@ public class PermisosUsuarioEmpleadoActivity extends AppCompatActivity {
                     permisosUsuario_EmpleadosCrearBinding.btnPermisoCrear.setVisibility(GONE);
                     permisosUsuario_EmpleadosCrearBinding.btnPermisoActualizar.setVisibility(GONE);
                     permisosUsuario_EmpleadosCrearBinding.btnPermisoEliminar.setVisibility(GONE);
+                    permisosUsuario_EmpleadosCrearBinding.btnPermisoDescargar.setVisibility(GONE);
+                    permisosUsuario_EmpleadosCrearBinding.btnPermisoCompartir.setVisibility(GONE);
                     permisosUsuario_EmpleadosCrearBinding.btnConfirmarPermisos.setVisibility(GONE);
 
                     permisosUsuario_EmpleadosCrearBinding.imgFotoPermisosUsuarioEmpleado.setVisibility(VISIBLE);
@@ -222,7 +236,6 @@ public class PermisosUsuarioEmpleadoActivity extends AppCompatActivity {
                 construirAlerta.setMessage("¿Esta completamente seguro(a) de asignar y confirmar estos permisos para este empleado(a)?")
                         .setTitle("Asignar permisos.");
 
-
                 construirAlerta.setPositiveButton("Si.", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -244,12 +257,14 @@ public class PermisosUsuarioEmpleadoActivity extends AppCompatActivity {
         } catch (Exception error) {
             permisosUsuario_EmpleadosCrearBinding.txtTituloPermisosUsuarioEmpleado.setVisibility(GONE);
             permisosUsuario_EmpleadosCrearBinding.txtInfoPermisosUsuarioEmpleado.setVisibility(GONE);
+
             permisosUsuario_EmpleadosCrearBinding.btnPermisoLeer.setVisibility(GONE);
             permisosUsuario_EmpleadosCrearBinding.btnPermisoCrear.setVisibility(GONE);
             permisosUsuario_EmpleadosCrearBinding.btnPermisoActualizar.setVisibility(GONE);
             permisosUsuario_EmpleadosCrearBinding.btnPermisoEliminar.setVisibility(GONE);
+            permisosUsuario_EmpleadosCrearBinding.btnPermisoDescargar.setVisibility(GONE);
+            permisosUsuario_EmpleadosCrearBinding.btnPermisoCompartir.setVisibility(GONE);
             permisosUsuario_EmpleadosCrearBinding.btnConfirmarPermisos.setVisibility(GONE);
-
 
             permisosUsuario_EmpleadosCrearBinding.imgFotoPermisosUsuarioEmpleado.setVisibility(VISIBLE);
             permisosUsuario_EmpleadosCrearBinding.txtMensajePermisosUsuarioEmpleado.setVisibility(VISIBLE);
@@ -292,16 +307,17 @@ public class PermisosUsuarioEmpleadoActivity extends AppCompatActivity {
 
 
     private void ConfirmarPermisos(String tokenUsuario) {
-
         leerActualizado = permisosUsuario_EmpleadosCrearBinding.btnPermisoLeer.isChecked();
         crearActualizado = permisosUsuario_EmpleadosCrearBinding.btnPermisoCrear.isChecked();
         actualizarActualizado = permisosUsuario_EmpleadosCrearBinding.btnPermisoActualizar.isChecked();
         eliminarActualizado = permisosUsuario_EmpleadosCrearBinding.btnPermisoEliminar.isChecked();
-
+        descargarActualizado = permisosUsuario_EmpleadosCrearBinding.btnPermisoDescargar.isChecked();
+        compartirActualizado = permisosUsuario_EmpleadosCrearBinding.btnPermisoCompartir.isChecked();
 
         permisoInterface = ConexionAPI.Conexion_API_Permiso_UsuarioEmpleado(this);
 
-        PermisoEntitie permisoEntitie = new PermisoEntitie(leerActualizado, crearActualizado, actualizarActualizado, eliminarActualizado);
+        PermisoEntitie permisoEntitie = new PermisoEntitie(leerActualizado, crearActualizado, actualizarActualizado,
+                eliminarActualizado, descargarActualizado, compartirActualizado);
 
         Call<Boolean> actualizarPermisos = permisoInterface.actualizarPermisos(permisoEntitie, correoRecorrido, tokenUsuario);
 
@@ -326,7 +342,8 @@ public class PermisosUsuarioEmpleadoActivity extends AppCompatActivity {
                     crearActualizado = false;
                     actualizarActualizado = false;
                     eliminarActualizado = false;
-
+                    descargarActualizado = false;
+                    compartirActualizado = false;
 
                     /* Esto es para enviarlo al metodo principal -
                      * de la aplicación móvil. */
@@ -339,13 +356,13 @@ public class PermisosUsuarioEmpleadoActivity extends AppCompatActivity {
                         int errorRaw = response.raw().code();
 
                         if(errorRaw == 401) {
-                            error = "Se finalizo la sesión de su cuenta.";
+                            error = " Se finalizo la sesión de su cuenta.";
                         }
 
                         /* Esto es para imprimir los mensajes de error. */
                         AlertDialog.Builder construirAlerta = new AlertDialog.Builder(PermisosUsuarioEmpleadoActivity.this);
                         construirAlerta.setIcon(R.drawable.icono_error);
-                        construirAlerta.setMessage("Pero en este momento no es posible actualizar los permisos del usuario debido a que: " + error + "\n\nPor favor, intentelo de nuevo.")
+                        construirAlerta.setMessage("Pero en este momento no es posible actualizar los permisos del usuario debido a que:" + error.replace('"', ' ') + "\n\nPor favor, intentelo de nuevo.")
                                 .setTitle("¡Lo sentimos!");
 
                         construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -365,7 +382,6 @@ public class PermisosUsuarioEmpleadoActivity extends AppCompatActivity {
                          * las excepciones respectivamente.
                          *
                          * error.printStackTrace(); */
-
                         AlertDialog.Builder construirAlerta = new AlertDialog.Builder(PermisosUsuarioEmpleadoActivity.this);
                         construirAlerta.setIcon(R.drawable.icono_error);
                         construirAlerta.setMessage("Pero no es posible actualizar los permisos del usuario en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")

@@ -1,12 +1,20 @@
 package com.proyectotcu.muniturrialba.index;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Base64;
@@ -17,9 +25,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.proyectotcu.muniturrialba.R;
+import com.proyectotcu.muniturrialba.manejoAPI.ConexionAPI;
+import com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI.RegistroArchivoEntitie;
+import com.proyectotcu.muniturrialba.manejoAPI.interfacesAPI.RegistroArchivoInterface;
 import com.proyectotcu.muniturrialba.moduloAdministracionArchivos.AdministracionArchivosActivity;
 import com.proyectotcu.muniturrialba.moduloEmpleados.ControlEmpleadosActivity;
 import com.proyectotcu.muniturrialba.moduloReporteria.ReporteriaActivity;
@@ -27,6 +37,13 @@ import com.proyectotcu.muniturrialba.moduloReporteria.ReporteriaActivity;
 import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class MenuFragment extends Fragment {
@@ -36,8 +53,15 @@ public class MenuFragment extends Fragment {
     TextView txtMensaje;
     ImageView logitoMenu;
     ScrollView scrollVerticalMenu;
-    static Boolean mensajeMenuPrincipal = false;
+    List<RegistroArchivoEntitie> datosOrdenados = new ArrayList<>();
 
+    static Boolean mensajeMenuPrincipal = false;
+    static Boolean mensajeNotificaciones = false;
+
+    public static ArrayList<RegistroArchivoEntitie> listaArchivoCompartido = new ArrayList<>();
+
+    //Interfaz que contiene los métodos de la entidad FAQ.
+    RegistroArchivoInterface registroArchivoInterface;
 
     /* A diferencia de las actividades, al ser esto un fragmento, no se -
      * puede usar el ViewBinding para acceder a los recursos de una forma -
@@ -116,6 +140,11 @@ public class MenuFragment extends Fragment {
             Boolean campoPermisoActualizar = Boolean.parseBoolean(json.optString("permiso_Actualizar"));
             Boolean campoPermisoEliminar = Boolean.parseBoolean(json.optString("permiso_Eliminar"));
 
+            String campoNombre = json.optString("nombre");
+            String campoPrimerApellido = json.optString("primer_Apellido");
+            String campoSegundoApellido = json.optString("segundo_Apellido");
+            String campoCorreo = json.optString("correo");
+
             /* Una vez hecho eso, lo que seguiria seria validar los permisos del usuario -
              * que ha iniciado sesión. Y, si luego de eso, la respuesta que trae es un 5,-
              * entonces quiere decir que si esta autorizado para acceder a los módulos corres-
@@ -133,6 +162,8 @@ public class MenuFragment extends Fragment {
                     botonEmpleado.setOnClickListener(v -> VistaEmpleados());
                     botonReporteria.setOnClickListener(v -> VistaReporteria());
                     botonAdministracionArchivos.setOnClickListener(v -> VistaAdministracionArchivos());
+
+                    NotificacionArchivo(tokenGuardado, campoNombre, campoPrimerApellido, campoSegundoApellido, campoCorreo);
                 }
 
                 /* Aqui lo que se esta haciendo es validar si el usuario tiene -
@@ -146,6 +177,8 @@ public class MenuFragment extends Fragment {
                     botonEmpleado.setOnClickListener(v -> VistaEmpleados());
                     botonReporteria.setOnClickListener(v -> VistaReporteria());
                     botonAdministracionArchivos.setOnClickListener(v -> VistaAdministracionArchivos());
+
+                    NotificacionArchivo(tokenGuardado, campoNombre, campoPrimerApellido, campoSegundoApellido, campoCorreo);
                 }
 
                 /* Aqui lo que se esta haciendo es validar si el usuario tiene -
@@ -158,6 +191,8 @@ public class MenuFragment extends Fragment {
 
                     botonEmpleado.setOnClickListener(v -> VistaEmpleados());
                     botonAdministracionArchivos.setOnClickListener(v -> VistaAdministracionArchivos());
+
+                    NotificacionArchivo(tokenGuardado, campoNombre, campoPrimerApellido, campoSegundoApellido, campoCorreo);
                 }
             }
 
@@ -173,18 +208,29 @@ public class MenuFragment extends Fragment {
             botonEmpleado.setVisibility(View.GONE);
             botonReporteria.setVisibility(View.GONE);
             botonAdministracionArchivos.setVisibility(View.GONE);
+            scrollVerticalMenu.setVisibility(View.GONE);
 
+            logitoMenu.setVisibility(View.VISIBLE);
             txtMensaje.setVisibility(View.VISIBLE);
+
+            logitoMenu.setImageResource(R.drawable.icono_contenido_no_disponible);
             txtMensaje.setText(getString(R.string.ErrorFragment));
             /* NOTA: El "getString(R.string.ErrorFragment)", lo que hace es traer un -
              * mensaje que se coloco en: "strings.xml" para que el textview: "txtMensaje"-
              * pueda colocarlo en la pantalla del fragmento (osea en el fragment_menu.xml),-
              * esto porque es una forma dinamica de hacerlo. */
 
-            Toast.makeText(getActivity(), "¡Lo sentimos, pero parece que hubo un problema!", Toast.LENGTH_LONG).show();
-            Toast.makeText(getActivity(),"Por favor, intentelo más tarde.", Toast.LENGTH_LONG).show();
-            Toast.makeText(getActivity(),"Si el problema persiste, entonces" +
-                    "\ncontactese con el personal técnico.", Toast.LENGTH_LONG).show();
+            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
+            construirAlerta.setIcon(R.drawable.icono_error);
+            construirAlerta.setMessage("Pero no es posible visualizar la información en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+                    .setTitle("¡Lo sentimos!");
+
+            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {}});
+
+            AlertDialog ejecutarMensaje = construirAlerta.create();
+            ejecutarMensaje.show();
         }
 
         return view;
@@ -285,29 +331,15 @@ public class MenuFragment extends Fragment {
      * de control de empleados respectivamente (básicamente es -
      * la pantallita). */
     private void VistaEmpleados() {
-        try {
-            //Aqui le dice a que vista tiene que ir, como un hipervinculo basicamente.
-            Intent intentEmpleado = new Intent(getActivity(), ControlEmpleadosActivity.class);
+        //Aqui le dice a que vista tiene que ir, como un hipervinculo basicamente.
+        Intent intentEmpleado = new Intent(getActivity(), ControlEmpleadosActivity.class);
 
-            //Le indica que ejecute el hipervinculo.
-            startActivity(intentEmpleado);
+        //Le indica que ejecute el hipervinculo.
+        startActivity(intentEmpleado);
 
-        } catch (Exception error) {
-            botonEmpleado.setVisibility(View.GONE);
-
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no es posible visualizar la información en estos momentos debido a un problema técnico. Por favor, intentelo más tarde.\n" + "\\nSi el problema persiste, entonces contactese con el personal técnico.")
-                    .setTitle("¡Lo sentimos!");
-
-            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}});
-
-            AlertDialog ejecutarMensaje = construirAlerta.create();
-            ejecutarMensaje.show();
-
-        }
+        /* Sirve para evitar que el usuario se regrese después.
+         * Esto por temas de buenas prácticas. */
+        getActivity().finish();
     }
 
 
@@ -319,6 +351,10 @@ public class MenuFragment extends Fragment {
 
         //Le indica que ejecute el hipervinculo.
         startActivity(intentReporteria);
+
+        /* Sirve para evitar que el usuario se regrese después.
+         * Esto por temas de buenas prácticas. */
+        getActivity().finish();
     }
 
 
@@ -331,6 +367,247 @@ public class MenuFragment extends Fragment {
 
         //Le indica que ejecute el hipervinculo.
         startActivity(intentArchivos);
+
+        /* Sirve para evitar que el usuario se regrese después.
+         * Esto por temas de buenas prácticas. */
+        getActivity().finish();
     }
 
+
+    /* Metodo que sirve para notificar al usuario(a) si recibio un -
+     * registro de archivo que le fue compartido. */
+    public void NotificacionArchivo(String tokenUsuario, String nombre, String primerApellido,
+                                    String segundoApellido, String correo) {
+        try {
+            registroArchivoInterface = ConexionAPI.Conexion_API_Archivo(getActivity());
+
+            ArrayList<String> listaMensaje = new ArrayList<String>();
+
+            Call<List<RegistroArchivoEntitie>> obtenerArchivosCompartidos = registroArchivoInterface.obtenerArchivosCompartidos(correo, tokenUsuario);
+
+            obtenerArchivosCompartidos.enqueue(new Callback<List<RegistroArchivoEntitie>>() {
+                @Override
+                public void onResponse(Call<List<RegistroArchivoEntitie>> call, Response<List<RegistroArchivoEntitie>> response) {
+                    if (response.isSuccessful()) {
+                        try {
+                            listaArchivoCompartido.clear();
+                            datosOrdenados = response.body();
+
+                            datosOrdenados.sort(new Comparator<RegistroArchivoEntitie>() {
+                                @Override
+                                public int compare(RegistroArchivoEntitie o1, RegistroArchivoEntitie o2) {
+                                    return o1.getFechaSubida().compareToIgnoreCase(o2.getFechaSubida());
+                                }
+                            });
+
+                            for(int i = 0; i < datosOrdenados.size(); i++) {
+                                listaArchivoCompartido.add(datosOrdenados.get(i));
+                            }
+
+                            for(int i = 0; i < listaArchivoCompartido.size(); i++) {
+                                RegistroArchivoEntitie registroArchivo = listaArchivoCompartido.get(i);
+                                String fechaSubida = registroArchivo.getFechaSubida().trim();
+                                String estadoArchivo = registroArchivo.getEstadoArchivo().trim();
+
+                                if("Compartido".equals(estadoArchivo)) {
+                                    listaMensaje.add("- " + registroArchivo.getNombreArchivo() + "." + registroArchivo.getFormatoArchivo().toLowerCase() + ". \n\n");
+
+                                    Call<Boolean> confirmarArchivo = registroArchivoInterface.actualizarEstadoRegistroArchivo("Recibido", fechaSubida, correo, tokenUsuario);
+
+                                    confirmarArchivo.enqueue(new Callback<Boolean>() {
+                                        @Override
+                                        public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                                            if (response.isSuccessful()) {
+                                            } else {
+                                                try {
+                                                    /* Esto permite leer el error del Body, de modo -
+                                                     * que sirva en el debug. */
+                                                    String error = response.errorBody().string();
+                                                    int errorRaw = response.raw().code();
+
+                                                    if (errorRaw == 401) {
+                                                        error = " Se finalizo la sesión de su cuenta.";
+                                                    }
+
+                                                    if(errorRaw == 404) {
+                                                        error = " No se pudo actualizar el registro del archivo.";
+                                                    }
+
+                                                    /* Este sirve solo para el logcat:
+                                                     * System.out.println(error); */
+                                                } catch (Exception error) {
+                                                    /* El printStackTrace(), sirve para aspectos de depuración.
+                                                     * Esto debido a que ayuda a entender donde y porque ocurrio -
+                                                     * un error durante la ejecución del proyecto. En este caso -
+                                                     * las excepciones respectivamente.
+                                                     *
+                                                     * error.printStackTrace(); */
+                                                }
+                                            }
+                                        }
+
+                                        /* Aqui es para saber si hubo un fallo en dar la respuesta -
+                                         * por parte del API. */
+                                        @Override
+                                        public void onFailure(Call<Boolean> call, Throwable t) {
+                                            /* Sirve para imprimir el mensaje que se recibio -
+                                             * anteriormente.
+                                             *
+                                             * NOTA: Este comando es para ver que fallo, el -
+                                             * usuario no lo debe ver:
+                                             * Toast.makeText(AyudaCrearActivity.this, t.getLocalizedMessage(),
+                                             * Toast.LENGTH_SHORT).show(); */
+                                        }
+                                    });
+                                }
+                            }
+
+                            if(listaMensaje.size() != 0) {
+                                String mensajeProveniente = "";
+
+                                for(int j = 0; j < listaMensaje.size(); j++) {
+                                    mensajeProveniente += listaMensaje.get(j);
+                                }
+
+                                if(ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.POST_NOTIFICATIONS)
+                                        == PackageManager.PERMISSION_GRANTED) {
+
+                                    /* Aqui lo que hace es crear un hipervinculo para que se pueda usar en la -
+                                     * notificación que se llega a mostrar al usuario(a) respectivamente. */
+                                    Intent intentHistorialArchivos = new Intent(getActivity(), AdministracionArchivosActivity.class);
+                                    intentHistorialArchivos.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    intentHistorialArchivos.putExtra("Seccion_A_Mostrar", "Historial_Archivos");
+
+                                    PendingIntent permisoNotificacion = PendingIntent.getActivity(
+                                            getActivity(), 0, intentHistorialArchivos, PendingIntent.FLAG_IMMUTABLE);
+
+
+                                    /* Aqui lo que hace es instanciar un nuevo constructor para las notificaciones.
+                                     * Esto es necesario porque con el nos permitira diseñar la notificación, como -
+                                     * son el icono, el titulo, la descripción que llevaria, el tipo de prioridad, -
+                                     * el hipervinculo (que seria un intent) que utilizaria y el cierre del mismo.
+                                     *
+                                     * NOTA: Como tal, en base a la documentación oficial, nos permite definir que -
+                                     * tan intrusivo puede ser la notificación, ya en versiones diferentes de Android, -
+                                     * esto suele tener un rol distinto, pero en escencia es importante definirlo.
+                                     *
+                                     * En este caso, como solo se quiere avisar sobre si le compartieron un archivo, -
+                                     * entonces se deja con una prioridad normal (osea por defecto) respectivamente.
+                                     *
+                                     * También, otro aspecto a mencionar es que en este constructor es necesario pasar -
+                                     * el canal de notificaciones, esto para que pueda saber en que canal debe usar para -
+                                     * mostrar la información respectivamente. */
+                                    Bitmap mapearIcono = BitmapFactory.decodeResource(getResources(), R.drawable.turri15);
+
+                                    NotificationCompat.Builder constructor = new NotificationCompat.Builder(getActivity(), "Canal_RecepcionArchivo")
+                                            .setSmallIcon(R.drawable.icono_notificacion)
+                                            .setLargeIcon(mapearIcono)
+                                            .setContentTitle("¡Hola " + nombre + " " + primerApellido + " " + segundoApellido + "!")
+                                            .setStyle(new NotificationCompat.BigTextStyle()
+                                                    .bigText("Te compartieron un documento llamado: \n\n" + mensajeProveniente + "\n\nAhora esta disponible en la sección: 'Historial Archivos' de administración de archivos."))
+                                            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                            .setContentIntent(permisoNotificacion)
+                                            .setAutoCancel(true);
+
+                                    /* Aqui lo que se esta haciendo es crear un manejador compacto de notificacion, para -
+                                     * poder colocar el contructor que se creo para la notificación, y una vez creada, -
+                                     * mostrarlo al usuario. Además, antes de hacer esto se verifica si el usuario acepto -
+                                     * el permiso de las notificaciones, y si no la acepto, entonces no notificaria al usuario(a) -
+                                     * respectivamente. */
+                                    NotificationManagerCompat manejadorNotificacion = NotificationManagerCompat.from(getActivity());
+                                    manejadorNotificacion.notify(1, constructor.build());
+
+                                } else {
+                                    AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
+                                    construirAlerta.setIcon(R.drawable.icono_advertencia);
+                                    construirAlerta.setMessage("Pero no es posible visualizar la notificación en estos momentos debido a la falta de permisos. Por favor, acepte los permisos respectivos para mostrar la información.")
+                                            .setTitle("¡Lo sentimos!");
+
+                                    construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {}});
+
+                                    AlertDialog ejecutarMensaje = construirAlerta.create();
+                                    ejecutarMensaje.show();
+                                }
+                            }
+
+                        } catch (Exception error) {
+                            if(mensajeNotificaciones != true) {
+                                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
+                                construirAlerta.setIcon(R.drawable.icono_error);
+                                construirAlerta.setMessage("Pero no es posible visualizar la notificación en estos momentos debido a un problema técnico. Por favor, intentelo más tarde.\n" + "\nSi el problema persiste, entonces contactese con el personal técnico.")
+                                        .setTitle("¡Lo sentimos!");
+
+                                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        mensajeNotificaciones = true;
+                                    }});
+
+                                AlertDialog ejecutarMensaje = construirAlerta.create();
+                                ejecutarMensaje.show();
+                            }
+                        }
+
+                    } else {
+                        try {
+                            /* Esto permite leer el error del Body, de modo -
+                             * que sirva en el debug. */
+                            String error = response.errorBody().string();
+                            int errorRaw = response.raw().code();
+
+                            if(errorRaw == 401) {
+                                error = " Se finalizo la sesión de su cuenta.";
+                            }
+
+                            if(errorRaw == 404) {
+                                error = " No se pudieron obtener los registros de los archivos.";
+                            }
+
+                            /* Este sirve solo para el logcat:
+                             * System.out.println(error); */
+                        } catch (Exception error) {
+                            /* El printStackTrace(), sirve para aspectos de depuración.
+                             * Esto debido a que ayuda a entender donde y porque ocurrio -
+                             * un error durante la ejecución del proyecto. En este caso -
+                             * las excepciones respectivamente.
+                             *
+                             * error.printStackTrace(); */
+                        }
+                    }
+                }
+
+                /* Aqui es para saber si hubo un fallo en dar la respuesta -
+                 * por parte del API. */
+                @Override
+                public void onFailure(Call<List<RegistroArchivoEntitie>> call, Throwable t) {
+                    /* Sirve para imprimir el mensaje que se recibio -
+                     * anteriormente.
+                     *
+                     * NOTA: Este comando es para ver que fallo, el -
+                     * usuario no lo debe ver:
+                     * Toast.makeText(AyudaCrearActivity.this, t.getLocalizedMessage(),
+                     * Toast.LENGTH_SHORT).show(); */
+                }
+            });
+
+        } catch (Exception error) {
+            if(mensajeNotificaciones != true) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
+                construirAlerta.setIcon(R.drawable.icono_error);
+                construirAlerta.setMessage("Pero no es posible visualizar la notificación en estos momentos debido a un problema técnico. Por favor, intentelo más tarde.\n" + "\nSi el problema persiste, entonces contactese con el personal técnico.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mensajeNotificaciones = true;
+                    }});
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+            }
+        }
+    }
 }

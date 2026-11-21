@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.proyectotcu.muniturrialba.R;
 import com.proyectotcu.muniturrialba.manejoAPI.ConexionAPI;
@@ -134,9 +133,30 @@ public class CarnetVirtualFragment extends Fragment {
             }
 
         } catch (Exception error) {
-            Toast.makeText(getActivity(), "¡Lo sentimos, pero parece que hubo un problema técnico!", Toast.LENGTH_LONG).show();
-            Toast.makeText(getActivity(), "Por favor, intentelo más tarde.", Toast.LENGTH_LONG).show();
-            Toast.makeText(getActivity(),"Si el problema persiste, entonces" + "\ncontactese con el personal técnico.", Toast.LENGTH_LONG).show();
+            fotoPerfil.setVisibility(View.GONE);
+            carnetQR.setVisibility(View.GONE);
+
+            logitoCarnet.setVisibility(View.VISIBLE);
+            txtMensaje.setVisibility(View.VISIBLE);
+
+            logitoCarnet.setImageResource(R.drawable.icono_contenido_no_disponible);
+            txtMensaje.setText(getString(R.string.ErrorFragment));
+            /* NOTA: El "getString(R.string.ErrorFragment)", lo que hace es traer un -
+             * mensaje que se coloco en: "strings.xml" para que el textview: "txtMensaje"-
+             * pueda colocarlo en la pantalla del fragmento (osea en el fragment_perfil.xml),-
+             * esto porque es una forma dinamica de hacerlo. */
+
+            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
+            construirAlerta.setIcon(R.drawable.icono_error);
+            construirAlerta.setMessage("Pero no es posible visualizar su carnet virtual en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+                    .setTitle("¡Lo sentimos!");
+
+            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {}});
+
+            AlertDialog ejecutarMensaje = construirAlerta.create();
+            ejecutarMensaje.show();
         }
 
         return view;
@@ -164,11 +184,6 @@ public class CarnetVirtualFragment extends Fragment {
          * lo pueda recibir y obtener el QR del usuario. Esto por medio de la interfaz respectiva. */
         Call<String> codigoQR = usuarioInterface.obtenerCodigoQR(nombreUsuario, apellidosUsuario, correoUsuario, tokenUsuario);
 
-        /* Además, también se hace otra petición con el metodo respectivo, para así poder enviar -
-         * el correo y el token para que el API lo pueda recibir y obtener los datos del usuario. -
-         * Esto por medio de la interfaz respectiva. */
-        Call<UsuarioEntitie> usuario = usuarioInterface.obtenerUsuario(correoUsuario, tokenUsuario);
-
 
         /* Aqui es cuando notamos si se pudo realizar o no el proceso, en este caso -
          * el metodo GET.
@@ -193,6 +208,156 @@ public class CarnetVirtualFragment extends Fragment {
                     } catch (Exception error) {
                         carnetQR.setImageResource(R.drawable.icono_carnet_virtual);
                     }
+
+                    /* Además, también se hace otra petición con el metodo respectivo, para así poder enviar -
+                     * el correo y el token para que el API lo pueda recibir y obtener los datos del usuario. -
+                     * Esto por medio de la interfaz respectiva. */
+                    Call<UsuarioEntitie> usuario = usuarioInterface.obtenerUsuario(correoUsuario, tokenUsuario);
+
+
+                    /* Aqui es cuando notamos si se pudo realizar o no el proceso, en este caso -
+                     * el metodo GET.
+                     *
+                     * Básicamente, con esto podemos ejecutar la petición anterior y además, también -
+                     * podemos saber la posible respuesta que pudo brindar el API como tal. */
+                    usuario.enqueue(new Callback<UsuarioEntitie>() {
+
+                        /* Aqui es para saber si hubo una respuesta por parte del API. */
+                        @Override
+                        public void onResponse(Call<UsuarioEntitie> call, Response<UsuarioEntitie> response) {
+                            if (response.isSuccessful()) {
+                                /* Aqui lo que se está haciendo es colocar la imagen del perfil, pero -
+                                 * siempre y cuando el usuario haya colocado una imagen, si no entonces -
+                                 * en su lugar se pondra un logo de perfil por defecto.
+                                 *
+                                 * Esto es asi porque en el registro no se pide una imagen como tal, de -
+                                 * ahi que se pone aqui un try catch para detectar si esta nulo la imagen -
+                                 * para luego hacer esa acción. */
+                                try {
+                                    String FotoPerfil = response.body().getImagen_Perfil().toString().trim();
+                                    byte[] lista = Base64.decode(FotoPerfil, Base64.DEFAULT);
+                                    Bitmap mapeo = BitmapFactory.decodeByteArray(lista, 0, lista.length);
+
+                                    fotoPerfil.setImageBitmap(mapeo);
+                                } catch (Exception error) {
+                                    fotoPerfil.setImageResource(R.drawable.icono_perfil_logo);
+                                }
+                            } else {
+                                try {
+                                    /* Esto permite leer el error del Body, de modo -
+                                     * que sirva en el debug. */
+                                    String error = response.errorBody().string();
+                                    int errorRaw = response.raw().code();
+
+                                    if(errorRaw == 401) {
+                                        error = " Se finalizo la sesión de su cuenta.";
+                                    }
+
+                                    if(errorRaw == 404) {
+                                        error = " No se pudo obtener el usuario(a).";
+                                    }
+
+                                    fotoPerfil.setVisibility(View.GONE);
+                                    carnetQR.setVisibility(View.GONE);
+
+                                    logitoCarnet.setVisibility(View.VISIBLE);
+                                    txtMensaje.setVisibility(View.VISIBLE);
+
+                                    logitoCarnet.setImageResource(R.drawable.icono_contenido_no_disponible);
+                                    txtMensaje.setText(getString(R.string.ErrorFragment));
+                                    /* NOTA: El "getString(R.string.ErrorFragment)", lo que hace es traer un -
+                                     * mensaje que se coloco en: "strings.xml" para que el textview: "txtMensaje"-
+                                     * pueda colocarlo en la pantalla del fragmento (osea en el fragment_perfil.xml),-
+                                     * esto porque es una forma dinamica de hacerlo. */
+
+                                    /* Esto es para imprimir los mensajes de error. */
+                                    AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
+                                    construirAlerta.setIcon(R.drawable.icono_error);
+                                    construirAlerta.setMessage("Pero en este momento no es posible ver la información debido a que:" + error.replace('"', ' ') + "\n\nPor favor, intentelo de nuevo.")
+                                            .setTitle("¡Lo sentimos!");
+
+                                    construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {}});
+
+                                    AlertDialog ejecutarMensaje = construirAlerta.create();
+                                    ejecutarMensaje.show();
+
+                                    /* Este sirve solo para el logcat:
+                                     * System.out.println(error); */
+                                } catch (Exception error) {
+                                    /* El printStackTrace(), sirve para aspectos de depuración.
+                                     * Esto debido a que ayuda a entender donde y porque ocurrio -
+                                     * un error durante la ejecución del proyecto. En este caso -
+                                     * las excepciones respectivamente.
+                                     *
+                                     * error.printStackTrace(); */
+                                    fotoPerfil.setVisibility(View.GONE);
+                                    carnetQR.setVisibility(View.GONE);
+
+                                    logitoCarnet.setVisibility(View.VISIBLE);
+                                    txtMensaje.setVisibility(View.VISIBLE);
+
+                                    logitoCarnet.setImageResource(R.drawable.icono_contenido_no_disponible);
+                                    txtMensaje.setText(getString(R.string.ErrorFragment));
+                                    /* NOTA: El "getString(R.string.ErrorFragment)", lo que hace es traer un -
+                                     * mensaje que se coloco en: "strings.xml" para que el textview: "txtMensaje"-
+                                     * pueda colocarlo en la pantalla del fragmento (osea en el fragment_perfil.xml),-
+                                     * esto porque es una forma dinamica de hacerlo. */
+
+                                    AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
+                                    construirAlerta.setIcon(R.drawable.icono_error);
+                                    construirAlerta.setMessage("Pero no es posible visualizar la información en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+                                            .setTitle("¡Lo sentimos!");
+
+                                    construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {}});
+
+                                    AlertDialog ejecutarMensaje = construirAlerta.create();
+                                    ejecutarMensaje.show();
+                                }
+                            }
+                        }
+
+                        /* Aqui es para saber si hubo un fallo en dar la respuesta -
+                         * por parte del API. */
+                        @Override
+                        public void onFailure(Call<UsuarioEntitie> call, Throwable t) {
+                            /* Sirve para imprimir el mensaje que se recibio anteriormente, -
+                             * y también para ver en que fallo en el API.
+                             *
+                             * NOTA: Este comando es para ver que fallo, el usuario no lo debe -
+                             * ver:
+                             * Toast.makeText(getActivity(), t.getLocalizedMessage(),
+                             * Toast.LENGTH_SHORT).show(); */
+                            fotoPerfil.setVisibility(View.GONE);
+                            carnetQR.setVisibility(View.GONE);
+
+                            logitoCarnet.setVisibility(View.VISIBLE);
+                            txtMensaje.setVisibility(View.VISIBLE);
+
+                            logitoCarnet.setImageResource(R.drawable.icono_contenido_no_disponible);
+                            txtMensaje.setText(getString(R.string.ErrorFragment));
+                            /* NOTA: El "getString(R.string.ErrorFragment)", lo que hace es traer un -
+                             * mensaje que se coloco en: "strings.xml" para que el textview: "txtMensaje"-
+                             * pueda colocarlo en la pantalla del fragmento (osea en el fragment_perfil.xml),-
+                             * esto porque es una forma dinamica de hacerlo. */
+
+                            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
+                            construirAlerta.setIcon(R.drawable.icono_error);
+                            construirAlerta.setMessage("Pero no es posible visualizar la información en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+                                    .setTitle("¡Lo sentimos!");
+
+                            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {}});
+
+                            AlertDialog ejecutarMensaje = construirAlerta.create();
+                            ejecutarMensaje.show();
+                        }
+                    });
+
                 } else {
                     try {
                         /* Esto permite leer el error del Body, de modo -
@@ -201,17 +366,34 @@ public class CarnetVirtualFragment extends Fragment {
                         int errorRaw = response.raw().code();
 
                         if(errorRaw == 401) {
-                            error = "Se finalizo la sesión de su cuenta.";
+                            error = " Se finalizo la sesión de su cuenta.";
                         }
 
-                        /* Aqui lo que se hace es colocar el logo del carnet por defecto.
-                         * Esto por temas de buenas prácticas. */
-                        carnetQR.setImageResource(R.drawable.icono_carnet_virtual);
+                        fotoPerfil.setVisibility(View.GONE);
+                        carnetQR.setVisibility(View.GONE);
+
+                        logitoCarnet.setVisibility(View.VISIBLE);
+                        txtMensaje.setVisibility(View.VISIBLE);
+
+                        logitoCarnet.setImageResource(R.drawable.icono_contenido_no_disponible);
+                        txtMensaje.setText(getString(R.string.ErrorFragment));
+                        /* NOTA: El "getString(R.string.ErrorFragment)", lo que hace es traer un -
+                         * mensaje que se coloco en: "strings.xml" para que el textview: "txtMensaje"-
+                         * pueda colocarlo en la pantalla del fragmento (osea en el fragment_perfil.xml),-
+                         * esto porque es una forma dinamica de hacerlo. */
 
                         /* Esto es para imprimir los mensajes de error. */
-                        Toast.makeText(getActivity(), "¡Lo sentimos!", Toast.LENGTH_SHORT).show();
-                        Toast.makeText(getActivity(), "Pero en este momento no es posible ver su carnet virtual debido a que " + error, Toast.LENGTH_LONG).show();
-                        Toast.makeText(getActivity(), "Por favor, intentelo más tarde.", Toast.LENGTH_LONG).show();
+                        AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
+                        construirAlerta.setIcon(R.drawable.icono_error);
+                        construirAlerta.setMessage("Pero en este momento no es posible ver su carnet virtual debido a que:" + error.replace('"', ' ') + "\n\nPor favor, intentelo de nuevo.")
+                                .setTitle("¡Lo sentimos!");
+
+                        construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {}});
+
+                        AlertDialog ejecutarMensaje = construirAlerta.create();
+                        ejecutarMensaje.show();
 
                         /* Este sirve solo para el logcat:
                          * System.out.println(error); */
@@ -222,15 +404,30 @@ public class CarnetVirtualFragment extends Fragment {
                          * las excepciones respectivamente.
                          *
                          * error.printStackTrace(); */
+                        fotoPerfil.setVisibility(View.GONE);
+                        carnetQR.setVisibility(View.GONE);
 
-                        /* Aqui lo que se hace es colocar el logo del carnet por defecto.
-                         * Esto por temas de buenas prácticas. */
-                        carnetQR.setImageResource(R.drawable.icono_carnet_virtual);
+                        logitoCarnet.setVisibility(View.VISIBLE);
+                        txtMensaje.setVisibility(View.VISIBLE);
 
-                        Toast.makeText(getActivity(), "¡Lo sentimos!", Toast.LENGTH_SHORT).show();
-                        Toast.makeText(getActivity(), "Pero no es posible visualizar su carnet virtual en estos momentos debido problema técnico.", Toast.LENGTH_LONG).show();
-                        Toast.makeText(getActivity(), "Por favor, intentelo más tarde.", Toast.LENGTH_LONG).show();
-                        Toast.makeText(getActivity(),"Si el problema persiste, entonces \ncontactese con el personal técnico.", Toast.LENGTH_LONG).show();
+                        logitoCarnet.setImageResource(R.drawable.icono_contenido_no_disponible);
+                        txtMensaje.setText(getString(R.string.ErrorFragment));
+                        /* NOTA: El "getString(R.string.ErrorFragment)", lo que hace es traer un -
+                         * mensaje que se coloco en: "strings.xml" para que el textview: "txtMensaje"-
+                         * pueda colocarlo en la pantalla del fragmento (osea en el fragment_perfil.xml),-
+                         * esto porque es una forma dinamica de hacerlo. */
+
+                        AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
+                        construirAlerta.setIcon(R.drawable.icono_error);
+                        construirAlerta.setMessage("Pero no es posible visualizar su carnet virtual en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+                                .setTitle("¡Lo sentimos!");
+
+                        construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {}});
+
+                        AlertDialog ejecutarMensaje = construirAlerta.create();
+                        ejecutarMensaje.show();
                     }
                 }
             }
@@ -246,108 +443,32 @@ public class CarnetVirtualFragment extends Fragment {
                  * ver:
                  * Toast.makeText(getActivity(), t.getLocalizedMessage(),
                  * Toast.LENGTH_SHORT).show(); */
-                carnetQR.setImageResource(R.drawable.icono_carnet_virtual);
+                fotoPerfil.setVisibility(View.GONE);
+                carnetQR.setVisibility(View.GONE);
 
-                Toast.makeText(getActivity(), "¡Lo sentimos!", Toast.LENGTH_SHORT).show();
-                Toast.makeText(getActivity(), "Pero no es posible visualizar su carnet virtual en estos momentos debido problema técnico.", Toast.LENGTH_LONG).show();
-                Toast.makeText(getActivity(), "Por favor, intentelo más tarde.", Toast.LENGTH_LONG).show();
-                Toast.makeText(getActivity(),"Si el problema persiste, entonces \ncontactese con el personal técnico.", Toast.LENGTH_LONG).show();
+                logitoCarnet.setVisibility(View.VISIBLE);
+                txtMensaje.setVisibility(View.VISIBLE);
+
+                logitoCarnet.setImageResource(R.drawable.icono_contenido_no_disponible);
+                txtMensaje.setText(getString(R.string.ErrorFragment));
+                /* NOTA: El "getString(R.string.ErrorFragment)", lo que hace es traer un -
+                 * mensaje que se coloco en: "strings.xml" para que el textview: "txtMensaje"-
+                 * pueda colocarlo en la pantalla del fragmento (osea en el fragment_perfil.xml),-
+                 * esto porque es una forma dinamica de hacerlo. */
+
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
+                construirAlerta.setIcon(R.drawable.icono_error);
+                construirAlerta.setMessage("Pero no es posible visualizar su carnet virtual en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
             }
         });
-
-
-        /* Aqui es cuando notamos si se pudo realizar o no el proceso, en este caso -
-         * el metodo GET.
-         *
-         * Básicamente, con esto podemos ejecutar la petición anterior y además, también -
-         * podemos saber la posible respuesta que pudo brindar el API como tal. */
-        usuario.enqueue(new Callback<UsuarioEntitie>() {
-
-            /* Aqui es para saber si hubo una respuesta por parte del API. */
-            @Override
-            public void onResponse(Call<UsuarioEntitie> call, Response<UsuarioEntitie> response) {
-                if (response.isSuccessful()) {
-                    /* Aqui lo que se está haciendo es colocar la imagen del perfil, pero -
-                     * siempre y cuando el usuario haya colocado una imagen, si no entonces -
-                     * en su lugar se pondra un logo de perfil por defecto.
-                     *
-                     * Esto es asi porque en el registro no se pide una imagen como tal, de -
-                     * ahi que se pone aqui un try catch para detectar si esta nulo la imagen -
-                     * para luego hacer esa acción. */
-                    try {
-                        String FotoPerfil = response.body().getImagen_Perfil().toString().trim();
-                        byte[] lista = Base64.decode(FotoPerfil, Base64.DEFAULT);
-                        Bitmap mapeo = BitmapFactory.decodeByteArray(lista, 0, lista.length);
-
-                        fotoPerfil.setImageBitmap(mapeo);
-                    } catch (Exception error) {
-                        fotoPerfil.setImageResource(R.drawable.icono_perfil_logo);
-                    }
-                } else {
-                    try {
-                        /* Esto permite leer el error del Body, de modo -
-                         * que sirva en el debug. */
-                        String error = response.errorBody().string();
-                        int errorRaw = response.raw().code();
-
-                        if(errorRaw == 401) {
-                            error = "Se finalizo la sesión de su cuenta.";
-                        }
-
-                        /* Aqui lo que se hace es colocar el logo de imagen por defecto.
-                         * Esto por temas de buenas prácticas. */
-                        fotoPerfil.setImageResource(R.drawable.icono_perfil_logo);
-
-                        /* Esto es para imprimir los mensajes de error. */
-                        Toast.makeText(getActivity(), "¡Lo sentimos!", Toast.LENGTH_SHORT).show();
-                        Toast.makeText(getActivity(), "Pero en este momento no es posible ver la información debido a que " + error, Toast.LENGTH_LONG).show();
-                        Toast.makeText(getActivity(), "Por favor, intentelo más tarde.", Toast.LENGTH_LONG).show();
-
-                        /* Este sirve solo para el logcat:
-                         * System.out.println(error); */
-                    } catch (Exception error) {
-                        /* El printStackTrace(), sirve para aspectos de depuración.
-                         * Esto debido a que ayuda a entender donde y porque ocurrio -
-                         * un error durante la ejecución del proyecto. En este caso -
-                         * las excepciones respectivamente.
-                         *
-                         * error.printStackTrace(); */
-
-                        /* Aqui lo que se hace es colocar el logo de imagen por defecto.
-                         * Esto por temas de buenas prácticas. */
-                        fotoPerfil.setImageResource(R.drawable.icono_perfil_logo);
-
-                        Toast.makeText(getActivity(), "¡Lo sentimos!", Toast.LENGTH_SHORT).show();
-                        Toast.makeText(getActivity(), "Pero no es posible visualizar la información en estos momentos debido problema técnico.", Toast.LENGTH_LONG).show();
-                        Toast.makeText(getActivity(), "Por favor, intentelo más tarde.", Toast.LENGTH_LONG).show();
-                        Toast.makeText(getActivity(),"Si el problema persiste, entonces \ncontactese con el personal técnico.", Toast.LENGTH_LONG).show();
-                    }
-                }
-            }
-
-            /* Aqui es para saber si hubo un fallo en dar la respuesta -
-             * por parte del API. */
-            @Override
-            public void onFailure(Call<UsuarioEntitie> call, Throwable t) {
-                /* Sirve para imprimir el mensaje que se recibio anteriormente, -
-                 * y también para ver en que fallo en el API.
-                 *
-                 * NOTA: Este comando es para ver que fallo, el usuario no lo debe -
-                 * ver:
-                 * Toast.makeText(getActivity(), t.getLocalizedMessage(),
-                 * Toast.LENGTH_SHORT).show(); */
-
-                /* Aqui lo que se hace es colocar el logo de imagen por defecto.
-                 * Esto por temas de buenas prácticas. */
-                fotoPerfil.setImageResource(R.drawable.icono_perfil_logo);
-
-                Toast.makeText(getActivity(), "¡Lo sentimos!", Toast.LENGTH_SHORT).show();
-                Toast.makeText(getActivity(), "Pero no es posible visualizar la información en estos momentos debido problema técnico.", Toast.LENGTH_LONG).show();
-                Toast.makeText(getActivity(), "Por favor, intentelo más tarde.", Toast.LENGTH_LONG).show();
-                Toast.makeText(getActivity(),"Si el problema persiste, entonces \ncontactese con el personal técnico.", Toast.LENGTH_LONG).show();
-            }
-        });
-
     }
 
 
@@ -377,7 +498,6 @@ public class CarnetVirtualFragment extends Fragment {
             if(mensajeCarnetVirtual != true) {
                 AlertDialog.Builder construirAlertaCrear = new AlertDialog.Builder(getActivity());
                 construirAlertaCrear.setIcon(R.drawable.icono_error);
-
                 construirAlertaCrear.setMessage("Pero no tienes la autorización necesaria para visualizar esta información.")
                         .setTitle("¡Lo sentimos!");
 

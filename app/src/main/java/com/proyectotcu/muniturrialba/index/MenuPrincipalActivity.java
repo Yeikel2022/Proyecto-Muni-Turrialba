@@ -48,17 +48,27 @@ public class MenuPrincipalActivity extends AppCompatActivity {
         Intent seccionRecorrida = getIntent();
         String seccionMostrar = seccionRecorrida.getStringExtra("Seccion_A_Mostrar");
 
-        if("Ayuda".equals(seccionMostrar)) {
+        if ("Ayuda".equals(seccionMostrar)) {
             Fragmentos(new AyudaFragment());
             activityMenuPrincipalBinding.btnVBarraNavegacion.setSelectedItemId(R.id.itm_Ayuda);
+
+        } else if (savedInstanceState != null) {
+            activityMenuPrincipalBinding.btnVBarraNavegacion.post(new Runnable() {
+                @Override
+                public void run() {
+                    activityMenuPrincipalBinding.btnVBarraNavegacion.setSelectedItemId(R.id.itm_Perfil);
+                }
+            });
+
         } else {
             Fragmentos(new MenuFragment());
         }
 
+
         activityMenuPrincipalBinding.btnVBarraNavegacion.setOnItemSelectedListener(menuItem -> {
             int idItem = menuItem.getItemId();
 
-            if(idItem == R.id.itm_Menu) {
+            if (idItem == R.id.itm_Menu) {
                 Fragmentos(new MenuFragment());
 
             } else if (idItem == R.id.itm_Perfil) {
@@ -73,7 +83,6 @@ public class MenuPrincipalActivity extends AppCompatActivity {
 
             return true;
         });
-
     }
 
 
@@ -81,10 +90,9 @@ public class MenuPrincipalActivity extends AppCompatActivity {
      * diferentes opciones de la barra de navegación de la aplicación -
      * móvil. Básicamente es lo equivalente a usar los intents en una -
      * actividad, solo que aqui son fragmentos. */
-    private void Fragmentos(Fragment fragmentoSeleccionado){
+    private void Fragmentos(Fragment fragmentoSeleccionado) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.framL_PlantillaMenu, fragmentoSeleccionado).commit();
     }
-
 }

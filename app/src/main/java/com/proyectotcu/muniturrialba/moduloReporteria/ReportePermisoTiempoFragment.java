@@ -151,6 +151,7 @@ public class ReportePermisoTiempoFragment extends Fragment {
             Boolean campoPermisoCrear = Boolean.parseBoolean(json.optString("permiso_Crear"));
             Boolean campoPermisoActualizar = Boolean.parseBoolean(json.optString("permiso_Actualizar"));
             Boolean campoPermisoEliminar = Boolean.parseBoolean(json.optString("permiso_Eliminar"));
+            Boolean campoPermisoDescargar = Boolean.parseBoolean(json.optString("permiso_Descargar"));
 
 
             //Moderador o administrador:
@@ -179,7 +180,9 @@ public class ReportePermisoTiempoFragment extends Fragment {
                     }
                 });
 
-                Integer respuestaPermisos = ValidarPermisosAdmin(campoPermisoLeer, campoPermisoCrear, campoPermisoActualizar, campoPermisoEliminar);
+                Integer respuestaPermisos = ValidarPermisosAdmin(campoPermisoLeer, campoPermisoCrear, campoPermisoActualizar,
+                        campoPermisoEliminar, campoPermisoDescargar);
+
                 if (respuestaPermisos == 5) {
                     botonCrear.setOnClickListener(v -> VistaGenerarReportesTiempo());
                     botonActualizar.setOnClickListener(v -> VistaEditarReportesTiempo());
@@ -187,7 +190,6 @@ public class ReportePermisoTiempoFragment extends Fragment {
                         construirAlerta.setIcon(R.drawable.icono_eliminar);
                         construirAlerta.setMessage("¿Esta completamente seguro(a) de eliminar este reporte de forma permanente?")
                                 .setTitle("Eliminar Reporte de Tiempo.");
-
 
                         construirAlerta.setPositiveButton("Si.", new DialogInterface.OnClickListener() {
                             @Override
@@ -210,7 +212,6 @@ public class ReportePermisoTiempoFragment extends Fragment {
                         construirAlerta.setIcon(R.drawable.icono_descargar);
                         construirAlerta.setMessage("¿Esta completamente seguro(a) de descargar este reporte de tiempo?")
                                 .setTitle("Descargar Reporte de Tiempo.");
-
 
                         construirAlerta.setPositiveButton("Si.", new DialogInterface.OnClickListener() {
                             @Override
@@ -289,11 +290,11 @@ public class ReportePermisoTiempoFragment extends Fragment {
     }
 
 
-    private Integer ValidarPermisosAdmin(Boolean Leer, Boolean Crear, Boolean Actualizar, Boolean Eliminar) {
+    private Integer ValidarPermisosAdmin(Boolean Leer, Boolean Crear, Boolean Actualizar, Boolean Eliminar, Boolean Descargar) {
         ArrayList<String> listaMensaje = new ArrayList<String>();
         String mensajeProveniente = "";
 
-        if(Leer == false && Crear == false && Actualizar == false && Eliminar == false) {
+        if(Leer == false && Crear == false && Actualizar == false && Eliminar == false && Descargar == false) {
             buscadorReportesTiempo.setVisibility(GONE);
             botonCrear.setVisibility(View.GONE);
             botonActualizar.setVisibility(View.GONE);
@@ -353,10 +354,7 @@ public class ReportePermisoTiempoFragment extends Fragment {
 
         if(Crear == false) {
             botonCrear.setVisibility(GONE);
-            botonDescargar.setVisibility(GONE);
-
             listaMensaje.add("- Generar un nuevo reporte dentro de este apartado.\n\n");
-            listaMensaje.add("- Descargar un reporte respectivamente.\n\n");
         }
 
 
@@ -368,11 +366,17 @@ public class ReportePermisoTiempoFragment extends Fragment {
 
         if(Eliminar == false) {
             botonEliminar.setVisibility(GONE);
-            listaMensaje.add("- Eliminar un reporte respectivamente.");
+            listaMensaje.add("- Eliminar un reporte respectivamente.\n\n");
         }
 
 
-        if(Leer != true || Crear != true || Actualizar != true || Eliminar != true) {
+        if(Descargar == false) {
+            botonDescargar.setVisibility(GONE);
+            listaMensaje.add("- Descargar un reporte respectivamente.\n\n");
+        }
+
+
+        if(Leer != true || Crear != true || Actualizar != true || Eliminar != true || Descargar != true) {
             if(listaMensaje.size() == 4) {
                 scrollHorizontalBotones.setVisibility(GONE);
             }
@@ -384,8 +388,7 @@ public class ReportePermisoTiempoFragment extends Fragment {
 
                 AlertDialog.Builder construirAlertaCrear = new AlertDialog.Builder(getActivity());
                 construirAlertaCrear.setIcon(R.drawable.icono_error);
-
-                construirAlertaCrear.setMessage("Pero no tienes la autorización necesaria para: \n\n" + mensajeProveniente)
+                construirAlertaCrear.setMessage("Pero no tienes la autorización necesaria para: \n\n" + mensajeProveniente + "Por favor, intentelo más tarde.")
                         .setTitle("¡Lo sentimos!");
 
                 construirAlertaCrear.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -483,11 +486,12 @@ public class ReportePermisoTiempoFragment extends Fragment {
 
         Call<List<ExtensionPermisoTiempoEntitie>> mostrarPermisosTiempo = permisoTiempoInterface.obtenerPermisosTiempo(tokenUsuario);
 
-
         mostrarPermisosTiempo.enqueue(new Callback<List<ExtensionPermisoTiempoEntitie>>() {
             @Override
             public void onResponse(Call<List<ExtensionPermisoTiempoEntitie>> call, Response<List<ExtensionPermisoTiempoEntitie>> response) {
                 if (response.isSuccessful()) {
+                    Boolean mostrarInfoDefecto = false;
+
                     tblTablaReportesTiempo.removeAllViews();
                     tbrPrimeraFila.setVisibility(GONE);
                     botonSeleccion.setVisibility(GONE);
@@ -516,7 +520,7 @@ public class ReportePermisoTiempoFragment extends Fragment {
                             campoDescripcion = new TextView(getActivity());
                             campoFechaAsignacion = new TextView(getActivity());
                             campoFechaFinalizacion = new TextView(getActivity());
-
+                            mostrarInfoDefecto = true;
 
                             LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 350);
                             AnchoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 180);
@@ -658,6 +662,12 @@ public class ReportePermisoTiempoFragment extends Fragment {
                             tblTablaReportesTiempo.addView(nuevaFila);
                         }
 
+                        if (mostrarInfoDefecto != true) {
+                            tbrPrimeraFila.setVisibility(VISIBLE);
+                            tblTablaReportesTiempo.addView(tbrPrimeraFila);
+                            botonSeleccion.setVisibility(VISIBLE);
+                        }
+
                     } else {
                         tblTablaReportesTiempo.removeAllViews();
 
@@ -673,7 +683,7 @@ public class ReportePermisoTiempoFragment extends Fragment {
                             campoDescripcion = new TextView(getActivity());
                             campoFechaAsignacion = new TextView(getActivity());
                             campoFechaFinalizacion = new TextView(getActivity());
-
+                            mostrarInfoDefecto = true;
 
                             LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 350);
                             AnchoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 180);
@@ -814,6 +824,12 @@ public class ReportePermisoTiempoFragment extends Fragment {
                             nuevaFila.addView(campoFechaFinalizacion);
                             tblTablaReportesTiempo.addView(nuevaFila);
                         }
+
+                        if (mostrarInfoDefecto != true) {
+                            tbrPrimeraFila.setVisibility(VISIBLE);
+                            tblTablaReportesTiempo.addView(tbrPrimeraFila);
+                            botonSeleccion.setVisibility(VISIBLE);
+                        }
                     }
 
                 } else {
@@ -822,7 +838,7 @@ public class ReportePermisoTiempoFragment extends Fragment {
                         int errorRaw = response.raw().code();
 
                         if(errorRaw == 401) {
-                            error = "Se finalizo la sesión de su cuenta.";
+                            error = " Se finalizo la sesión de su cuenta.";
                         }
 
                         buscadorReportesTiempo.setVisibility(GONE);
@@ -843,7 +859,7 @@ public class ReportePermisoTiempoFragment extends Fragment {
 
                         AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
                         construirAlerta.setIcon(R.drawable.icono_error);
-                        construirAlerta.setMessage("Pero en este momento no es posible ver la información debido a que: " + error + "\n\nPor favor, intentelo de nuevo.")
+                        construirAlerta.setMessage("Pero en este momento no es posible ver la información debido a que:" + error.replace('"', ' ') + "\n\nPor favor, intentelo de nuevo.")
                                 .setTitle("¡Lo sentimos!");
 
                         construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {

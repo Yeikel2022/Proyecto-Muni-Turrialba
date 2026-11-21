@@ -141,7 +141,6 @@ public class EmpleadoActualizarActivity extends AppCompatActivity {
                 construirAlerta.setMessage("¿Esta completamente seguro(a) de actualizar este empleado(a)?")
                         .setTitle("Actualizar Empleado(a).");
 
-
                 construirAlerta.setPositiveButton("Si.", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -247,7 +246,6 @@ public class EmpleadoActualizarActivity extends AppCompatActivity {
         departamentoActualizada = empleadosActualizarBinding.edtxtDepartamentoEmpleadoActualizado.getText().toString().trim();
         activoActualizado = empleadosActualizarBinding.btnActivoEmpleado.isChecked();
 
-
         boolean respuestaValidacion = ValidarEmpleado(nombreActualizada, primerApellidoActualizada, segundoApellidoActualizada, cedulaActualizada,
                 edadActualizada, correoActualizada, contraseñaActualizada, rolActualizada, departamentoActualizada, activoActualizado);
 
@@ -272,10 +270,7 @@ public class EmpleadoActualizarActivity extends AppCompatActivity {
                     Integer.parseInt(edadActualizada), cedulaActualizada, telefonoActualizada, correoActualizada,
                     contraseñaActualizada, null, rol);
 
-            EmpleadoEntitie empleadoEntitie = new EmpleadoEntitie(activoActualizado, departamentoActualizada);
-
             Call<Boolean> actualizarUsuario = usuarioInterface.actualizarUsuario(usuarioEntitie, cedulaRecorrido, tokenUsuario);
-            Call<Boolean> actualizarEmpleado = empleadoInterface.actualizarEmpleado(empleadoEntitie, correoActualizada, tokenUsuario);
 
             /* Aqui es cuando notamos si se pudo realizar o no el proceso, en este caso -
              * el metodo POST.
@@ -290,6 +285,10 @@ public class EmpleadoActualizarActivity extends AppCompatActivity {
                     /* Si la respuesta que se recibio resulto ser correcta, entonces -
                      * siga con lo demás, caso contrario, pues muestre el error respectivo. */
                     if (response.isSuccessful()) {
+                        EmpleadoEntitie empleadoEntitie = new EmpleadoEntitie(activoActualizado, departamentoActualizada);
+
+                        Call<Boolean> actualizarEmpleado = empleadoInterface.actualizarEmpleado(empleadoEntitie, correoActualizada, tokenUsuario);
+
                         actualizarEmpleado.enqueue(new Callback<Boolean>() {
 
                             /* Aqui es para saber si hubo una respuesta por parte del API. */
@@ -327,13 +326,13 @@ public class EmpleadoActualizarActivity extends AppCompatActivity {
                                         int errorRaw = response.raw().code();
 
                                         if(errorRaw == 401) {
-                                            error = "Se finalizo la sesión de su cuenta.";
+                                            error = " Se finalizo la sesión de su cuenta.";
                                         }
 
                                         /* Esto es para imprimir los mensajes de error. */
                                         AlertDialog.Builder construirAlerta = new AlertDialog.Builder(EmpleadoActualizarActivity.this);
                                         construirAlerta.setIcon(R.drawable.icono_error);
-                                        construirAlerta.setMessage("Pero en este momento no es posible actualizar el empleado(a) debido a que: " + error + "\n\nPor favor, intentelo de nuevo.")
+                                        construirAlerta.setMessage("Pero en este momento no es posible actualizar el empleado(a) debido a que:" + error.replace('"', ' ') + "\n\nPor favor, intentelo de nuevo.")
                                                 .setTitle("¡Lo sentimos!");
 
                                         construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -353,7 +352,6 @@ public class EmpleadoActualizarActivity extends AppCompatActivity {
                                          * las excepciones respectivamente.
                                          *
                                          * error.printStackTrace(); */
-
                                         AlertDialog.Builder construirAlerta = new AlertDialog.Builder(EmpleadoActualizarActivity.this);
                                         construirAlerta.setIcon(R.drawable.icono_error);
                                         construirAlerta.setMessage("Pero no es posible actualizar el empleado(a) en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
@@ -394,8 +392,6 @@ public class EmpleadoActualizarActivity extends AppCompatActivity {
                             }
                         });
 
-
-
                     } else {
                         try {
                             /* Esto permite leer el error del Body, de modo -
@@ -404,12 +400,12 @@ public class EmpleadoActualizarActivity extends AppCompatActivity {
                             int errorRaw = response.raw().code();
 
                             if(errorRaw == 401) {
-                                error = "Se finalizo la sesión de su cuenta.";
+                                error = " Se finalizo la sesión de su cuenta.";
                             }
 
                             AlertDialog.Builder construirAlerta = new AlertDialog.Builder(EmpleadoActualizarActivity.this);
                             construirAlerta.setIcon(R.drawable.icono_error);
-                            construirAlerta.setMessage("Pero en este momento no es posible actualizar el empleado(a) debido a que: " + error + "\n\nPor favor, intentelo de nuevo.")
+                            construirAlerta.setMessage("Pero en este momento no es posible actualizar el empleado(a) debido a que:" + error.replace('"', ' ') + "\n\nPor favor, intentelo de nuevo.")
                                     .setTitle("¡Lo sentimos!");
 
                             construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -467,258 +463,267 @@ public class EmpleadoActualizarActivity extends AppCompatActivity {
                     AlertDialog ejecutarMensaje = construirAlerta.create();
                     ejecutarMensaje.show();
                 }
-
             });
-
         }
     }
 
 
     private boolean ValidarEmpleado(String nombre, String primerApellido, String segundoApellido, String cedula,
-                                    String edad, String correo, String contraseña, String rol, String departamento, boolean activo) {
+                                    String edad, String correo, String contraseña, String rol, String departamento,
+                                    boolean activo) {
+        try {
+            /* Aqui valida si el nombre, los apellidos, la edad, la cédula, el correo electronico -
+             * y la contraseña están vacios. Y si entra, entonces mandaria un mensaje de advertencia -
+             * al usuario y un false al metodo: RealizarRegistro. */
+            if (nombre.equals(nombreRecorrido) && primerApellido.equals(primerApellidoRecorrido) && segundoApellido.equals(segundoApellidoRecorrido) && cedula.equals(cedulaRecorrido) &&
+                    edad.equals(edadRecorrido) && correo.equals(correoRecorrido) && contraseña.equals(contraseñaRecorrido) && rol.equals(rolRecorrido) && departamento.equals(departamentoRecorrido)
+                    && activo == activoRecorrido) {
 
-        /* Aqui valida si el nombre, los apellidos, la edad, la cédula, el correo electronico -
-         * y la contraseña están vacios. Y si entra, entonces mandaria un mensaje de advertencia -
-         * al usuario y un false al metodo: RealizarRegistro. */
-        if (nombre.equals(nombreRecorrido) && primerApellido.equals(primerApellidoRecorrido) && segundoApellido.equals(segundoApellidoRecorrido) && cedula.equals(cedulaRecorrido) &&
-                edad.equals(edadRecorrido) && correo.equals(correoRecorrido) && contraseña.equals(contraseñaRecorrido) && rol.equals(rolRecorrido) && departamento.equals(departamentoRecorrido) && activo == activoRecorrido) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(EmpleadoActualizarActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo actualizar el empleado(a) debido a que están los mismos datos." + "\n\nPor favor, ingrese los nuevos cambios que desea para actualizar el empleado(a) que fue seleccionado(a) respectivamente.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+
+            /* Aqui valida si el nombre, los apellidos, la edad, la cédula, el correo electronico -
+             * y la contraseña están vacios. Y si entra, entonces mandaria un mensaje de advertencia -
+             * al usuario y un false al metodo: RealizarRegistro. */
+            if (nombre.isEmpty() && primerApellido.isEmpty() && segundoApellido.isEmpty() && cedula.isEmpty() && edad.isEmpty()
+                    && correo.isEmpty() && contraseña.isEmpty() && rol.equals("Seleccione el rol que quiere asignar:") &&
+                    departamento.isEmpty()) {
+
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(EmpleadoActualizarActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo actualizar el empleado(a) debido a que todos los espacios están vacios." + "\n\nPor favor, ingrese todos los campos requeridos (excepto el teléfono) e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+
+            /* Luego, lo segundo seria validar esos campos respectivamente.
+             * Aqui valida si el nombre es nulo o si esta vacio. Y si entra -
+             * entonces mandaria un mensaje de advertencia al usuario y -
+             * un false al metodo: RealizarRegistro. */
+            if (nombre.isEmpty()) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(EmpleadoActualizarActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo actualizar el empleado(a) debido a que el nombre se encuentra vacio." + "\n\nPor favor, digite otra vez su nombre e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+
+            /* Aqui valida si el primer apellido es nulo o si esta vacio. Y si entra -
+             * entonces mandaria un mensaje de advertencia al usuario y un false -
+             * al metodo: RealizarRegistro. */
+            if (primerApellido.isEmpty()) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(EmpleadoActualizarActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo actualizar el empleado(a) debido a que el primer apellido se encuentra vacio." + "\n\nPor favor, digite otra vez su apellido e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+
+            /* Aqui valida si el segundo apellido es nulo o si esta vacio. Y si -
+             * entra entonces mandaria un mensaje de advertencia al usuario -
+             * y un false al metodo: RealizarRegistro. */
+            if (segundoApellido.isEmpty()) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(EmpleadoActualizarActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo actualizar el empleado(a) debido a que el segundo apellido se encuentra vacio." + "\n\nPor favor, digite otra vez su apellido e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+            /* Aqui valida si la cédula esta vacia o si es mayor a 12 (esto porque -
+             * en Costa Rica la cédula nacional es de 9 digitos y el extranjero 12). -
+             * Y si entra entonces mandaria un mensaje de advertencia al usuario y un -
+             * false al metodo: RealizarRegistro. */
+            if (cedula.isEmpty() || cedula.length() > 12) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(EmpleadoActualizarActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo actualizar el empleado(a) debido a que la cédula esta vacia o supera el limite." + "\n\nPor favor, digite otra vez su cédula e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+
+            /* Aqui valida si la edad se encuentra vacia, si es igual a cero, o si -
+             * dicha edad es mayor a 99 (lo que indicaria que tiene 3 digitos). Y -
+             * si entra entonces mandaria un mensaje de advertencia al usuario y un -
+             * false al metodo: RealizarRegistro. */
+            if (edad.isEmpty() || Integer.parseInt(edad) == 0 || Integer.parseInt(edad) > 99) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(EmpleadoActualizarActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo actualizar el empleado(a) debido a que la edad se encuentra vacia o esta incorrecta." + "\n\nPor favor, digite otra vez su edad e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+
+            /* Aqui valida si el correo esta vacio o si tiene errores en el formato.
+             * Y si entra, entonces mandaria un mensaje de advertencia al usuario -
+             * y un false al metodo: RealizarRegistro.
+             *
+             * NOTA: El comando: !Patterns.EMAIL_ADDRESS.matcher(textoCorreo).matches(), -
+             * lo que ayuda es para saber si el correo esta bien o no, esto por medio de -
+             * lo siguiente: "Patterns.EMAIL_ADDRESS", el cual es un comando que brinda -
+             * Android Studio para poder manejar diferentes patrones como si fuera una -
+             * expresión regular, en este caso, un correo electronico.
+             *
+             * Ahora con: "matcher(textoCorreo)", esto sirve para poder comparar el correo -
+             * ingresado con ese patron que nosotros habiamos solicitado, osea el Patterns, -
+             * luego de eso el: "matches()" nos ayudara a dar el resultado de esa comparación. */
+            if (correo.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(correo).matches()) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(EmpleadoActualizarActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo actualizar el empleado(a) debido a que el correo electrónico esta vacio o esta incorrecto." + "\n\nPor favor, digite otra vez su correo electrónico e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+
+            /* Aqui valida si la contraseña esta vacia o si es menor a 12 (que es el minimo -
+             * de digitos de la contraseña). Y si entra, entonces mandaria un mensaje de -
+             * advertencia al usuario y un false al metodo: RealizarRegistro. */
+            if (contraseña.isEmpty() || contraseña.length() < 12) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(EmpleadoActualizarActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo actualizar el empleado(a) debido a que la contraseña esta vacia o esta incorrecta." + "\n\nPor favor, digite otra vez su contraseña e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+            /* Aqui valida si la contraseña esta vacia o si es menor a 12 (que es el minimo -
+             * de digitos de la contraseña). Y si entra, entonces mandaria un mensaje de -
+             * advertencia al usuario y un false al metodo: RealizarRegistro. */
+            if (rol.isEmpty() || rol.equals("Seleccione el rol que quiere asignar:")) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(EmpleadoActualizarActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo actualizar el empleado(a) debido a que el rol se encuentra vacio." + "\n\nPor favor, digite otra vez su rol e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+            /* Aqui valida si la contraseña esta vacia o si es menor a 12 (que es el minimo -
+             * de digitos de la contraseña). Y si entra, entonces mandaria un mensaje de -
+             * advertencia al usuario y un false al metodo: RealizarRegistro. */
+            if (departamento.isEmpty()) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(EmpleadoActualizarActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo actualizar el empleado(a) debido a que el departamento se encuentra vacio." + "\n\nPor favor, digite otra vez su departamento e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+            return true;
+
+        } catch (Exception error) {
             AlertDialog.Builder construirAlerta = new AlertDialog.Builder(EmpleadoActualizarActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no se pudo actualizar el empleado(a) debido a que están los mismos datos." + "\n\nPor favor, ingrese los nuevos cambios que desea para actualizar el empleado(a) que fue seleccionado(a) respectivamente.")
+            construirAlerta.setIcon(R.drawable.icono_error);
+            construirAlerta.setMessage("Pero no es posible actualizar el empleado(a) en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
                     .setTitle("¡Lo sentimos!");
 
             construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {}});
 
-            AlertDialog ejecutarMensaje = construirAlerta.create();
-            ejecutarMensaje.show();
-
-
-            return false;
-        }
-
-
-        /* Aqui valida si el nombre, los apellidos, la edad, la cédula, el correo electronico -
-         * y la contraseña están vacios. Y si entra, entonces mandaria un mensaje de advertencia -
-         * al usuario y un false al metodo: RealizarRegistro. */
-        if (nombre.isEmpty() && primerApellido.isEmpty() && segundoApellido.isEmpty() && cedula.isEmpty() && edad.isEmpty()
-                && correo.isEmpty() && contraseña.isEmpty() && rol.equals("Seleccione el rol que quiere asignar:") && departamento.isEmpty()) {
-
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(EmpleadoActualizarActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no se pudo actualizar el empleado(a) debido a que todos los espacios están vacios." + "\n\nPor favor, ingrese todos los campos requeridos (excepto el teléfono) e intentelo de nuevo.")
-                    .setTitle("¡Lo sentimos!");
-
-            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}});
 
             AlertDialog ejecutarMensaje = construirAlerta.create();
             ejecutarMensaje.show();
-
             return false;
         }
-
-
-        /* Luego, lo segundo seria validar esos campos respectivamente.
-         * Aqui valida si el nombre es nulo o si esta vacio. Y si entra -
-         * entonces mandaria un mensaje de advertencia al usuario y -
-         * un false al metodo: RealizarRegistro. */
-        if (nombre == null || nombre.isEmpty()) {
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(EmpleadoActualizarActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no se pudo actualizar el empleado(a) debido a que el nombre se encuentra vacio." + "\n\nPor favor, digite otra vez su nombre e intentelo de nuevo.")
-                    .setTitle("¡Lo sentimos!");
-
-            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}});
-
-            AlertDialog ejecutarMensaje = construirAlerta.create();
-            ejecutarMensaje.show();
-
-
-            return false;
-        }
-
-
-        /* Aqui valida si el primer apellido es nulo o si esta vacio. Y si entra -
-         * entonces mandaria un mensaje de advertencia al usuario y un false -
-         * al metodo: RealizarRegistro. */
-        if (primerApellido == null || primerApellido.isEmpty()) {
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(EmpleadoActualizarActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no se pudo actualizar el empleado(a) debido a que el primer apellido se encuentra vacio." + "\n\nPor favor, digite otra vez su apellido e intentelo de nuevo.")
-                    .setTitle("¡Lo sentimos!");
-
-            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}});
-
-            AlertDialog ejecutarMensaje = construirAlerta.create();
-            ejecutarMensaje.show();
-
-
-            return false;
-        }
-
-
-        /* Aqui valida si el segundo apellido es nulo o si esta vacio. Y si -
-         * entra entonces mandaria un mensaje de advertencia al usuario -
-         * y un false al metodo: RealizarRegistro. */
-        if (segundoApellido == null || segundoApellido.isEmpty()) {
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(EmpleadoActualizarActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no se pudo actualizar el empleado(a) debido a que el segundo apellido se encuentra vacio." + "\n\nPor favor, digite otra vez su apellido e intentelo de nuevo.")
-                    .setTitle("¡Lo sentimos!");
-
-            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}});
-
-            AlertDialog ejecutarMensaje = construirAlerta.create();
-            ejecutarMensaje.show();
-
-            return false;
-        }
-
-        /* Aqui valida si la cédula esta vacia o si es mayor a 12 (esto porque -
-         * en Costa Rica la cédula nacional es de 9 digitos y el extranjero 12). -
-         * Y si entra entonces mandaria un mensaje de advertencia al usuario y un -
-         * false al metodo: RealizarRegistro. */
-        if (cedula.isEmpty() || cedula.length() > 12) {
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(EmpleadoActualizarActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no se pudo actualizar el empleado(a) debido a que la cédula esta vacia o supera el limite." + "\n\nPor favor, digite otra vez su cédula e intentelo de nuevo.")
-                    .setTitle("¡Lo sentimos!");
-
-            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}});
-
-            AlertDialog ejecutarMensaje = construirAlerta.create();
-            ejecutarMensaje.show();
-
-
-            return false;
-        }
-
-
-        /* Aqui valida si la edad se encuentra vacia, si es igual a cero, o si -
-         * dicha edad es mayor a 99 (lo que indicaria que tiene 3 digitos). Y -
-         * si entra entonces mandaria un mensaje de advertencia al usuario y un -
-         * false al metodo: RealizarRegistro. */
-        if (edad.isEmpty() || Integer.parseInt(edad) == 0 || Integer.parseInt(edad) > 99) {
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(EmpleadoActualizarActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no se pudo actualizar el empleado(a) debido a que la edad se encuentra vacia o esta incorrecta." + "\n\nPor favor, digite otra vez su edad e intentelo de nuevo.")
-                    .setTitle("¡Lo sentimos!");
-
-            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}});
-
-            AlertDialog ejecutarMensaje = construirAlerta.create();
-            ejecutarMensaje.show();
-
-
-            return false;
-        }
-
-
-        /* Aqui valida si el correo esta vacio o si tiene errores en el formato.
-         * Y si entra, entonces mandaria un mensaje de advertencia al usuario -
-         * y un false al metodo: RealizarRegistro.
-         *
-         * NOTA: El comando: !Patterns.EMAIL_ADDRESS.matcher(textoCorreo).matches(), -
-         * lo que ayuda es para saber si el correo esta bien o no, esto por medio de -
-         * lo siguiente: "Patterns.EMAIL_ADDRESS", el cual es un comando que brinda -
-         * Android Studio para poder manejar diferentes patrones como si fuera una -
-         * expresión regular, en este caso, un correo electronico.
-         *
-         * Ahora con: "matcher(textoCorreo)", esto sirve para poder comparar el correo -
-         * ingresado con ese patron que nosotros habiamos solicitado, osea el Patterns, -
-         * luego de eso el: "matches()" nos ayudara a dar el resultado de esa comparación. */
-        if (correo.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(correo).matches()) {
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(EmpleadoActualizarActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no se pudo actualizar el empleado(a) debido a que el correo electrónico esta vacio o esta incorrecto." + "\n\nPor favor, digite otra vez su correo electrónico e intentelo de nuevo.")
-                    .setTitle("¡Lo sentimos!");
-
-            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}});
-
-            AlertDialog ejecutarMensaje = construirAlerta.create();
-            ejecutarMensaje.show();
-
-
-            return false;
-        }
-
-
-        /* Aqui valida si la contraseña esta vacia o si es menor a 12 (que es el minimo -
-         * de digitos de la contraseña). Y si entra, entonces mandaria un mensaje de -
-         * advertencia al usuario y un false al metodo: RealizarRegistro. */
-        if (contraseña.isEmpty() || contraseña.length() < 12) {
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(EmpleadoActualizarActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no se pudo actualizar el empleado(a) debido a que la contraseña esta vacia o esta incorrecta." + "\n\nPor favor, digite otra vez su contraseña e intentelo de nuevo.")
-                    .setTitle("¡Lo sentimos!");
-
-            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}});
-
-            AlertDialog ejecutarMensaje = construirAlerta.create();
-            ejecutarMensaje.show();
-
-
-            return false;
-        }
-
-        /* Aqui valida si la contraseña esta vacia o si es menor a 12 (que es el minimo -
-         * de digitos de la contraseña). Y si entra, entonces mandaria un mensaje de -
-         * advertencia al usuario y un false al metodo: RealizarRegistro. */
-        if (rol.isEmpty() || rol.equals("Seleccione el rol que quiere asignar:")) {
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(EmpleadoActualizarActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no se pudo actualizar el empleado(a) debido a que el rol se encuentra vacio." + "\n\nPor favor, digite otra vez su rol e intentelo de nuevo.")
-                    .setTitle("¡Lo sentimos!");
-
-            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}});
-
-            AlertDialog ejecutarMensaje = construirAlerta.create();
-            ejecutarMensaje.show();
-
-
-            return false;
-        }
-
-        /* Aqui valida si la contraseña esta vacia o si es menor a 12 (que es el minimo -
-         * de digitos de la contraseña). Y si entra, entonces mandaria un mensaje de -
-         * advertencia al usuario y un false al metodo: RealizarRegistro. */
-        if (departamento.isEmpty() || departamento == null) {
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(EmpleadoActualizarActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_advertencia);
-            construirAlerta.setMessage("Pero no se pudo actualizar el empleado(a) debido a que el departamento se encuentra vacio." + "\n\nPor favor, digite otra vez su departamento e intentelo de nuevo.")
-                    .setTitle("¡Lo sentimos!");
-
-            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}});
-
-            AlertDialog ejecutarMensaje = construirAlerta.create();
-            ejecutarMensaje.show();
-
-            return false;
-        }
-
-
-        return true;
     }
 
 

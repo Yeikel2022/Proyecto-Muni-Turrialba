@@ -1,6 +1,8 @@
 package com.proyectotcu.muniturrialba.index;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -9,6 +11,7 @@ import android.util.Base64;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -62,6 +65,22 @@ public class CambiarPasswordActivity extends AppCompatActivity {
         /* Sirve para llamar el metodo de cambiar contraseña, siempre y cuando -
          * el usuario presione el boton respectivo. */
         cambiarPasswordBinding.btnCambiarPassword.setOnClickListener(v -> CambiarContraseña());
+
+        //METODO PARA DETECTAR SI EL USUARIO POR X O Y RAZÓN, DESEA REGRESARSE.
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                //Aqui le dice a que vista tiene que ir, como un hipervinculo basicamente.
+                Intent intentRecuperarContra = new Intent(CambiarPasswordActivity.this, RecuperarPasswordActivity.class);
+
+                //Le indica que ejecute el hipervinculo.
+                startActivity(intentRecuperarContra);
+
+                /* Sirve para evitar que el usuario se regrese después.
+                 * Esto por temas de buenas prácticas. */
+                finish();
+            }
+        });
     }
 
     /* Metodo que sirve para cambiar la contraseña que coloca el usuario, -
@@ -139,9 +158,17 @@ public class CambiarPasswordActivity extends AppCompatActivity {
                             String error = response.errorBody().string();
 
                             //Imprime el error capturado.
-                            Toast.makeText(CambiarPasswordActivity.this, "¡Lo sentimos, pero en este momento no se cambiar la contraseña!", Toast.LENGTH_LONG).show();
-                            Toast.makeText(CambiarPasswordActivity.this, error, Toast.LENGTH_LONG).show();
-                            Toast.makeText(CambiarPasswordActivity.this, "Por favor, corriga los datos e intentelo de nuevo.", Toast.LENGTH_LONG).show();
+                            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(CambiarPasswordActivity.this);
+                            construirAlerta.setIcon(R.drawable.icono_error);
+                            construirAlerta.setMessage("Pero en este momento no se pudo cambiar la contraseña debido a que:" + error.replace('"', ' ') + "\n\nPor favor, corriga los datos e intentelo de nuevo.")
+                                    .setTitle("¡Lo sentimos!");
+
+                            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {}});
+
+                            AlertDialog ejecutarMensaje = construirAlerta.create();
+                            ejecutarMensaje.show();
 
                             /* Este sirve solo para el logcat:
                              * System.out.println(error); */
@@ -152,10 +179,17 @@ public class CambiarPasswordActivity extends AppCompatActivity {
                              * las excepciones respectivamente.
                              *
                              * error.printStackTrace(); */
-                            Toast.makeText(CambiarPasswordActivity.this, "¡Lo sentimos, " +
-                                    "pero parece que hubo un problema!", Toast.LENGTH_LONG).show();
-                            Toast.makeText(CambiarPasswordActivity.this,
-                                    "Por favor, intentelo más tarde.", Toast.LENGTH_LONG).show();
+                            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(CambiarPasswordActivity.this);
+                            construirAlerta.setIcon(R.drawable.icono_error);
+                            construirAlerta.setMessage("Pero no es posible cambiar la contraseña en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+                                    .setTitle("¡Lo sentimos!");
+
+                            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {}});
+
+                            AlertDialog ejecutarMensaje = construirAlerta.create();
+                            ejecutarMensaje.show();
                         }
                     }
                 }
@@ -172,68 +206,122 @@ public class CambiarPasswordActivity extends AppCompatActivity {
                      * debe ver:
                      * Toast.makeText(CambiarPasswordActivity.this, t.getLocalizedMessage(),
                      * Toast.LENGTH_SHORT).show(); */
-                    Toast.makeText(CambiarPasswordActivity.this, "¡Lo sentimos, " +
-                            "pero en este momento no se pudo cambiar la contraseña!", Toast.LENGTH_LONG).show();
+                    AlertDialog.Builder construirAlerta = new AlertDialog.Builder(CambiarPasswordActivity.this);
+                    construirAlerta.setIcon(R.drawable.icono_error);
+                    construirAlerta.setMessage("Pero no es posible cambiar la contraseña en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+                            .setTitle("¡Lo sentimos!");
 
-                    Toast.makeText(CambiarPasswordActivity.this,
-                            "Por favor, intentelo de nuevo.", Toast.LENGTH_LONG).show();
+                    construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {}});
+
+                    AlertDialog ejecutarMensaje = construirAlerta.create();
+                    ejecutarMensaje.show();
                 }
             });
-
         }
     }
+
 
     /* Este metodo sirve para validar la contraseña -
      * que esta colocando el usuario respectivamente. */
     private boolean ValidarContraseña(String contraseñaIngresada, String contraseñaConfirmada) {
-        /* Aqui valida si la contraseña ingresada y confirmada están vacios. Y si -
-         * entra, entonces mandaria un mensaje de advertencia al usuario y un false -
-         * al metodo: CambiarContraseña. */
-        if (contraseñaIngresada.isEmpty() && contraseñaConfirmada.isEmpty()) {
-            Toast.makeText(CambiarPasswordActivity.this, "¡Los espacios para la nueva contraseña están vacios!", Toast.LENGTH_LONG).show();
-            Toast.makeText(CambiarPasswordActivity.this, "Por favor, ingrese todos los campos requeridos.", Toast.LENGTH_LONG).show();
+        try {
+            /* Aqui valida si la contraseña ingresada y confirmada están vacios. Y si -
+             * entra, entonces mandaria un mensaje de advertencia al usuario y un false -
+             * al metodo: CambiarContraseña. */
+            if (contraseñaIngresada.isEmpty() && contraseñaConfirmada.isEmpty()) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(CambiarPasswordActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo cambiar la contraseña debido a que todos los espacios están vacios." + "\n\nPor favor, ingrese todos los campos requeridos e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+            /* Aqui valida si la contraseña ingresada esta vacia o si es menor a 12 (que -
+             * es el minimo de digitos de la contraseña). Y si entra, entonces mandaria -
+             * un mensaje de advertencia al usuario y un false al metodo: CambiarContraseña. */
+            if (contraseñaIngresada.isEmpty() || contraseñaIngresada.length() < 12) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(CambiarPasswordActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo cambiar la contraseña debido a que la nueva contraseña se encuentra vacia o esta incorrecta." + "\n\nPor favor, ingrese la nueva contraseña e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+            /* Aqui valida si la contraseña confirmada esta vacia o si es menor a 12 (que -
+             * es el minimo de digitos de la contraseña). Y si entra, entonces mandaria -
+             * un mensaje de advertencia al usuario y un false al metodo: CambiarContraseña. */
+            if (contraseñaConfirmada.isEmpty() || contraseñaConfirmada.length() < 12) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(CambiarPasswordActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo cambiar la contraseña debido a que el espacio para confirmar la nueva contraseña se encuentra vacia o esta incorrecta." + "\n\nPor favor, ingrese la nueva contraseña e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+            /* Aqui valida si la contraseña confirmada es diferente a la contraseña ingresada.
+             * Y si entra, entonces mandaria un mensaje de advertencia al usuario y un false -
+             * al metodo: CambiarContraseña. */
+            if (!contraseñaConfirmada.equals(contraseñaIngresada)) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(CambiarPasswordActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_advertencia);
+                construirAlerta.setMessage("Pero no se pudo cambiar la contraseña debido a que ambas contraseñas estan incorrectas." + "\n\nPor favor, asegurese que sea la misma contraseña en ambos lados e intentelo de nuevo.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+                return false;
+            }
+
+            return true;
+
+        } catch (Exception error) {
+            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(CambiarPasswordActivity.this);
+            construirAlerta.setIcon(R.drawable.icono_error);
+            construirAlerta.setMessage("Pero no es posible cambiar la contraseña en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+                    .setTitle("¡Lo sentimos!");
+
+            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {}});
+
+
+            AlertDialog ejecutarMensaje = construirAlerta.create();
+            ejecutarMensaje.show();
             return false;
         }
-
-        /* Aqui valida si la contraseña ingresada esta vacia o si es menor a 12 (que -
-         * es el minimo de digitos de la contraseña). Y si entra, entonces mandaria -
-         * un mensaje de advertencia al usuario y un false al metodo: CambiarContraseña. */
-        if (contraseñaIngresada.isEmpty() || contraseñaIngresada.length() < 12) {
-            Toast.makeText(CambiarPasswordActivity.this,
-                    "¡La nueva contraseña esta vacia o esta incorrecta!", Toast.LENGTH_LONG).show();
-
-            Toast.makeText(CambiarPasswordActivity.this,
-                    "Por favor, digite otra vez su contraseña.", Toast.LENGTH_LONG).show();
-            return false;
-        }
-
-        /* Aqui valida si la contraseña confirmada esta vacia o si es menor a 12 (que -
-         * es el minimo de digitos de la contraseña). Y si entra, entonces mandaria -
-         * un mensaje de advertencia al usuario y un false al metodo: CambiarContraseña. */
-        if (contraseñaConfirmada.isEmpty() || contraseñaConfirmada.length() < 12) {
-            Toast.makeText(CambiarPasswordActivity.this,
-                    "¡La nueva contraseña esta vacia o esta incorrecta!", Toast.LENGTH_LONG).show();
-
-            Toast.makeText(CambiarPasswordActivity.this,
-                    "Por favor, digite otra vez su contraseña.", Toast.LENGTH_LONG).show();
-            return false;
-        }
-
-        /* Aqui valida si la contraseña confirmada es diferente a la contraseña ingresada.
-         * Y si entra, entonces mandaria un mensaje de advertencia al usuario y un false -
-         * al metodo: CambiarContraseña. */
-        if (!contraseñaConfirmada.equals(contraseñaIngresada)) {
-            Toast.makeText(CambiarPasswordActivity.this,
-                    "¡Las contraseñas están incorrectas!", Toast.LENGTH_LONG).show();
-
-            Toast.makeText(CambiarPasswordActivity.this,
-                    "Por favor, asegurese que sea la misma contraseña en ambos lados.",
-                    Toast.LENGTH_LONG).show();
-            return false;
-        }
-
-        return true;
     }
+
 
     /* Metodo que sirve para realizar el inicio de sesión por parte del -
      * usuario respectivamente. */
@@ -322,10 +410,17 @@ public class CambiarPasswordActivity extends AppCompatActivity {
                          *
                          * NOTA: Este comando es para ver que fallo, el usuario no lo debe ver:
                          * Toast.makeText(CambiarPasswordActivity.this, error.toString(), Toast.LENGTH_LONG).show(); */
-                        Toast.makeText(CambiarPasswordActivity.this, "¡Lo sentimos, " +
-                                "pero parece que hubo un problema!", Toast.LENGTH_LONG).show();
-                        Toast.makeText(CambiarPasswordActivity.this,
-                                "Por favor, intentelo más tarde.", Toast.LENGTH_LONG).show();
+                        AlertDialog.Builder construirAlerta = new AlertDialog.Builder(CambiarPasswordActivity.this);
+                        construirAlerta.setIcon(R.drawable.icono_error);
+                        construirAlerta.setMessage("Pero no es posible iniciar sesión en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+                                .setTitle("¡Lo sentimos!");
+
+                        construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {}});
+
+                        AlertDialog ejecutarMensaje = construirAlerta.create();
+                        ejecutarMensaje.show();
                     }
                 } else {
                     try {
@@ -334,9 +429,17 @@ public class CambiarPasswordActivity extends AppCompatActivity {
                         String error = response.errorBody().string();
 
                         /* Esto es para imprimir los mensajes de error. */
-                        Toast.makeText(CambiarPasswordActivity.this, "¡Lo sentimos, pero en este momento no se pudo iniciar sesión!", Toast.LENGTH_LONG).show();
-                        Toast.makeText(CambiarPasswordActivity.this, error, Toast.LENGTH_LONG).show();
-                        Toast.makeText(CambiarPasswordActivity.this, "Por favor, corriga los datos e intentelo de nuevo.", Toast.LENGTH_LONG).show();
+                        AlertDialog.Builder construirAlerta = new AlertDialog.Builder(CambiarPasswordActivity.this);
+                        construirAlerta.setIcon(R.drawable.icono_error);
+                        construirAlerta.setMessage("Pero en este momento no es posible iniciar sesión debido a que:" + error.replace('"', ' ') + "\n\nPor favor, corriga los datos e intentelo de nuevo.")
+                                .setTitle("¡Lo sentimos!");
+
+                        construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {}});
+
+                        AlertDialog ejecutarMensaje = construirAlerta.create();
+                        ejecutarMensaje.show();
 
                         /* Este sirve solo para el logcat:
                          * System.out.println(error); */
@@ -347,10 +450,17 @@ public class CambiarPasswordActivity extends AppCompatActivity {
                          * las excepciones respectivamente.
                          *
                          * error.printStackTrace(); */
-                        Toast.makeText(CambiarPasswordActivity.this, "¡Lo sentimos, " +
-                                "pero parece que hubo un problema!", Toast.LENGTH_LONG).show();
-                        Toast.makeText(CambiarPasswordActivity.this,
-                                "Por favor, intentelo más tarde.", Toast.LENGTH_LONG).show();
+                        AlertDialog.Builder construirAlerta = new AlertDialog.Builder(CambiarPasswordActivity.this);
+                        construirAlerta.setIcon(R.drawable.icono_error);
+                        construirAlerta.setMessage("Pero no es posible iniciar sesión en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+                                .setTitle("¡Lo sentimos!");
+
+                        construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {}});
+
+                        AlertDialog ejecutarMensaje = construirAlerta.create();
+                        ejecutarMensaje.show();
                     }
                 }
             }
@@ -366,15 +476,19 @@ public class CambiarPasswordActivity extends AppCompatActivity {
                  * usuario no lo debe ver:
                  * Toast.makeText(CambiarPasswordActivity.this, t.getLocalizedMessage(),
                  * Toast.LENGTH_SHORT).show(); */
-                Toast.makeText(CambiarPasswordActivity.this, "¡Lo sentimos, " +
-                        "pero en estos instantes no se pudo continuar con el proceso!", Toast.LENGTH_LONG).show();
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(CambiarPasswordActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_error);
+                construirAlerta.setMessage("Pero no es posible iniciar sesión en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+                        .setTitle("¡Lo sentimos!");
 
-                Toast.makeText(CambiarPasswordActivity.this,
-                        "Por favor, intentelo de nuevo.", Toast.LENGTH_LONG).show();
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
             }
-
         });
-
     }
 
 
@@ -399,8 +513,4 @@ public class CambiarPasswordActivity extends AppCompatActivity {
          * las actividades que existen respectivamente. */
         finishAffinity();
     }
-
-
-
-
 }

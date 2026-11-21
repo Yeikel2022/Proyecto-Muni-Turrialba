@@ -52,6 +52,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class ReporteUsuarioEditarActivity extends AppCompatActivity {
+
     //Variable para usar el ViewBinding de esta clase.
     private ActivityReporteUsuariosEditarBinding reporteUsuariosEditarBinding;
 
@@ -152,7 +153,6 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
                 construirAlerta.setMessage("¿Esta completamente seguro(a) de actualizar este reporte respectivamente?")
                         .setTitle("Actualizar Reporte Usuario.");
 
-
                 construirAlerta.setPositiveButton("Si.", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -174,7 +174,6 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
                 construirAlerta.setIcon(R.drawable.icono_eliminar);
                 construirAlerta.setMessage("¿Esta completamente seguro(a) de eliminar estos datos del usuario(a) de forma permanente?")
                         .setTitle("Eliminar Datos Usuario(a).");
-
 
                 construirAlerta.setPositiveButton("Si.", new DialogInterface.OnClickListener() {
                     @Override
@@ -296,7 +295,6 @@ public class ReporteUsuarioEditarActivity extends AppCompatActivity {
                 campoFechaCreacionGuardado = new TextView(ReporteUsuarioEditarActivity.this);
                 campoFechaInicioSesionGuardado = new TextView(ReporteUsuarioEditarActivity.this);
                 campoUltimaConexionGuardado = new TextView(ReporteUsuarioEditarActivity.this);
-
 
                 LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 350);
                 AnchoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 205);

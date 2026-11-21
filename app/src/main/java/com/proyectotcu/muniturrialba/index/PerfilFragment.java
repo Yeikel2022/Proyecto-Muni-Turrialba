@@ -2,6 +2,7 @@ package com.proyectotcu.muniturrialba.index;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,11 +10,13 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts.*;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.provider.Settings;
@@ -24,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +36,11 @@ import com.proyectotcu.muniturrialba.R;
 import com.proyectotcu.muniturrialba.manejoAPI.ConexionAPI;
 import com.proyectotcu.muniturrialba.manejoAPI.entidadesAPI.UsuarioEntitie;
 import com.proyectotcu.muniturrialba.manejoAPI.interfacesAPI.UsuarioInterface;
+import com.proyectotcu.muniturrialba.moduloAdministracionArchivos.AdministracionArchivosActivity;
+import com.proyectotcu.muniturrialba.moduloAdministracionArchivos.ArchivoRecienteActualizarActivity;
+import com.proyectotcu.muniturrialba.moduloAdministracionArchivos.ArchivoRecienteCrearActivity;
+import com.proyectotcu.muniturrialba.moduloAdministracionArchivos.ArchivoRecienteFragment;
+import com.proyectotcu.muniturrialba.moduloAdministracionArchivos.HistorialArchivoFragment;
 import com.proyectotcu.muniturrialba.moduloEmpleados.ControlEmpleadosActivity;
 import com.proyectotcu.muniturrialba.moduloEmpleados.ControlSalarioFragment;
 import com.proyectotcu.muniturrialba.moduloEmpleados.EmpleadoFragment;
@@ -61,6 +70,7 @@ public class PerfilFragment extends Fragment {
     ImageView fotoPerfil, logitoPerfil;
     Button botonPermisos, botonCerrar;
     ImageButton botonEditarPerfil;
+    ScrollView scrollVerticalPerfil;
     String imagenBase64;
     static Boolean mensajePerfil = false;
 
@@ -91,9 +101,11 @@ public class PerfilFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_perfil, container, false);
         fotoPerfil = view.findViewById(R.id.img_fotoPerfil);
         logitoPerfil = view.findViewById(R.id.img_errorFotoPerfil);
+
         botonEditarPerfil = view.findViewById(R.id.btn_editarPerfil);
         botonCerrar = view.findViewById(R.id.btn_CerrarSesion);
         botonPermisos = view.findViewById(R.id.btn_Permisos);
+        scrollVerticalPerfil = view.findViewById(R.id.sv_ScrollVertical_Perfil);
 
         txtNombre = view.findViewById(R.id.txt_NombreUsuario);
         txtApellidos = view.findViewById(R.id.txt_ApellidosUsuario);
@@ -180,7 +192,6 @@ public class PerfilFragment extends Fragment {
 
                     botonCerrar.setOnClickListener(v -> {
                         AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
-
                         construirAlerta.setIcon(R.drawable.icono_cancelar);
                         construirAlerta.setMessage("¿Esta completamente seguro(a) de cerrar sesión?")
                                 .setTitle("Cerrar Sesión.");
@@ -223,16 +234,16 @@ public class PerfilFragment extends Fragment {
                      *
                      * NOTA: El uri, es básicamente la ruta que indica donde esta la imagen, de modo -
                      * que con ese dato, se podria acceder a ella. */
-                     SelectorImagen = registerForActivityResult(new PickVisualMedia(), uri -> {
-                         if (uri != null) {
-                             /* Este comando seria para ver si se pudo seleccionar la imagen, entonces -
-                              * sirve de mucho para cuestiones de depuración:
-                              * Log.d("Imagen", "Si se pudo seleccionar la imagen, la cual es la siguiente: " + uri); */
-                             CambiarFotoPerfil(campoCorreo, tokenGuardado, uri);
-                         }
-                     });
+                    SelectorImagen = registerForActivityResult(new PickVisualMedia(), uri -> {
+                        if (uri != null) {
+                            /* Este comando seria para ver si se pudo seleccionar la imagen, entonces -
+                             * sirve de mucho para cuestiones de depuración:
+                             * Log.d("Imagen", "Si se pudo seleccionar la imagen, la cual es la siguiente: " + uri); */
+                            CambiarFotoPerfil(campoCorreo, tokenGuardado, uri);
+                        }
+                    });
 
-                     MostrarDatosPerfil(campoCorreo, tokenGuardado);
+                    MostrarDatosPerfil(campoCorreo, tokenGuardado);
                 }
 
                 /* Asimismo, también se hace otra validación, ya que, si la respuesta que trae -
@@ -250,7 +261,6 @@ public class PerfilFragment extends Fragment {
 
                     botonCerrar.setOnClickListener(v -> {
                         AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
-
                         construirAlerta.setIcon(R.drawable.icono_cancelar);
                         construirAlerta.setMessage("¿Esta completamente seguro(a) de cerrar sesión?")
                                 .setTitle("Cerrar Sesión.");
@@ -291,7 +301,6 @@ public class PerfilFragment extends Fragment {
 
                     botonCerrar.setOnClickListener(v -> {
                         AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
-
                         construirAlerta.setIcon(R.drawable.icono_cancelar);
                         construirAlerta.setMessage("¿Esta completamente seguro(a) de cerrar sesión?")
                                 .setTitle("Cerrar Sesión.");
@@ -347,7 +356,6 @@ public class PerfilFragment extends Fragment {
 
                 botonCerrar.setOnClickListener(v -> {
                     AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
-
                     construirAlerta.setIcon(R.drawable.icono_cancelar);
                     construirAlerta.setMessage("¿Esta completamente seguro(a) de cerrar sesión?")
                             .setTitle("Cerrar Sesión.");
@@ -393,19 +401,30 @@ public class PerfilFragment extends Fragment {
             }
 
             fotoPerfil.setVisibility(View.GONE);
-            botonCerrar.setVisibility(View.GONE);
+            botonCerrar.setVisibility(View.VISIBLE);
             botonPermisos.setVisibility(View.GONE);
 
+            logitoPerfil.setVisibility(View.VISIBLE);
             txtMensaje.setVisibility(View.VISIBLE);
+
+            logitoPerfil.setImageResource(R.drawable.icono_contenido_no_disponible);
             txtMensaje.setText(getString(R.string.ErrorFragment));
             /* NOTA: El "getString(R.string.ErrorFragment)", lo que hace es traer un -
              * mensaje que se coloco en: "strings.xml" para que el textview: "txtMensaje"-
              * pueda colocarlo en la pantalla del fragmento (osea en el fragment_perfil.xml),-
              * esto porque es una forma dinamica de hacerlo. */
 
-            Toast.makeText(getActivity(), "¡Lo sentimos, pero parece que hubo un problema técnico!", Toast.LENGTH_LONG).show();
-            Toast.makeText(getActivity(), "Por favor, intentelo más tarde.", Toast.LENGTH_LONG).show();
-            Toast.makeText(getActivity(),"Si el problema persiste, entonces" + "\ncontactese con el personal técnico.", Toast.LENGTH_LONG).show();
+            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
+            construirAlerta.setIcon(R.drawable.icono_error);
+            construirAlerta.setMessage("Pero no es posible visualizar la información en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+                    .setTitle("¡Lo sentimos!");
+
+            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {}});
+
+            AlertDialog ejecutarMensaje = construirAlerta.create();
+            ejecutarMensaje.show();
         }
 
         return view;
@@ -444,7 +463,6 @@ public class PerfilFragment extends Fragment {
             if(mensajePerfil != true) {
                 AlertDialog.Builder construirAlertaCrear = new AlertDialog.Builder(getActivity());
                 construirAlertaCrear.setIcon(R.drawable.icono_error);
-
                 construirAlertaCrear.setMessage("Pero no tienes la autorización necesaria para visualizar la información de la cuenta.")
                         .setTitle("¡Lo sentimos!");
 
@@ -473,7 +491,6 @@ public class PerfilFragment extends Fragment {
             if(mensajePerfil != true) {
                 AlertDialog.Builder construirAlertaCrear = new AlertDialog.Builder(getActivity());
                 construirAlertaCrear.setIcon(R.drawable.icono_error);
-
                 construirAlertaCrear.setMessage("Pero no tienes la autorización necesaria para visualizar los permisos de la aplicación respectivamente.")
                         .setTitle("¡Lo sentimos!");
 
@@ -501,7 +518,6 @@ public class PerfilFragment extends Fragment {
             if(mensajePerfil != true) {
                 AlertDialog.Builder construirAlertaCrear = new AlertDialog.Builder(getActivity());
                 construirAlertaCrear.setIcon(R.drawable.icono_error);
-
                 construirAlertaCrear.setMessage("Pero no tienes la autorización necesaria para actualizar la información de la cuenta.")
                         .setTitle("¡Lo sentimos!");
 
@@ -555,104 +571,177 @@ public class PerfilFragment extends Fragment {
             /* Aqui es para saber si hubo una respuesta por parte del API. */
             @Override
             public void onResponse(Call<UsuarioEntitie> call, Response<UsuarioEntitie> response) {
-                    if (response.isSuccessful()) {
-                        /* Aqui lo que se está haciendo es colocar el nombre, los -
-                         * apellidos y el correo electrónico del usuario en la pantalla -
-                         * del perfil respectivamente. */
-                        String Nombre = response.body().getNombre().toString().trim();
-                        String Apellidos = response.body().getApellido_1().toString().trim() + " " + response.body().getApellido_2().toString().trim();
-                        String Correo = response.body().getCorreo_Electronico().toString().trim();
+                if (response.isSuccessful()) {
+                    /* Aqui lo que se está haciendo es colocar el nombre, los -
+                     * apellidos y el correo electrónico del usuario en la pantalla -
+                     * del perfil respectivamente. */
+                    String Nombre = response.body().getNombre().toString().trim();
+                    String Apellidos = response.body().getApellido_1().toString().trim() + " " + response.body().getApellido_2().toString().trim();
+                    String Correo = response.body().getCorreo_Electronico().toString().trim();
 
-                        txtNombre.setText(Nombre);
-                        txtApellidos.setText(Apellidos);
-                        txtCorreo.setText(Correo);
+                    txtNombre.setText(Nombre);
+                    txtApellidos.setText(Apellidos);
+                    txtCorreo.setText(Correo);
 
-                        /* Aqui lo que se está haciendo es colocar la imagen del perfil, pero -
-                         * siempre y cuando el usuario haya colocado una imagen, si no entonces -
-                         * en su lugar se pondra un logo de perfil por defecto.
+                    /* Aqui lo que se está haciendo es colocar la imagen del perfil, pero -
+                     * siempre y cuando el usuario haya colocado una imagen, si no entonces -
+                     * en su lugar se pondra un logo de perfil por defecto.
+                     *
+                     * Esto es asi porque en el registro no se pide una imagen como tal, de -
+                     * ahi que se pone aqui un try catch para detectar si esta nulo la imagen -
+                     * para luego hacer esa acción. */
+                    try {
+                        String FotoPerfil = response.body().getImagen_Perfil().toString().trim();
+                        byte[] lista = Base64.decode(FotoPerfil, Base64.DEFAULT);
+                        Bitmap mapeo = BitmapFactory.decodeByteArray(lista, 0, lista.length);
+
+                        fotoPerfil.setImageBitmap(mapeo);
+
+                    } catch (Exception error) {
+                        fotoPerfil.setImageResource(R.drawable.icono_perfil_logo);
+                    }
+                } else {
+                    try {
+                        /* Esto permite leer el error del Body, de modo -
+                         * que sirva en el debug. */
+                        String error = response.errorBody().string();
+                        int errorRaw = response.raw().code();
+
+                        if(errorRaw == 401) {
+                            error = " Se finalizo la sesión de su cuenta.";
+                        }
+
+                        if(errorRaw == 404) {
+                            error = " No se pudo obtener el usuario(a).";
+                        }
+
+                        txtNombre.setVisibility(View.GONE);
+                        txtApellidos.setVisibility(View.GONE);
+                        txtCorreo.setVisibility(View.GONE);
+
+                        /* Esto es por si da un nulo el boton llamado: botonEditarPerfil, -
+                         * ya que es el que va a ejecutar lo de la selección de imagen.
+                         * Si no pasa eso, entonces simplemente seguira como los demás. */
+                        Boolean validacion = botonEditarPerfil == null;
+                        if (validacion != true) {
+                            botonEditarPerfil.setVisibility(View.GONE);
+                        }
+
+                        fotoPerfil.setVisibility(View.GONE);
+                        botonCerrar.setVisibility(View.VISIBLE);
+                        botonPermisos.setVisibility(View.GONE);
+
+                        logitoPerfil.setVisibility(View.VISIBLE);
+                        txtMensaje.setVisibility(View.VISIBLE);
+
+                        logitoPerfil.setImageResource(R.drawable.icono_contenido_no_disponible);
+                        txtMensaje.setText(getString(R.string.ErrorFragment));
+
+                        /* Esto es para imprimir los mensajes de error. */
+                        AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
+                        construirAlerta.setIcon(R.drawable.icono_error);
+                        construirAlerta.setMessage("Pero en este momento no es posible ver la información debido a que:" + error.replace('"', ' ') + "\n\nPor favor, intentelo de nuevo.")
+                                .setTitle("¡Lo sentimos!");
+
+                        construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {}});
+
+                        AlertDialog ejecutarMensaje = construirAlerta.create();
+                        ejecutarMensaje.show();
+
+                        /* Este sirve solo para el logcat:
+                         * System.out.println(error); */
+                    } catch (Exception error) {
+                        /* El printStackTrace(), sirve para aspectos de depuración.
+                         * Esto debido a que ayuda a entender donde y porque ocurrio -
+                         * un error durante la ejecución del proyecto. En este caso -
+                         * las excepciones respectivamente.
                          *
-                         * Esto es asi porque en el registro no se pide una imagen como tal, de -
-                         * ahi que se pone aqui un try catch para detectar si esta nulo la imagen -
-                         * para luego hacer esa acción. */
-                        try {
-                            String FotoPerfil = response.body().getImagen_Perfil().toString().trim();
-                            byte[] lista = Base64.decode(FotoPerfil, Base64.DEFAULT);
-                            Bitmap mapeo = BitmapFactory.decodeByteArray(lista, 0, lista.length);
+                         * error.printStackTrace(); */
+                        txtNombre.setVisibility(View.GONE);
+                        txtApellidos.setVisibility(View.GONE);
+                        txtCorreo.setVisibility(View.GONE);
 
-                            fotoPerfil.setImageBitmap(mapeo);
-                        } catch (Exception error) {
-                            fotoPerfil.setImageResource(R.drawable.icono_perfil_logo);
-                        }
-                    } else {
-                        try {
-                            /* Esto permite leer el error del Body, de modo -
-                             * que sirva en el debug. */
-                            String error = response.errorBody().string();
-                            int errorRaw = response.raw().code();
-
-                            if(errorRaw == 401) {
-                                error = "Se finalizo la sesión de su cuenta.";
-                            }
-
-                            /* Aqui lo que se hace es colocar el logo de imagen por defecto y ocultar -
-                             * la opcion de editar el perfil. Esto por temas de buenas prácticas. */
-                            fotoPerfil.setImageResource(R.drawable.icono_perfil_logo);
+                        /* Esto es por si da un nulo el boton llamado: botonEditarPerfil, -
+                         * ya que es el que va a ejecutar lo de la selección de imagen.
+                         * Si no pasa eso, entonces simplemente seguira como los demás. */
+                        Boolean validacion = botonEditarPerfil == null;
+                        if (validacion != true) {
                             botonEditarPerfil.setVisibility(View.GONE);
-
-
-                            /* Esto es para imprimir los mensajes de error. */
-                            Toast.makeText(getActivity(), "¡Lo sentimos!", Toast.LENGTH_SHORT).show();
-                            Toast.makeText(getActivity(), "Pero en este momento no es posible ver la información debido a que " + error, Toast.LENGTH_LONG).show();
-                            Toast.makeText(getActivity(), "Por favor, intentelo más tarde.", Toast.LENGTH_LONG).show();
-
-                            /* Este sirve solo para el logcat:
-                             * System.out.println(error); */
-                        } catch (Exception error) {
-                            /* El printStackTrace(), sirve para aspectos de depuración.
-                             * Esto debido a que ayuda a entender donde y porque ocurrio -
-                             * un error durante la ejecución del proyecto. En este caso -
-                             * las excepciones respectivamente.
-                             *
-                             * error.printStackTrace(); */
-
-                            /* Aqui lo que se hace es ocultar la opcion para editar el perfil, -
-                             * y en la foto de perfil se coloca el logo de imagen por defecto. -
-                             * Esto por temas de buenas prácticas. */
-                            fotoPerfil.setImageResource(R.drawable.icono_perfil_logo);
-                            botonEditarPerfil.setVisibility(View.GONE);
-
-                            Toast.makeText(getActivity(), "¡Lo sentimos!", Toast.LENGTH_SHORT).show();
-                            Toast.makeText(getActivity(), "Pero no es posible visualizar la información en estos momentos debido problema técnico.", Toast.LENGTH_LONG).show();
-                            Toast.makeText(getActivity(), "Por favor, intentelo más tarde.", Toast.LENGTH_LONG).show();
-                            Toast.makeText(getActivity(),"Si el problema persiste, entonces \ncontactese con el personal técnico.", Toast.LENGTH_LONG).show();
                         }
+
+                        fotoPerfil.setVisibility(View.GONE);
+                        botonCerrar.setVisibility(View.VISIBLE);
+                        botonPermisos.setVisibility(View.GONE);
+
+                        logitoPerfil.setVisibility(View.VISIBLE);
+                        txtMensaje.setVisibility(View.VISIBLE);
+
+                        logitoPerfil.setImageResource(R.drawable.icono_contenido_no_disponible);
+                        txtMensaje.setText(getString(R.string.ErrorFragment));
+
+                        AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
+                        construirAlerta.setIcon(R.drawable.icono_error);
+                        construirAlerta.setMessage("Pero no es posible visualizar la información en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+                                .setTitle("¡Lo sentimos!");
+
+                        construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {}});
+
+                        AlertDialog ejecutarMensaje = construirAlerta.create();
+                        ejecutarMensaje.show();
                     }
                 }
+            }
 
-                /* Aqui es para saber si hubo un fallo en dar la respuesta -
-                 * por parte del API. */
-                @Override
-                public void onFailure(Call<UsuarioEntitie> call, Throwable t) {
-                    /* Sirve para imprimir el mensaje que se recibio anteriormente, -
-                     * y también para ver en que fallo en el API.
-                     *
-                     * NOTA: Este comando es para ver que fallo, el usuario no lo debe -
-                     * ver:
-                     * Toast.makeText(getActivity(), t.getLocalizedMessage(),
-                     * Toast.LENGTH_SHORT).show(); */
+            /* Aqui es para saber si hubo un fallo en dar la respuesta -
+             * por parte del API. */
+            @Override
+            public void onFailure(Call<UsuarioEntitie> call, Throwable t) {
+                /* Sirve para imprimir el mensaje que se recibio anteriormente, -
+                 * y también para ver en que fallo en el API.
+                 *
+                 * NOTA: Este comando es para ver que fallo, el usuario no lo debe -
+                 * ver:
+                 * Toast.makeText(getActivity(), t.getLocalizedMessage(),
+                 * Toast.LENGTH_SHORT).show(); */
+                txtNombre.setVisibility(View.GONE);
+                txtApellidos.setVisibility(View.GONE);
+                txtCorreo.setVisibility(View.GONE);
 
-                    /* Aqui lo que se hace es ocultar la opcion para editar el perfil, -
-                     * y en la foto de perfil se coloca el logo de imagen por defecto. -
-                     * Esto por temas de buenas prácticas. */
-                    fotoPerfil.setImageResource(R.drawable.icono_perfil_logo);
+                /* Esto es por si da un nulo el boton llamado: botonEditarPerfil, -
+                 * ya que es el que va a ejecutar lo de la selección de imagen.
+                 * Si no pasa eso, entonces simplemente seguira como los demás. */
+                Boolean validacion = botonEditarPerfil == null;
+                if (validacion != true) {
                     botonEditarPerfil.setVisibility(View.GONE);
-
-                    Toast.makeText(getActivity(), "¡Lo sentimos!", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getActivity(), "Pero no es posible visualizar la información en estos momentos debido problema técnico.", Toast.LENGTH_LONG).show();
-                    Toast.makeText(getActivity(), "Por favor, intentelo más tarde.", Toast.LENGTH_LONG).show();
-                    Toast.makeText(getActivity(),"Si el problema persiste, entonces \ncontactese con el personal técnico.", Toast.LENGTH_LONG).show();
                 }
-            });
+
+                fotoPerfil.setVisibility(View.GONE);
+                botonCerrar.setVisibility(View.VISIBLE);
+                botonPermisos.setVisibility(View.GONE);
+
+                logitoPerfil.setVisibility(View.VISIBLE);
+                txtMensaje.setVisibility(View.VISIBLE);
+
+                logitoPerfil.setImageResource(R.drawable.icono_contenido_no_disponible);
+                txtMensaje.setText(getString(R.string.ErrorFragment));
+
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
+                construirAlerta.setIcon(R.drawable.icono_error);
+                construirAlerta.setMessage("Pero no es posible visualizar la información en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+                        .setTitle("¡Lo sentimos!");
+
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}});
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+            }
+        });
     }
 
 
@@ -760,12 +849,24 @@ public class PerfilFragment extends Fragment {
                             /* Esto permite leer el error del Body, de modo -
                              * que sirva en el debug. */
                             String error = response.errorBody().string();
+                            int errorRaw = response.raw().code();
+
+                            if(errorRaw == 401) {
+                                error = " Se finalizo la sesión de su cuenta.";
+                            }
 
                             /* Esto es para imprimir los mensajes de error. */
-                            Toast.makeText(getActivity(), "¡Lo sentimos!", Toast.LENGTH_LONG).show();
-                            Toast.makeText(getActivity(), "Pero en este momento no es posible actualizar la información debido a que " + error, Toast.LENGTH_LONG).show();
-                            Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show();
-                            Toast.makeText(getActivity(), "Por favor, intentelo más tarde.", Toast.LENGTH_LONG).show();
+                            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
+                            construirAlerta.setIcon(R.drawable.icono_error);
+                            construirAlerta.setMessage("Pero en este momento no es posible actualizar la información debido a que:" + error.replace('"', ' ') + "\n\nPor favor, intentelo de nuevo.")
+                                    .setTitle("¡Lo sentimos!");
+
+                            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {}});
+
+                            AlertDialog ejecutarMensaje = construirAlerta.create();
+                            ejecutarMensaje.show();
 
                             /* Este sirve solo para el logcat:
                              * System.out.println(error); */
@@ -776,10 +877,17 @@ public class PerfilFragment extends Fragment {
                              * las excepciones respectivamente.
                              *
                              * error.printStackTrace(); */
-                            Toast.makeText(getActivity(), "¡Lo sentimos!", Toast.LENGTH_LONG).show();
-                            Toast.makeText(getActivity(), "Pero no es posible actualizar la información en estos momentos debido problema técnico.", Toast.LENGTH_LONG).show();
-                            Toast.makeText(getActivity(), "Por favor, intentelo más tarde.", Toast.LENGTH_LONG).show();
-                            Toast.makeText(getActivity(),"Si el problema persiste, entonces \ncontactese con el personal técnico.", Toast.LENGTH_LONG).show();
+                            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
+                            construirAlerta.setIcon(R.drawable.icono_error);
+                            construirAlerta.setMessage("Pero no es posible actualizar la información en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+                                    .setTitle("¡Lo sentimos!");
+
+                            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {}});
+
+                            AlertDialog ejecutarMensaje = construirAlerta.create();
+                            ejecutarMensaje.show();
                         }
                     }
                 }
@@ -795,18 +903,34 @@ public class PerfilFragment extends Fragment {
                      * ver:
                      * Toast.makeText(getActivity(), t.getLocalizedMessage(),
                      * Toast.LENGTH_SHORT).show(); */
-                    Toast.makeText(getActivity(), "¡Lo sentimos!", Toast.LENGTH_LONG).show();
-                    Toast.makeText(getActivity(), "Pero no es posible actualizar la información en estos momentos debido problema técnico.", Toast.LENGTH_LONG).show();
-                    Toast.makeText(getActivity(), "Por favor, intentelo más tarde.", Toast.LENGTH_LONG).show();
-                    Toast.makeText(getActivity(),"Si el problema persiste, entonces \ncontactese con el personal técnico.", Toast.LENGTH_LONG).show();
+                    AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
+                    construirAlerta.setIcon(R.drawable.icono_error);
+                    construirAlerta.setMessage("Pero no es posible actualizar la información en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+                            .setTitle("¡Lo sentimos!");
+
+                    construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {}});
+
+                    AlertDialog ejecutarMensaje = construirAlerta.create();
+                    ejecutarMensaje.show();
                 }
             });
 
-        } catch (Exception e) {
+        } catch (Exception error) {
             /* Aqui lo que se hace es enviar un mensaje de error, esto por si llegara a suceder -
              * algún imprevisto o algún error durante el cambio del perfil respectivamente. */
-            Toast.makeText(getActivity(), "¡Lo sentimos, pero parece que hubo un problema técnico!" + "\nPor favor, intentelo más tarde.", Toast.LENGTH_LONG).show();
-            Toast.makeText(getActivity(),"Si el problema persiste, entonces" + "\ncontactese con el personal técnico.", Toast.LENGTH_LONG).show();
+            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
+            construirAlerta.setIcon(R.drawable.icono_error);
+            construirAlerta.setMessage("Pero no es posible actualizar la información en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+                    .setTitle("¡Lo sentimos!");
+
+            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {}});
+
+            AlertDialog ejecutarMensaje = construirAlerta.create();
+            ejecutarMensaje.show();
         }
     }
 
@@ -831,8 +955,17 @@ public class PerfilFragment extends Fragment {
             startActivity(intentConfiguracionApp);
 
         } catch (Exception error) {
-            Toast.makeText(getActivity(), "¡Lo sentimos, pero parece que hubo un problema técnico!" + "\nPor favor, intentelo más tarde.", Toast.LENGTH_LONG).show();
-            Toast.makeText(getActivity(),"Si el problema persiste, entonces" + "\ncontactese con el personal técnico.", Toast.LENGTH_LONG).show();
+            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
+            construirAlerta.setIcon(R.drawable.icono_error);
+            construirAlerta.setMessage("Pero no es posible visualizar la información en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+                    .setTitle("¡Lo sentimos!");
+
+            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {}});
+
+            AlertDialog ejecutarMensaje = construirAlerta.create();
+            ejecutarMensaje.show();
         }
     }
 
@@ -863,6 +996,8 @@ public class PerfilFragment extends Fragment {
              * del usuario(a) respectivamente. */
             //Administrativo:
             MenuFragment.mensajeMenuPrincipal = false;
+            MenuFragment.mensajeNotificaciones = false;
+            MenuFragment.listaArchivoCompartido.clear();
             mensajePerfil = false;
             CarnetVirtualFragment.mensajeCarnetVirtual = false;
             AyudaFragment.mensajePermisosAyuda = false;
@@ -893,7 +1028,21 @@ public class PerfilFragment extends Fragment {
             ReporteSalarioFragment.respaldoReporteSalario.clear();
             ReporteSalarioFragment.contadorNumeroReporteSalarios = 0;
 
-            //Administración de Archivos: (Pendiente).
+            //Administración de Archivos:
+            AdministracionArchivosActivity.mensajeAdministracionArchivo = false;
+            ArchivoRecienteFragment.mensajeArchivoReciente = false;
+            ArchivoRecienteCrearActivity.autorizacionArchivoCrear = false;
+            ArchivoRecienteActualizarActivity.autorizacionArchivoActualizar = false;
+            ArchivoRecienteActualizarActivity.segundaAutorizacion_ArchivoActualizar = false;
+            HistorialArchivoFragment.mensajeHistorialArchivo = false;
+
+            //Esto sirve para eliminar el canal de notificaciones cuando el usuario cierra sesión:
+            NotificationManager manejadorNotificaciones =
+                    ContextCompat.getSystemService(getActivity(), NotificationManager.class);
+
+            if(manejadorNotificaciones != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                manejadorNotificaciones.deleteNotificationChannel("Canal_RecepcionArchivo");
+            }
 
             /* Esto solo seria si quisiera ver que pantalla es en el Debug.
             Activity nombreActividad = getActivity();
@@ -909,11 +1058,17 @@ public class PerfilFragment extends Fragment {
             getActivity().finishAffinity();
 
         } catch (Exception error) {
-            Toast.makeText(getActivity(), "¡Lo sentimos!", Toast.LENGTH_LONG).show();
-            Toast.makeText(getActivity(), "Pero en este momento no fue posible cerrar la sesión de su cuenta debido a un problema técnico.", Toast.LENGTH_LONG).show();
-            Toast.makeText(getActivity(), "Por favor, intentelo más tarde.", Toast.LENGTH_LONG).show();
-            Toast.makeText(getActivity(),"Si el problema persiste, entonces" + "\ncontactese con el personal técnico.", Toast.LENGTH_LONG).show();
+            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
+            construirAlerta.setIcon(R.drawable.icono_error);
+            construirAlerta.setMessage("Pero no fue posible cerrar la sesión de su cuenta en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
+                    .setTitle("¡Lo sentimos!");
+
+            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {}});
+
+            AlertDialog ejecutarMensaje = construirAlerta.create();
+            ejecutarMensaje.show();
         }
     }
-
 }

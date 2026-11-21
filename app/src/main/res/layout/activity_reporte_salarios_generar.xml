@@ -422,6 +422,7 @@
             android:id="@+id/btn_GenerarReporteSalarial"
             android:layout_width="170dp"
             android:layout_height="63dp"
+            android:layout_marginStart="-5dp"
             android:layout_marginTop="30dp"
             android:background="@drawable/custom_buttons"
             android:checked="true"

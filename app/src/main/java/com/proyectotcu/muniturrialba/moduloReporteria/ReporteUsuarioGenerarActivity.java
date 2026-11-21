@@ -146,7 +146,6 @@ public class ReporteUsuarioGenerarActivity extends AppCompatActivity {
                 campoFechaInicioSesionGuardado = new TextView(ReporteUsuarioGenerarActivity.this);
                 campoUltimaConexionGuardado = new TextView(ReporteUsuarioGenerarActivity.this);
 
-
                 LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 350);
                 AnchoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 205);
                 LargoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
@@ -363,6 +362,7 @@ public class ReporteUsuarioGenerarActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private Integer ConvertirPropiedades(int tipoPropiedad, int tamañoPropiedad) {
         int resultado = 0;

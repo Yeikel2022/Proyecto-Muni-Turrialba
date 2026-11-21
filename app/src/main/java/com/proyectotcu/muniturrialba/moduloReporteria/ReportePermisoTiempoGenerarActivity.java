@@ -146,7 +146,6 @@ public class ReportePermisoTiempoGenerarActivity extends AppCompatActivity {
                 campoFechaAsignacionGuardado = new TextView(ReportePermisoTiempoGenerarActivity.this);
                 campoFechaFinalizacionGuardado = new TextView(ReportePermisoTiempoGenerarActivity.this);
 
-
                 LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 350);
                 AnchoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 205);
                 LargoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
@@ -176,7 +175,6 @@ public class ReportePermisoTiempoGenerarActivity extends AppCompatActivity {
                 String Descripcion = extensionPermisoTiempoEntitie.getDescripcion().trim();
                 String FechaAsignacion = extensionPermisoTiempoEntitie.getFechaAsignacion().trim().replace("T", " ");
                 String FechaFinalizacion = extensionPermisoTiempoEntitie.getFechaFinalizacion().trim().replace("T", " ");
-
 
                 campoCheckBoxGuardado.setChecked(true);
                 campoCheckBoxGuardado.setWidth(LargoCheckBox);
@@ -353,6 +351,7 @@ public class ReportePermisoTiempoGenerarActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private Integer ConvertirPropiedades(int tipoPropiedad, int tamañoPropiedad) {
         int resultado = 0;

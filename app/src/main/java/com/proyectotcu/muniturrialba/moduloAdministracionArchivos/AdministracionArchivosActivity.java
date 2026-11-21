@@ -11,6 +11,7 @@ import android.util.Base64;
 import android.view.Menu;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -21,15 +22,16 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.proyectotcu.muniturrialba.R;
 import com.proyectotcu.muniturrialba.databinding.ActivityAdministracionArchivoBinding;
+import com.proyectotcu.muniturrialba.index.MenuPrincipalActivity;
 import com.proyectotcu.muniturrialba.moduloEmpleados.MensajeFragment;
 
 import org.json.JSONObject;
-
 import java.nio.charset.StandardCharsets;
 
 public class AdministracionArchivosActivity extends AppCompatActivity {
 
     private ActivityAdministracionArchivoBinding administracionArchivoBinding;
+    public static Boolean mensajeAdministracionArchivo = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +99,7 @@ public class AdministracionArchivosActivity extends AppCompatActivity {
             /* Aqui lo que se esta haciendo es validar si el usuario tiene el rol: "Moderador" -
              * o "Administrador". Y si no, entonces no lo dejaria acceder a las opciones del -
              * perfil. */
-            if (campoRol == 1 || campoRol == 2) {
+            if (campoRol == 1 || campoRol == 2  || campoRol == 3) {
                 Integer respuestaPermisos = ValidarPermisos(campoPermisoLeer, campoPermisoCrear, campoPermisoActualizar, campoPermisoEliminar);
 
                 if (respuestaPermisos == 5) {
@@ -111,57 +113,33 @@ public class AdministracionArchivosActivity extends AppCompatActivity {
                     String seccionMostrar = seccionRecorrida.getStringExtra("Seccion_A_Mostrar");
 
                     if ("Historial_Archivos".equals(seccionMostrar)) {
-                        //Fragmentos(new HistorialArchivoFragment());
+                        Fragmentos(new HistorialArchivoFragment());
                         administracionArchivoBinding.btnVBarraNavegacionAdministracionArchivos.setSelectedItemId(R.id.itm_Historial_Archivos);
 
-                    }  else if ("Compartir_Archivos".equals(seccionMostrar)) {
-                        //Fragmentos(new ArchivosFragment());
-                        administracionArchivoBinding.btnVBarraNavegacionAdministracionArchivos.setSelectedItemId(R.id.itm_Archivos);
-
                     } else {
-                        //Fragmentos(new ArchivosFragment());
+                        Fragmentos(new ArchivoRecienteFragment());
                     }
 
 
                     administracionArchivoBinding.btnVBarraNavegacionAdministracionArchivos.setOnItemSelectedListener(menuItem -> {
                         int idItem = menuItem.getItemId();
 
-                        if (idItem == R.id.itm_Historial_Archivos) {
-                            //Fragmentos(new HistorialArchivoFragment());
+                        if (idItem == R.id.itm_Archivos_Recientes) {
+                            Fragmentos(new ArchivoRecienteFragment());
 
-                        } else if (idItem == R.id.itm_Archivos) {
-                            //Fragmentos(new ArchivosFragment());
+                        } else if (idItem == R.id.itm_Historial_Archivos) {
+                            Fragmentos(new HistorialArchivoFragment());
                         }
 
                         return true;
                     });
                 }
-
-
-                /* Asimismo, también se hace otra validación, ya que, si la respuesta que trae -
-                 * es un 3, quiere decir que ese usuario que inicio sesión no contiene el permiso -
-                 * de actualizar, por lo que no esta autorizado para hacer algun cambio en la foto -
-                 * de perfil respectivamente. */
-                if (respuestaPermisos == 1) {
-                    AlertDialog.Builder construirAlerta = new AlertDialog.Builder(AdministracionArchivosActivity.this);
-                    construirAlerta.setIcon(R.drawable.icono_error);
-                    construirAlerta.setMessage("No tienes la autorización necesaria para visualizar esta información.")
-                            .setTitle("¡Lo sentimos!");
-
-                    construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {}});
-
-                    AlertDialog ejecutarMensaje = construirAlerta.create();
-                    ejecutarMensaje.show();
-                }
             }
-
 
         } catch (Exception error) {
             Menu itemsMenu = administracionArchivoBinding.btnVBarraNavegacionAdministracionArchivos.getMenu();
+            itemsMenu.findItem(R.id.itm_Archivos_Recientes).setVisible(false);
             itemsMenu.findItem(R.id.itm_Historial_Archivos).setVisible(false);
-            itemsMenu.findItem(R.id.itm_Archivos).setVisible(false);
             itemsMenu.findItem(R.id.itm_Archivos_Mensaje).setVisible(true);
 
             Bundle bundleMensaje = new Bundle();
@@ -185,6 +163,22 @@ public class AdministracionArchivosActivity extends AppCompatActivity {
             AlertDialog ejecutarMensaje = construirAlerta.create();
             ejecutarMensaje.show();
         }
+
+        //METODO PARA DETECTAR SI EL USUARIO POR X O Y RAZÓN, DESEA REGRESARSE.
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                //Aqui le dice a que vista tiene que ir, como un hipervinculo basicamente.
+                Intent intentMenuPrincipal = new Intent(AdministracionArchivosActivity.this, MenuPrincipalActivity.class);
+
+                //Le indica que ejecute el hipervinculo.
+                startActivity(intentMenuPrincipal);
+
+                /* Sirve para evitar que el usuario se regrese después.
+                 * Esto por temas de buenas prácticas. */
+                finish();
+            }
+        });
     }
 
 
@@ -195,25 +189,28 @@ public class AdministracionArchivosActivity extends AppCompatActivity {
          * mencionando que no tiene la autorización suficiente para poder continuar. */
         if(Leer == false && Crear == false && Actualizar == false && Eliminar == false) {
             Menu itemsMenu = administracionArchivoBinding.btnVBarraNavegacionAdministracionArchivos.getMenu();
+            itemsMenu.findItem(R.id.itm_Archivos_Recientes).setVisible(false);
             itemsMenu.findItem(R.id.itm_Historial_Archivos).setVisible(false);
-            itemsMenu.findItem(R.id.itm_Archivos).setVisible(false);
             itemsMenu.findItem(R.id.itm_Archivos_Mensaje).setVisible(true);
 
             Fragmentos(new MensajeFragment());
             administracionArchivoBinding.btnVBarraNavegacionAdministracionArchivos.setSelectedItemId(R.id.itm_Archivos_Mensaje);
 
-            AlertDialog.Builder construirAlerta = new AlertDialog.Builder(AdministracionArchivosActivity.this);
-            construirAlerta.setIcon(R.drawable.icono_error);
-            construirAlerta.setMessage("No tienes la autorización necesaria para visualizar estos apartados de reporteria.")
-                    .setTitle("¡Lo sentimos!");
+            if (mensajeAdministracionArchivo != true) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(AdministracionArchivosActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_error);
+                construirAlerta.setMessage("Pero no tienes la autorización necesaria para visualizar estos apartados de administración de archivos.")
+                        .setTitle("¡Lo sentimos!");
 
-            construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}});
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mensajeAdministracionArchivo = true;
+                    }});
 
-            AlertDialog ejecutarMensaje = construirAlerta.create();
-            ejecutarMensaje.show();
-
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+            }
 
             return 0;
         }
@@ -227,15 +224,30 @@ public class AdministracionArchivosActivity extends AppCompatActivity {
          * esta autorizado. */
         if(Leer == false) {
             Menu itemsMenu = administracionArchivoBinding.btnVBarraNavegacionAdministracionArchivos.getMenu();
+            itemsMenu.findItem(R.id.itm_Archivos_Recientes).setVisible(false);
             itemsMenu.findItem(R.id.itm_Historial_Archivos).setVisible(false);
-            itemsMenu.findItem(R.id.itm_Archivos).setVisible(false);
             itemsMenu.findItem(R.id.itm_Archivos_Mensaje).setVisible(true);
 
             Fragmentos(new MensajeFragment());
             administracionArchivoBinding.btnVBarraNavegacionAdministracionArchivos.setSelectedItemId(R.id.itm_Archivos_Mensaje);
 
+            if (mensajeAdministracionArchivo != true) {
+                AlertDialog.Builder construirAlerta = new AlertDialog.Builder(AdministracionArchivosActivity.this);
+                construirAlerta.setIcon(R.drawable.icono_error);
+                construirAlerta.setMessage("Pero no tienes la autorización necesaria para visualizar estos apartados de administración de archivos.")
+                        .setTitle("¡Lo sentimos!");
 
-            return 1;
+                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mensajeAdministracionArchivo = true;
+                    }});
+
+                AlertDialog ejecutarMensaje = construirAlerta.create();
+                ejecutarMensaje.show();
+            }
+
+            return 0;
         }
 
 
@@ -253,5 +265,4 @@ public class AdministracionArchivosActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.framL_PlantillaAdministracionArchivos, fragmentoSeleccionado).commit();
     }
-
 }

@@ -52,7 +52,8 @@ public class AyudaFragment extends Fragment {
 
     //Variables globales para esta clase.
     Integer LargoContenido, AnchoContenido, LargoCheckBox, AnchoCheckBox, TamañoLetraContenido,
-            margenContenido, margenCheckBox, margenTop, paddingTopContenido, paddingStartContenido, paddingEndContenido;
+            margenContenido, margenCheckBox, margenTop, paddingTopContenido, paddingStartContenido,
+            paddingEndContenido;
     TextView txtPregunta, txtRespuesta, txtTipoPrioridad, campoPregunta, campoRespuesta,
              campoTipoPrioridad, txtMensaje;
     Button botonCrear, botonActualizar, botonEliminar;
@@ -196,7 +197,6 @@ public class AyudaFragment extends Fragment {
                         construirAlerta.setMessage("¿Esta completamente seguro(a) de eliminar esta pregunta de forma permanentemente?")
                                 .setTitle("Eliminar FAQ.");
 
-
                         construirAlerta.setPositiveButton("Si.", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -227,7 +227,7 @@ public class AyudaFragment extends Fragment {
                 botonEliminar.setVisibility(GONE);
                 scrollHorizontalBotones.setVisibility(GONE);
 
-                MostrarAyudaFAQ(tokenGuardado,  null, false);
+                MostrarAyudaFAQ(tokenGuardado, null, false);
             }
 
         } catch (Exception error) {
@@ -342,7 +342,7 @@ public class AyudaFragment extends Fragment {
          * esta autorizado. */
         if(Eliminar == false) {
             botonEliminar.setVisibility(GONE);
-            listaMensaje.add("- Eliminar una pregunta que está situada en el foro.");
+            listaMensaje.add("- Eliminar una pregunta que está situada en el foro.\n\n");
         }
 
         if(Crear != true || Actualizar != true || Eliminar != true) {
@@ -357,8 +357,7 @@ public class AyudaFragment extends Fragment {
 
                 AlertDialog.Builder construirAlertaCrear = new AlertDialog.Builder(getActivity());
                 construirAlertaCrear.setIcon(R.drawable.icono_error);
-
-                construirAlertaCrear.setMessage("Pero no tienes la autorización necesaria para: \n\n" + mensajeProveniente)
+                construirAlertaCrear.setMessage("Pero no tienes la autorización necesaria para: \n\n" + mensajeProveniente + "Por favor, intentelo más tarde.")
                         .setTitle("¡Lo sentimos!");
 
                 construirAlertaCrear.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -434,7 +433,6 @@ public class AyudaFragment extends Fragment {
             construirAlerta.setMessage("Pero no es posible visualizar la información en estos momentos debido a un problema técnico. Por favor intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
                     .setTitle("¡Lo sentimos!");
 
-
             construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {}});
@@ -474,23 +472,7 @@ public class AyudaFragment extends Fragment {
             @Override
             public void onResponse(Call<List<FAQEntitie>> call, Response<List<FAQEntitie>> response) {
                 if (response.isSuccessful()) {
-
-                    if(response.body().size() == 1) {
-                        tblTablaAyuda.removeAllViews();
-
-                        for (int i = 0; i < response.body().size(); i++) {
-                            FAQEntitie faqEntitie = response.body().get(i);
-                            String Pregunta = faqEntitie.getPregunta().trim();
-                            String Respuesta = faqEntitie.getRespuesta().trim();
-                            String Tipo_Prioridad = faqEntitie.getTipoPrioridad().trim();
-
-                            txtPregunta.setText(Pregunta);
-                            txtRespuesta.setText(Respuesta);
-                            txtTipoPrioridad.setText(Tipo_Prioridad);
-                            botonSeleccion.setTag(faqEntitie);
-                            botonSeleccion.setVisibility(VISIBLE);
-                        }
-                    }
+                    Boolean mostrarInfoDefecto = false;
 
                     tblTablaAyuda.removeAllViews();
                     tbrPrimeraFila.setVisibility(GONE);
@@ -515,7 +497,7 @@ public class AyudaFragment extends Fragment {
                             campoPregunta = new TextView(getActivity());
                             campoRespuesta = new TextView(getActivity());
                             campoTipoPrioridad = new TextView(getActivity());
-
+                            mostrarInfoDefecto = true;
 
                             LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 350);
                             AnchoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 205);
@@ -523,15 +505,16 @@ public class AyudaFragment extends Fragment {
                             AnchoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
                             TamañoLetraContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_SP, 10);
 
-
                             parametrosContenido = new TableRow.LayoutParams(LargoContenido, AnchoContenido);
                             parametrosCheckBox = new TableRow.LayoutParams(LargoCheckBox, AnchoCheckBox);
                             margenContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, -1);
                             margenCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 7);
                             margenTop = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 5);
+
                             paddingStartContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 11);
                             paddingEndContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 5);
                             paddingTopContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 5);
+
                             parametrosContenido.setMarginStart(margenContenido);
                             parametrosCheckBox.setMarginStart(margenCheckBox);
                             parametrosCheckBox.setMarginEnd(margenCheckBox);
@@ -591,6 +574,12 @@ public class AyudaFragment extends Fragment {
                             tblTablaAyuda.addView(nuevaFila);
                         }
 
+                        if (mostrarInfoDefecto != true) {
+                            tbrPrimeraFila.setVisibility(VISIBLE);
+                            tblTablaAyuda.addView(tbrPrimeraFila);
+                            botonSeleccion.setVisibility(VISIBLE);
+                        }
+
                     } else {
                         tblTablaAyuda.removeAllViews();
 
@@ -601,7 +590,7 @@ public class AyudaFragment extends Fragment {
                             campoPregunta = new TextView(getActivity());
                             campoRespuesta = new TextView(getActivity());
                             campoTipoPrioridad = new TextView(getActivity());
-
+                            mostrarInfoDefecto = true;
 
                             LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 350);
                             AnchoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 205);
@@ -609,16 +598,16 @@ public class AyudaFragment extends Fragment {
                             AnchoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
                             TamañoLetraContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_SP, 10);
 
-
                             parametrosContenido = new TableRow.LayoutParams(LargoContenido, AnchoContenido);
                             parametrosCheckBox = new TableRow.LayoutParams(LargoCheckBox, AnchoCheckBox);
                             margenContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, -1);
                             margenCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 7);
                             margenTop = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 5);
+
                             paddingStartContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 11);
-                            //PONERLO EN LOS DEMÁS, REVISAR LO DE GENERAR REPORTE, Y LUEGO LEER EL MENSAJE.
                             paddingEndContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 5);
                             paddingTopContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 5);
+
                             parametrosContenido.setMarginStart(margenContenido);
                             parametrosCheckBox.setMarginStart(margenCheckBox);
                             parametrosCheckBox.setMarginEnd(margenCheckBox);
@@ -677,6 +666,12 @@ public class AyudaFragment extends Fragment {
                             nuevaFila.addView(campoTipoPrioridad);
                             tblTablaAyuda.addView(nuevaFila);
                         }
+
+                        if (mostrarInfoDefecto != true) {
+                            tbrPrimeraFila.setVisibility(VISIBLE);
+                            tblTablaAyuda.addView(tbrPrimeraFila);
+                            botonSeleccion.setVisibility(VISIBLE);
+                        }
                     }
 
                 } else {
@@ -687,7 +682,7 @@ public class AyudaFragment extends Fragment {
                         int errorRaw = response.raw().code();
 
                         if(errorRaw == 401) {
-                            error = "Se finalizo la sesión de su cuenta.";
+                            error = " Se finalizo la sesión de su cuenta.";
                         }
 
                         /* Aqui lo que se hace es ocultar los botones de crear, actualizar, -
@@ -710,7 +705,7 @@ public class AyudaFragment extends Fragment {
                         /* Esto es para imprimir los mensajes de error. */
                         AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
                         construirAlerta.setIcon(R.drawable.icono_error);
-                        construirAlerta.setMessage("Pero en este momento no es posible ver la información debido a que: " + error + "\n\nPor favor, intentelo de nuevo.")
+                        construirAlerta.setMessage("Pero en este momento no es posible ver la información debido a que:" + error.replace('"', ' ') + "\n\nPor favor, intentelo de nuevo.")
                                 .setTitle("¡Lo sentimos!");
 
                         construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
@@ -905,10 +900,10 @@ public class AyudaFragment extends Fragment {
             construirAlerta.setMessage("Pero no es posible actualizar la pregunta en estos momentos debido a un problema técnico. Por favor, intentelo más tarde." + "\n\nSi el problema persiste, entonces contactese con el personal técnico.")
                     .setTitle("¡Lo sentimos!");
 
-
             construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {}});
+
             AlertDialog ejecutarMensaje = construirAlerta.create();
             ejecutarMensaje.show();
         }
@@ -935,6 +930,7 @@ public class AyudaFragment extends Fragment {
                 String preguntaGuardado = datoSeleccionado.getPregunta().trim();
 
                 Activity nombreActividad = getActivity();
+
                 faqInterface = ConexionAPI.Conexion_API_FAQ(nombreActividad);
 
                 Call<Boolean> eliminarFAQ = faqInterface.eliminarFAQ(preguntaGuardado, tokenUsuario);
@@ -958,21 +954,21 @@ public class AyudaFragment extends Fragment {
                                 int errorRaw = response.raw().code();
 
                                 if(errorRaw == 401) {
-                                    error = "Se finalizo la sesión de su cuenta.";
+                                    error = " Se finalizo la sesión de su cuenta.";
                                 }
 
                                 /* Esto es para imprimir los mensajes de error. */
                                 AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
-                                    construirAlerta.setIcon(R.drawable.icono_error);
-                                    construirAlerta.setMessage("Pero en este momento no es posible eliminar la pregunta debido a que: " + error + "\n\nPor favor, intentelo de nuevo.")
-                                            .setTitle("¡Lo sentimos!");
+                                construirAlerta.setIcon(R.drawable.icono_error);
+                                construirAlerta.setMessage("Pero en este momento no es posible eliminar la pregunta debido a que:" + error.replace('"', ' ') + "\n\nPor favor, intentelo de nuevo.")
+                                        .setTitle("¡Lo sentimos!");
 
-                                    construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {}});
+                                construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {}});
 
-                                    AlertDialog ejecutarMensaje = construirAlerta.create();
-                                    ejecutarMensaje.show();
+                                AlertDialog ejecutarMensaje = construirAlerta.create();
+                                ejecutarMensaje.show();
 
                                 /* Este sirve solo para el logcat:
                                  * System.out.println(error); */
@@ -1021,9 +1017,7 @@ public class AyudaFragment extends Fragment {
                         AlertDialog ejecutarMensaje = construirAlerta.create();
                         ejecutarMensaje.show();
                     }
-
                 });
-
 
             } else {
                 AlertDialog.Builder construirAlerta = new AlertDialog.Builder(getActivity());
@@ -1037,7 +1031,6 @@ public class AyudaFragment extends Fragment {
 
                 AlertDialog ejecutarMensaje = construirAlerta.create();
                 ejecutarMensaje.show();
-
             }
 
         } catch (Exception error) {

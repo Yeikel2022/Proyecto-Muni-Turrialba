@@ -297,12 +297,15 @@ public class ReporteUsuarioInfoActivity extends AppCompatActivity {
     private void MostrarReportesUsuario(String tokenUsuario, List<ExtensionInicioSesionEntitie> listaActualizada, Boolean autorizacion) {
 
         inicioSesionInterface = ConexionAPI.Conexion_API_Inicio_Sesion(this);
+
         Call<List<ExtensionInicioSesionEntitie>> mostrarUsuarios = inicioSesionInterface.obtenerUsuarios(tokenUsuario);
 
         mostrarUsuarios.enqueue(new Callback<List<ExtensionInicioSesionEntitie>>() {
             @Override
             public void onResponse(Call<List<ExtensionInicioSesionEntitie>> call, Response<List<ExtensionInicioSesionEntitie>> response) {
                 if (response.isSuccessful()) {
+                    Boolean mostrarInfoDefecto = false;
+
                     listaUsuarioInfoBinding.tblTablaContenidoInfoUsuariosLista.removeAllViews();
                     listaUsuarioInfoBinding.tbrPrimeraFilaContenidoInfoUsuariosLista.setVisibility(GONE);
                     listaUsuarioInfoBinding.btnSeleccionDatoInfoUsuariosLista.setVisibility(GONE);
@@ -332,14 +335,13 @@ public class ReporteUsuarioInfoActivity extends AppCompatActivity {
                             campoFechaCreacion = new TextView(ReporteUsuarioInfoActivity.this);
                             campoFechaInicioSesion = new TextView(ReporteUsuarioInfoActivity.this);
                             campoUltimaConexion = new TextView(ReporteUsuarioInfoActivity.this);
-
+                            mostrarInfoDefecto = true;
 
                             LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 350);
                             AnchoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 180);
                             LargoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
                             AnchoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
                             TamañoLetraContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_SP, 10);
-
 
                             parametrosContenido = new TableRow.LayoutParams(LargoContenido, AnchoContenido);
                             parametrosCheckBox = new TableRow.LayoutParams(LargoCheckBox, AnchoCheckBox);
@@ -488,6 +490,12 @@ public class ReporteUsuarioInfoActivity extends AppCompatActivity {
                             listaUsuarioInfoBinding.tblTablaContenidoInfoUsuariosLista.addView(nuevaFila);
                         }
 
+                        if (mostrarInfoDefecto != true) {
+                            listaUsuarioInfoBinding.tbrPrimeraFilaContenidoInfoUsuariosLista.setVisibility(VISIBLE);
+                            listaUsuarioInfoBinding.tblTablaContenidoInfoUsuariosLista.addView(listaUsuarioInfoBinding.tbrPrimeraFilaContenidoInfoUsuariosLista);
+                            listaUsuarioInfoBinding.btnSeleccionDatoInfoUsuariosLista.setVisibility(VISIBLE);
+                        }
+
                     } else {
                         listaUsuarioInfoBinding.tblTablaContenidoInfoUsuariosLista.removeAllViews();
 
@@ -504,14 +512,13 @@ public class ReporteUsuarioInfoActivity extends AppCompatActivity {
                             campoFechaCreacion = new TextView(ReporteUsuarioInfoActivity.this);
                             campoFechaInicioSesion = new TextView(ReporteUsuarioInfoActivity.this);
                             campoUltimaConexion = new TextView(ReporteUsuarioInfoActivity.this);
-
+                            mostrarInfoDefecto = true;
 
                             LargoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 350);
                             AnchoContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 180);
                             LargoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
                             AnchoCheckBox = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_DIP, 30);
                             TamañoLetraContenido = ConvertirPropiedades(TypedValue.COMPLEX_UNIT_SP, 10);
-
 
                             parametrosContenido = new TableRow.LayoutParams(LargoContenido, AnchoContenido);
                             parametrosCheckBox = new TableRow.LayoutParams(LargoCheckBox, AnchoCheckBox);
@@ -659,6 +666,12 @@ public class ReporteUsuarioInfoActivity extends AppCompatActivity {
                             nuevaFila.addView(campoUltimaConexion);
                             listaUsuarioInfoBinding.tblTablaContenidoInfoUsuariosLista.addView(nuevaFila);
                         }
+
+                        if (mostrarInfoDefecto != true) {
+                            listaUsuarioInfoBinding.tbrPrimeraFilaContenidoInfoUsuariosLista.setVisibility(VISIBLE);
+                            listaUsuarioInfoBinding.tblTablaContenidoInfoUsuariosLista.addView(listaUsuarioInfoBinding.tbrPrimeraFilaContenidoInfoUsuariosLista);
+                            listaUsuarioInfoBinding.btnSeleccionDatoInfoUsuariosLista.setVisibility(VISIBLE);
+                        }
                     }
 
                 } else {
@@ -667,7 +680,7 @@ public class ReporteUsuarioInfoActivity extends AppCompatActivity {
                         int errorRaw = response.raw().code();
 
                         if(errorRaw == 401) {
-                            error = "Se finalizo la sesión de su cuenta.";
+                            error = " Se finalizo la sesión de su cuenta.";
                         }
 
                         listaUsuarioInfoBinding.svBuscarInfoUsuarioLista.setVisibility(GONE);
@@ -684,7 +697,7 @@ public class ReporteUsuarioInfoActivity extends AppCompatActivity {
 
                         AlertDialog.Builder construirAlerta = new AlertDialog.Builder(ReporteUsuarioInfoActivity.this);
                         construirAlerta.setIcon(R.drawable.icono_error);
-                        construirAlerta.setMessage("Pero en este momento no es posible ver la información debido a que: " + error + "\n\nPor favor, intentelo de nuevo.")
+                        construirAlerta.setMessage("Pero en este momento no es posible ver la información debido a que:" + error.replace('"', ' ') + "\n\nPor favor, intentelo de nuevo.")
                                 .setTitle("¡Lo sentimos!");
 
                         construirAlerta.setNeutralButton("Ok.", new DialogInterface.OnClickListener() {
